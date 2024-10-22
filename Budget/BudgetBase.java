@@ -174,7 +174,10 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         BudgetBase newContentPane = new BudgetBase(frame);
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
- 
+
+        //testing print and commits
+        System.out.println("TESTING HELLO WORLD");
+
         //Display the window.
         frame.pack();
         frame.setVisible(true);

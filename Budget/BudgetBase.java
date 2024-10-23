@@ -5,7 +5,7 @@
 //
 // user can enter in wages and loans and calculate total income
 //
-// run in Codio 
+// run in Codio
 // To see GUI, run with java and select Box Url from Codio top line menu
 //
 // Layout - Uses GridBag layout in a straightforward way, every component has a (column, row) position in the UI grid
@@ -30,7 +30,10 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     private JButton exitButton;        // Exit button
     private JTextField wagesField;     // Wages text field
     private JTextField loansField;     // Loans text field
+    private JTextField otherIncomeField;
     private JTextField totalIncomeField; // Total Income field
+    private JTextField foodField;
+
 
     // constructor - create UI  (dont need to change this)
     public BudgetBase(JFrame frame) {
@@ -42,7 +45,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     // initialise componenents
     // Note that this method is quite long.  Can be shortened by putting Action Listener stuff in a separate method
     // will be generated automatically by IntelliJ, Eclipse, etc
-    private void initComponents() { 
+    private void initComponents() {
 
         // Top row (0) - "INCOME" label
         JLabel incomeLabel = new JLabel("INCOME");
@@ -56,7 +59,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         // Could create method to do below (since this is done several times)
         wagesField = new JTextField("", 10);   // blank initially, with 10 columns
         wagesField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        addComponent(wagesField, 1, 1);   
+        addComponent(wagesField, 1, 1);
 
         // Row 2 - Loans label followed by loans textbox
         JLabel loansLabel = new JLabel("Loans");
@@ -65,25 +68,55 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         // set up text box for entering loans
         loansField = new JTextField("", 10);   // blank initially, with 10 columns
         loansField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        addComponent(loansField, 2, 1); 
+        addComponent(loansField, 2, 1);
 
-        // Row 3 - Total Income label followed by total income field
+        // Row 3 - Other label followed by other textbox
+        JLabel otherLabel = new JLabel("Other");
+        addComponent(otherLabel, 3, 0);
+
+        // set up text box for entering loans
+        otherIncomeField = new JTextField("", 10);   // blank initially, with 10 columns
+        otherIncomeField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
+        addComponent(otherIncomeField, 3, 1);
+
+        // Row 4 - Total Income label followed by total income field
         JLabel totalIncomeLabel = new JLabel("Total Income");
-        addComponent(totalIncomeLabel, 3, 0);
+        addComponent(totalIncomeLabel, 4, 0);
 
         // set up text box for displaying total income.  Users cam view, but cannot directly edit it
         totalIncomeField = new JTextField("0", 10);   // 0 initially, with 10 columns
         totalIncomeField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         totalIncomeField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
-        addComponent(totalIncomeField, 3, 1);  
+        addComponent(totalIncomeField, 4, 1);
+
+
+        //Row 5 is blank
+        JLabel blankLabel = new JLabel(" ");
+        addComponent(blankLabel, 5, 0);
+
+        //Row 6 is Spending header
+        JLabel spendingLabel = new JLabel("SPENDING");
+        addComponent(spendingLabel, 6, 0);
+
+
+        //Row 7 is food field
+        JLabel foodLabel = new JLabel("Food");
+        addComponent(foodLabel, 7, 0);
+
+        // set up text field for entering wages
+        // Could create method to do below (since this is done several times)
+        foodField = new JTextField("", 10);   // blank initially, with 10 columns
+        foodField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
+        addComponent(foodField, 7, 1);
+
 
         // Row 4 - Calculate Button
         calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, 4, 0);  
+        addComponent(calculateButton, 9, 0);
 
         // Row 5 - Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, 5, 0);  
+        addComponent(exitButton, 10, 0);
 
         // set up  listeners (in a spearate method)
         initListeners();
@@ -125,16 +158,17 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         // get values from income text fields.  valie is NaN if an error occurs
         double wages = getTextFieldValue(wagesField);
         double loans = getTextFieldValue(loansField);
+        double other = getTextFieldValue(otherIncomeField);
 
         // clear total field and return if any value is NaN (error)
-        if (Double.isNaN(wages) || Double.isNaN(loans)) {
+        if (Double.isNaN(wages) || Double.isNaN(loans) || Double.isNaN(other)) {
             totalIncomeField.setText("");  // clear total income field
             wages = 0.0;
             return wages;   // exit method and do nothing
         }
 
         // otherwise calculate total income and update text field
-        double totalIncome = wages + loans;
+        double totalIncome = wages + loans + other;
         totalIncomeField.setText(String.format("%.2f",totalIncome));  // format with 2 digits after the .
         return totalIncome;
     }
@@ -165,11 +199,11 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 // below is standard code to set up Swing, which students shouldnt need to edit much
     // standard mathod to show UI
     private static void createAndShowGUI() {
- 
+
         //Create and set up the window.
         JFrame frame = new JFrame("Budget Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+
         //Create and set up the content pane.
         BudgetBase newContentPane = new BudgetBase(frame);
         newContentPane.setOpaque(true); //content panes must be opaque
@@ -182,14 +216,14 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         frame.pack();
         frame.setVisible(true);
     }
- 
+
     // standard main class to set up Swing UI
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI(); 
+                createAndShowGUI();
             }
         });
     }

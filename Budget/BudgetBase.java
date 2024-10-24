@@ -34,6 +34,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     private JTextField[] spendingFields; // Array for spending text fields
     private JTextField totalIncomeField; // Total Income field
     private JTextField totalSpendingField;
+    private JTextField overalTotalField;
 
     // constructor - create UI  (dont need to change this)
     public BudgetBase(JFrame frame) {
@@ -119,13 +120,23 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         JLabel blankLabel2 = new JLabel(" ");
         addComponent(blankLabel2, numberIncomeRows + numberSpendingRows + 6, 0);
 
-        // Row 4 - Calculate Button
-        calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, numberIncomeRows + numberSpendingRows + 7, 0);
 
-        // Row 5 - Exit Button
+        JLabel overallTotalLabel = new JLabel("Overall Total");
+        addComponent(overallTotalLabel, numberIncomeRows+numberSpendingRows +7, 0);
+
+        // set up text box for displaying total income.  Users cam view, but cannot directly edit it
+        overalTotalField = new JTextField("0", 10);   // 0 initially, with 10 columns
+        overalTotalField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
+        overalTotalField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
+        addComponent(overalTotalField, numberIncomeRows+numberSpendingRows +7, 1);
+
+        //Calculate Button
+        calculateButton = new JButton("Calculate");
+        addComponent(calculateButton, numberIncomeRows + numberSpendingRows + 8, 0);
+
+        //Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, numberIncomeRows + numberSpendingRows + 7, 1);
+        addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 1);
 
 
         // set up  listeners (in a spearate method)
@@ -151,6 +162,8 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
             public void actionPerformed(ActionEvent e) {
                 calculateTotalIncome();
                 calculateTotalSpending();
+                calculateOverallTotal();
+
             }
         });
 
@@ -200,7 +213,11 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         totalSpendingField.setText(String.format("%.2f", totalSpending));
     }
 
-    //test
+    //does (income - spending)
+    public void calculateOverallTotal() {
+        double overallTotal = calculateTotal(incomeFields) - calculateTotal(spendingFields);
+        overalTotalField.setText(String.format("%.2f", overallTotal));
+    }
 
 
     // return the value if a text field as a double

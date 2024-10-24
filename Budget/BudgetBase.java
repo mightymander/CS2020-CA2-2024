@@ -17,6 +17,7 @@ package Budget;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.Arrays;
 
 // class definition
 public class BudgetBase extends JPanel {    // based on Swing JPanel
@@ -26,14 +27,13 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     GridBagConstraints layoutConstraints = new GridBagConstraints(); // used to control layout
 
     // widgets which may have listeners and/or values
+    // widgets which may have listeners and/or values
     private JButton calculateButton;   // Calculate button
     private JButton exitButton;        // Exit button
-    private JTextField wagesField;     // Wages text field
-    private JTextField loansField;     // Loans text field
-    private JTextField otherIncomeField;
+    private JTextField[] incomeFields; // Array for income text fields
+    private JTextField[] spendingFields; // Array for spending text fields
     private JTextField totalIncomeField; // Total Income field
-    private JTextField foodField;
-
+    private JTextField totalSpendingField;
 
     // constructor - create UI  (dont need to change this)
     public BudgetBase(JFrame frame) {
@@ -47,79 +47,92 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     // will be generated automatically by IntelliJ, Eclipse, etc
     private void initComponents() {
 
+
+        // Income categories
+        String[] incomeCategories = {"Wages", "Loans", "Other","cats"};
+        int numberIncomeRows = incomeCategories.length;
+        incomeFields = new JTextField[numberIncomeRows];
+
+
+        // Spending categories
+        String[] spendingCategories = {"Food", "Rent", "apples"};
+        int numberSpendingRows = spendingCategories.length;
+        spendingFields = new JTextField[numberSpendingRows];
+
         // Top row (0) - "INCOME" label
         JLabel incomeLabel = new JLabel("INCOME");
         addComponent(incomeLabel, 0, 0);
 
-        // Row 1 - Wages label followed by wages textbox
-        JLabel wagesLabel = new JLabel("Wages");
-        addComponent(wagesLabel, 1, 0);
+        // Loop through and create income rows dynamically
+        for (int i = 0; i < numberIncomeRows; i++) {
+            JLabel incomeCategoryLabel = new JLabel(incomeCategories[i]);
+            addComponent(incomeCategoryLabel, i + 1, 0);
 
-        // set up text field for entering wages
-        // Could create method to do below (since this is done several times)
-        wagesField = new JTextField("", 10);   // blank initially, with 10 columns
-        wagesField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        addComponent(wagesField, 1, 1);
+            // Create corresponding text fields
+            incomeFields[i] = new JTextField("", 10);
+            incomeFields[i].setHorizontalAlignment(JTextField.RIGHT);
+            addComponent(incomeFields[i], i + 1, 1);
+        }
 
-        // Row 2 - Loans label followed by loans textbox
-        JLabel loansLabel = new JLabel("Loans");
-        addComponent(loansLabel, 2, 0);
 
-        // set up text box for entering loans
-        loansField = new JTextField("", 10);   // blank initially, with 10 columns
-        loansField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        addComponent(loansField, 2, 1);
 
-        // Row 3 - Other label followed by other textbox
-        JLabel otherLabel = new JLabel("Other");
-        addComponent(otherLabel, 3, 0);
-
-        // set up text box for entering loans
-        otherIncomeField = new JTextField("", 10);   // blank initially, with 10 columns
-        otherIncomeField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        addComponent(otherIncomeField, 3, 1);
-
-        // Row 4 - Total Income label followed by total income field
+        //Total Income label followed by total income field
         JLabel totalIncomeLabel = new JLabel("Total Income");
-        addComponent(totalIncomeLabel, 4, 0);
+        addComponent(totalIncomeLabel, numberIncomeRows +1, 0);
 
         // set up text box for displaying total income.  Users cam view, but cannot directly edit it
         totalIncomeField = new JTextField("0", 10);   // 0 initially, with 10 columns
         totalIncomeField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         totalIncomeField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
-        addComponent(totalIncomeField, 4, 1);
+        addComponent(totalIncomeField, numberIncomeRows +1, 1);
 
+        //blank row after total income
+        JLabel blankLabel1 = new JLabel(" ");
+        addComponent(blankLabel1, numberIncomeRows+2, 0);
 
-        //Row 5 is blank
-        JLabel blankLabel = new JLabel(" ");
-        addComponent(blankLabel, 5, 0);
-
-        //Row 6 is Spending header
+        //Spending header
         JLabel spendingLabel = new JLabel("SPENDING");
-        addComponent(spendingLabel, 6, 0);
+        addComponent(spendingLabel,  numberIncomeRows + 4, 0);
 
+        for (int i = 0; i < numberSpendingRows; i++) {
+            JLabel spendingCategoryLabel  = new JLabel(spendingCategories[i]);
+            addComponent(spendingCategoryLabel, numberIncomeRows + 5 + i, 0);
 
-        //Row 7 is food field
-        JLabel foodLabel = new JLabel("Food");
-        addComponent(foodLabel, 7, 0);
+            // Create corresponding text fields
+            spendingFields[i] = new JTextField("", 10);
+            spendingFields[i].setHorizontalAlignment(JTextField.RIGHT);
+            addComponent(spendingFields[i], numberIncomeRows + 5 + i, 1);
+        }
 
-        // set up text field for entering wages
-        // Could create method to do below (since this is done several times)
-        foodField = new JTextField("", 10);   // blank initially, with 10 columns
-        foodField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        addComponent(foodField, 7, 1);
+        //total spending
 
+        JLabel totalSpendingLabel = new JLabel("Total Spending");
+        addComponent(totalSpendingLabel, numberIncomeRows+numberSpendingRows +5, 0);
+
+        // set up text box for displaying total income.  Users cam view, but cannot directly edit it
+        totalSpendingField = new JTextField("0", 10);   // 0 initially, with 10 columns
+        totalSpendingField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
+        totalSpendingField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
+        addComponent(totalSpendingField, numberIncomeRows+numberSpendingRows +5, 1);
+
+        //blank row
+        JLabel blankLabel2 = new JLabel(" ");
+        addComponent(blankLabel2, numberIncomeRows + numberSpendingRows + 6, 0);
 
         // Row 4 - Calculate Button
         calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, 9, 0);
+        addComponent(calculateButton, numberIncomeRows + numberSpendingRows + 7, 0);
 
         // Row 5 - Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, 10, 0);
+        addComponent(exitButton, numberIncomeRows + numberSpendingRows + 7, 1);
+
 
         // set up  listeners (in a spearate method)
         initListeners();
+
+
+
     }
 
     // set up listeners
@@ -137,8 +150,11 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         calculateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 calculateTotalIncome();
+                calculateTotalSpending();
             }
         });
+
+
 
     }
 
@@ -153,25 +169,39 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 
     // update totalIncomeField (eg, when Calculate is pressed)
     // use double to hold numbers, so user can type fractional amounts such as 134.50
-    public double calculateTotalIncome() {
+    // General method to calculate the total for an array of text fields
+    public double calculateTotal(JTextField[] fields) {
+        double total = 0.0;
 
-        // get values from income text fields.  valie is NaN if an error occurs
-        double wages = getTextFieldValue(wagesField);
-        double loans = getTextFieldValue(loansField);
-        double other = getTextFieldValue(otherIncomeField);
+        // Loop through the fields array to get values and sum them
+        for (JTextField field : fields) {
+            double value = getTextFieldValue(field);
 
-        // clear total field and return if any value is NaN (error)
-        if (Double.isNaN(wages) || Double.isNaN(loans) || Double.isNaN(other)) {
-            totalIncomeField.setText("");  // clear total income field
-            wages = 0.0;
-            return wages;   // exit method and do nothing
+            // Exit and return 0 if any value is NaN (error)
+            if (Double.isNaN(value)) {
+                return 0.0;
+            }
+
+            total += value;
         }
 
-        // otherwise calculate total income and update text field
-        double totalIncome = wages + loans + other;
-        totalIncomeField.setText(String.format("%.2f",totalIncome));  // format with 2 digits after the .
-        return totalIncome;
+        return total;  // Return the calculated total
     }
+
+    // Calculate total income using incomeFields array
+    public void calculateTotalIncome() {
+        double totalIncome = calculateTotal(incomeFields);
+        totalIncomeField.setText(String.format("%.2f", totalIncome));  // Update the UI field with formatted total
+    }
+
+    // Example: Calculate total spending using spendingFields array (if you need this)
+    public void calculateTotalSpending() {
+        double totalSpending = calculateTotal(spendingFields);
+        totalSpendingField.setText(String.format("%.2f", totalSpending));
+    }
+
+    //test
+
 
     // return the value if a text field as a double
     // --return 0 if field is blank

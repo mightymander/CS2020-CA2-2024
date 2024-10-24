@@ -19,6 +19,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 // class definition
@@ -38,6 +39,20 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     private JTextField totalSpendingField;
     private JTextField overalTotalField;
 
+    private JButton addIncomeFieldButton;
+    private JButton addSpendingFieldButton;
+
+
+    // Income categories
+    ArrayList<String> incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
+    ArrayList<String> spendingCategories = new ArrayList<>(Arrays.asList("Food", "Rent", "apples"));
+
+
+    private ArrayList<Double> currentIncomeValues = new ArrayList<>(); // To store income values
+    private ArrayList<Double> currentSpendingValues = new ArrayList<>(); // To store spending values
+
+
+
     // constructor - create UI  (dont need to change this)
     public BudgetBase(JFrame frame) {
         topLevelFrame = frame; // keep track of top-level frame
@@ -50,24 +65,27 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     // will be generated automatically by IntelliJ, Eclipse, etc
     private void initComponents() {
 
-        // Income categories
-        String[] incomeCategories = {"Wages", "Loans", "Other","cats"};
-        int numberIncomeRows = incomeCategories.length;
+
+        int numberIncomeRows = incomeCategories.size();
         incomeFields = new JTextField[numberIncomeRows];
 
 
+
         // Spending categories
-        String[] spendingCategories = {"Food", "Rent", "apples"};
-        int numberSpendingRows = spendingCategories.length;
+        int numberSpendingRows = spendingCategories.size();
         spendingFields = new JTextField[numberSpendingRows];
 
         // Top row (0) - "INCOME" label
         JLabel incomeLabel = new JLabel("INCOME");
         addComponent(incomeLabel, 0, 0);
 
+        //add button besie income
+        addIncomeFieldButton = new JButton("ADD");
+        addComponent(addIncomeFieldButton, 0, 1);
+
         // Loop through and create income rows dynamically
         for (int i = 0; i < numberIncomeRows; i++) {
-            JLabel incomeCategoryLabel = new JLabel(incomeCategories[i]);
+            JLabel incomeCategoryLabel = new JLabel(incomeCategories.get(i));
             addComponent(incomeCategoryLabel, i + 1, 0);
 
             // Create corresponding text fields
@@ -96,8 +114,13 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         JLabel spendingLabel = new JLabel("SPENDING");
         addComponent(spendingLabel,  numberIncomeRows + 4, 0);
 
+        //add spending field button
+        //add button besie income
+        addSpendingFieldButton = new JButton("ADD");
+        addComponent(addSpendingFieldButton, numberIncomeRows + 4, 1);
+
         for (int i = 0; i < numberSpendingRows; i++) {
-            JLabel spendingCategoryLabel  = new JLabel(spendingCategories[i]);
+            JLabel spendingCategoryLabel  = new JLabel(spendingCategories.get(i));
             addComponent(spendingCategoryLabel, numberIncomeRows + 5 + i, 0);
 
             // Create corresponding text fields
@@ -137,6 +160,8 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 0);
 
 
+
+
         // set up  listeners (in a spearate method)
         initListeners();
 
@@ -150,6 +175,52 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+
+        addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String input = JOptionPane.showInputDialog("Enter additional Income field name:  ");
+                incomeCategories.add(input);
+
+                // Save current state before clearing components
+                saveCurrentState();
+
+                // Clear existing components
+                removeAll(); // Remove all components from the panel
+
+                // Re-initialize components
+                initComponents(); // Re-run initComponents to set up the UI again
+
+                // Restore saved state
+                restoreSavedState();
+
+                // Refresh the layout
+                revalidate(); // Refresh the panel to show the new components
+                repaint(); // Repaint the panel to ensure it displays correctly
+            }
+        });
+
+        addSpendingFieldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String input = JOptionPane.showInputDialog("Enter additional Spending field name:  ");
+                spendingCategories.add(input);
+
+                // Save current state before clearing components
+                saveCurrentState();
+
+                // Clear existing components
+                removeAll(); // Remove all components from the panel
+
+                // Re-initialize components
+                initComponents(); // Re-run initComponents to set up the UI again
+
+                // Restore saved state
+                restoreSavedState();
+
+                // Refresh the layout
+                revalidate(); // Refresh the panel to show the new components
+                repaint(); // Repaint the panel to ensure it displays correctly
             }
         });
 
@@ -189,6 +260,47 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         }
     }
 
+
+
+    // Method to save the current state of income and spending fields
+    private void saveCurrentState() {
+        // Save current values of income fields
+        ArrayList<Double> currentIncomeValues = new ArrayList<>();
+        for (JTextField field : incomeFields) {
+            currentIncomeValues.add(getTextFieldValue(field)); // Add current value to the list
+        }
+
+        // Save current values of spending fields
+        ArrayList<Double> currentSpendingValues = new ArrayList<>();
+        for (JTextField field : spendingFields) {
+            currentSpendingValues.add(getTextFieldValue(field)); // Add current value to the list
+        }
+
+        // Store in a class-level variable or pass them around as needed
+        this.currentIncomeValues = currentIncomeValues;
+        this.currentSpendingValues = currentSpendingValues;
+    }
+
+
+    // Method to restore the saved state to the fields
+    private void restoreSavedState() {
+        // Restore income fields
+        for (int i = 0; i < incomeFields.length && i < currentIncomeValues.size(); i++) {
+            incomeFields[i].setText(String.valueOf(currentIncomeValues.get(i))); // Set saved value
+        }
+
+        // Restore spending fields
+        for (int i = 0; i < spendingFields.length && i < currentSpendingValues.size(); i++) {
+            spendingFields[i].setText(String.valueOf(currentSpendingValues.get(i))); // Set saved value
+        }
+    }
+
+
+
+
+
+
+
     // Trigger calculations for income, spending, and overall total
     private void triggerCalculations() {
         calculateTotalIncome();
@@ -202,6 +314,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         layoutConstraints.gridx = gridcol;
         layoutConstraints.gridy = gridrow;
         add(component, layoutConstraints);
+
 
     }
 

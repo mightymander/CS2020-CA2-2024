@@ -1,0 +1,13 @@
+inside, initComponents() i was redeclaring incomeFields which was messing up with other things, this too a while to find
+
+"JTextField[] incomeFields = new JTextField[numberIncomeRows];"
+
+incomeFields = new JTextField[numberIncomeRows];
+
+================
+
+removing the need for a calulate button was very simple using DocumentListener
+
+insertUpdate(DocumentEvent e): This method is called when text is inserted into the document.
+removeUpdate(DocumentEvent e): This method is called when text is removed from the document.
+changedUpdate(DocumentEvent e): This method is called when the document's attributes change.

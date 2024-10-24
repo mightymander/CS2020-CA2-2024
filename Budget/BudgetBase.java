@@ -15,6 +15,8 @@ package Budget;
 
 // Swing imports
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.Arrays;
@@ -47,7 +49,6 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     // Note that this method is quite long.  Can be shortened by putting Action Listener stuff in a separate method
     // will be generated automatically by IntelliJ, Eclipse, etc
     private void initComponents() {
-
 
         // Income categories
         String[] incomeCategories = {"Wages", "Loans", "Other","cats"};
@@ -130,19 +131,14 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         overalTotalField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
         addComponent(overalTotalField, numberIncomeRows+numberSpendingRows +7, 1);
 
-        //Calculate Button
-        calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, numberIncomeRows + numberSpendingRows + 8, 0);
 
         //Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 1);
+        addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 0);
 
 
         // set up  listeners (in a spearate method)
         initListeners();
-
-
 
     }
 
@@ -157,18 +153,47 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
             }
         });
 
-        // calculateButton - call calculateTotalIncome() when pressed
-        calculateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                calculateTotalIncome();
-                calculateTotalSpending();
-                calculateOverallTotal();
 
-            }
-        });
+        for (JTextField incomeField : incomeFields) {
+            incomeField.getDocument().addDocumentListener(new DocumentListener() {
 
+                public void insertUpdate(DocumentEvent e) {
+                    triggerCalculations();
+                }
 
+                public void removeUpdate(DocumentEvent e) {
+                    triggerCalculations();
+                }
 
+                public void changedUpdate(DocumentEvent e) {
+                    triggerCalculations();
+                }
+            });
+        }
+
+        // Add DocumentListener to all spending fields
+        for (JTextField spendingField : spendingFields) {
+            spendingField.getDocument().addDocumentListener(new DocumentListener() {
+                public void insertUpdate(DocumentEvent e) {
+                    triggerCalculations();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    triggerCalculations();
+                }
+
+                public void changedUpdate(DocumentEvent e) {
+                    triggerCalculations();
+                }
+            });
+        }
+    }
+
+    // Trigger calculations for income, spending, and overall total
+    private void triggerCalculations() {
+        calculateTotalIncome();
+        calculateTotalSpending();
+        calculateOverallTotal();
     }
 
     // add a component at specified row and column in UI.  (0,0) is top-left corner

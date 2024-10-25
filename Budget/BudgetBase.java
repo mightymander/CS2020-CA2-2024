@@ -295,12 +295,6 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         }
     }
 
-
-
-
-
-
-
     // Trigger calculations for income, spending, and overall total
     private void triggerCalculations() {
         calculateTotalIncome();
@@ -394,11 +388,12 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
 
-        //testing print and commits
-        System.out.println("TESTING HELLO WORLD");
+        //make the frame bigger on start
+
 
         //Display the window.
-        frame.pack();
+        //frame.pack();
+        frame.setSize(400,600);
         frame.setVisible(true);
     }
 

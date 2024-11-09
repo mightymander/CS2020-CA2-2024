@@ -1,7 +1,9 @@
 package Budget;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+//import junit assert equals
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 // Swing imports
 import javax.swing.*;
@@ -25,4 +27,14 @@ public class BudgetBaseTest
 
         //assertEquals(value, bb.calculateTotalIncome() );
     }
+
+
+    @Test
+    public void testJunit() {
+        //test junit is working
+        String str = "WORKING";
+        assertEquals("WORKING", str);
+    }
+
+
 }

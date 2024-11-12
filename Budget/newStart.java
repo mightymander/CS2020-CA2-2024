@@ -13,14 +13,6 @@
 // Students who use IntelliJ or Eclipse may want to use the UI designers in these IDEs , instead of GridBagLayout
 package Budget;
 
-
-//TODO 
-// - create method that saves all the current input fields
-// - then test that the method works
-// - then create a method that loads the saved fields
-// - then test that the method works
-
-
 // Swing imports
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -60,12 +52,14 @@ public class newStart extends JPanel {    // based on Swing JPanel
     private JTextField totalSpendingField;
     private JTextField overalTotalField;
 
+    private int temp1 = 0;
+
 
      // Income, spending categories
     ArrayList<String> incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
     ArrayList<String> spendingCategories = new ArrayList<>(Arrays.asList("Food", "Rent", "apples"));
-    private ArrayList<String> currentIncomeValues = new ArrayList<>(Arrays.asList()); // To store income values with default 0
-    private ArrayList<String> currentSpendingValues = new ArrayList<>(Arrays.asList()); // To store spending values with default 0
+    private ArrayList<String> currentIncomeValues = new ArrayList<>(Arrays.asList("","","")); // To store income values with default 0
+    private ArrayList<String> currentSpendingValues = new ArrayList<>(Arrays.asList("","","")); // To store spending values with default 0
 
     // Stack to store all budgets
     private Stack<Budget> allBudgets = new Stack<>();
@@ -124,7 +118,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
     // Note that this method is quite long.  Can be shortened by putting Action Listener stuff in a separate method
     // will be generated automatically by IntelliJ, Eclipse, etc
     private void initComponents() { 
-
         
         int numberIncomeRows = incomeCategories.size();
         incomeFields = new JTextField[numberIncomeRows];
@@ -219,6 +212,13 @@ public class newStart extends JPanel {    // based on Swing JPanel
         exitButton = new JButton("Exit");
         addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 1);
 
+        // Save the current fields to the stack
+        //only saves initial fields
+        if (temp1 ==0) {
+            saveFields();
+            temp1=1;
+        }
+
         // set up  listeners (in a spearate method)
         initListeners();
     }
@@ -284,9 +284,9 @@ public class newStart extends JPanel {    // based on Swing JPanel
     
     //method to goback to the previous budget 
     private void goBack() {
-
+    
         // Check if there are any budgets to go back to
-        if (allBudgets.size() <= 1) {
+        if (allBudgets.size() <1) {
         System.out.println("No previous budget to revert to.");
         return;
         }

@@ -64,15 +64,15 @@ public class newStart extends JPanel {    // based on Swing JPanel
      // Income, spending categories
     ArrayList<String> incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
     ArrayList<String> spendingCategories = new ArrayList<>(Arrays.asList("Food", "Rent", "apples"));
-
-    private ArrayList<String> currentIncomeValues = new ArrayList<>(); // To store income values
-    private ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values
+    private ArrayList<String> currentIncomeValues = new ArrayList<>(Arrays.asList()); // To store income values with default 0
+    private ArrayList<String> currentSpendingValues = new ArrayList<>(Arrays.asList()); // To store spending values with default 0
 
     // Stack to store all budgets
     private Stack<Budget> allBudgets = new Stack<>();
-
+   
     // constructor - create UI  (dont need to change this)
     public newStart(JFrame frame) {
+        
         topLevelFrame = frame; // keep track of top-level frame
         setLayout(new GridBagLayout());  // use GridBag layout
         initComponents();  // initalise components
@@ -147,7 +147,8 @@ public class newStart extends JPanel {    // based on Swing JPanel
             addComponent(incomeCategoryLabel, i + 1, 0);
 
             // Create text fields
-            incomeFields[i] = new JTextField("", 10);
+            String incomeValue = i < currentIncomeValues.size() ? currentIncomeValues.get(i) : "";
+            incomeFields[i] = new JTextField(incomeValue, 10);
             incomeFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(incomeFields[i], i + 1, 1);
         }
@@ -181,7 +182,8 @@ public class newStart extends JPanel {    // based on Swing JPanel
             addComponent(spendingCategoryLabel, numberIncomeRows + 5 + i, 0);
 
             // Create text fields
-            spendingFields[i] = new JTextField("", 10);
+            String spendingValue = i < currentSpendingValues.size() ? currentSpendingValues.get(i) : "";
+            spendingFields[i] = new JTextField(spendingValue, 10);
             spendingFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(spendingFields[i], numberIncomeRows + 5 + i, 1);
         }
@@ -217,8 +219,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
         exitButton = new JButton("Exit");
         addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 1);
 
-
-
         // set up  listeners (in a spearate method)
         initListeners();
     }
@@ -230,24 +230,15 @@ public class newStart extends JPanel {    // based on Swing JPanel
         // exitButton - exit program when pressed
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //Print all budgets from the stack
-                for (Budget budget : allBudgets) {
-                    System.out.println(budget);
-                }
-                //System.exit(0);
-                removeAll();
-
-                initComponents();
+                System.exit(0);
             }
         });
 
         //undo button
         undoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Pop the last budget from the stack
-                if (!allBudgets.isEmpty()) {
-                    allBudgets.pop();
-                }
+                goBack();
+                triggerCalculations();
             }
         });
 
@@ -270,18 +261,20 @@ public class newStart extends JPanel {    // based on Swing JPanel
             triggerCalculations();
             //DEBUG_printCurrentValues();
             saveFields();
-            goBack();
+            
             
         }
         // Trigger calculations when text is removed
         public void removeUpdate(DocumentEvent e) {
             updateIncomeSpendingValuesList();
+            triggerCalculations();
             //DEBUG_printCurrentValues();
             saveFields();
         }
         // Trigger calculations when text is changed
         public void changedUpdate(DocumentEvent e) {
             updateIncomeSpendingValuesList();
+            triggerCalculations();
             //DEBUG_printCurrentValues();
             saveFields();
         }
@@ -291,21 +284,52 @@ public class newStart extends JPanel {    // based on Swing JPanel
     
     //method to goback to the previous budget 
     private void goBack() {
-        //grab the most recent budget
-        Budget mostRecentBudget = allBudgets.peek();
+
+        // Check if there are any budgets to go back to
+        if (allBudgets.size() <= 1) {
+        System.out.println("No previous budget to revert to.");
+        return;
+        }
         
+        System.out.println("Going back to the previous budget...");
+
+        //grab the most recent budget
+        Budget mostRecentBudget = allBudgets.pop();
+        System.out.println("Most recent budget: " + mostRecentBudget);
+
         //remove everything from incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues
         incomeCategories.clear();
         spendingCategories.clear();
         currentIncomeValues.clear();
         currentSpendingValues.clear();
 
-        //add the most recent budget's income and expense entries to the lists
-        
+        //repopulate incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues
+        // from mostRecentBudget
+        for (Budget.Entry income : mostRecentBudget.income) {
+            incomeCategories.add(income.description);
+            currentIncomeValues.add(income.amount);
+        }
+        for (Budget.Entry spending : mostRecentBudget.expenses) {
+            spendingCategories.add(spending.description);
+            currentSpendingValues.add(spending.amount);
+        }
 
-        
+        System.out.println("Updated income categories: " + incomeCategories);
+        System.out.println("Updated income values: " + currentIncomeValues);
+        System.out.println("Updated spending categories: " + spendingCategories);
+        System.out.println("Updated spending values: " + currentSpendingValues);
 
-        
+        //remove all components from the panel
+        removeAll(); // Remove all components from the panel
+
+        //reinitialize the components
+        initComponents(); // Reinitialize the components
+
+        // Refresh the layout
+        revalidate(); // Refresh the panel to show the new components
+        repaint(); // Repaint the panel to ensure it displays correctly
+
+        System.out.println("UI components reinitialized and layout refreshed.");
     }
     
 
@@ -424,28 +448,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-
-        //testing saveing stacks works
-        // Create lists of income and expense entries
-        List<Budget.Entry> incomeValues = Arrays.asList(
-            new Budget.Entry("salary", "1000"), 
-            new Budget.Entry("freelance", "2000"),
-            new Budget.Entry("investment", "3000")
-        );
-        List<Budget.Entry> expenseValues = Arrays.asList(
-            new Budget.Entry("rent", "100"), 
-            new Budget.Entry("utilities", "200"),
-            new Budget.Entry("subscriptions", "300")
-        );
-        // Create new stack of Budget objects
-        Stack<Budget> allBudgets = new Stack<>();
-
-        // Add a new budget to the stack
-        stacksTesting.addBudget(allBudgets, incomeValues, expenseValues);
-
-        
-
-
 
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {

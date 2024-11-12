@@ -227,7 +227,12 @@ public class newStart extends JPanel {    // based on Swing JPanel
         // exitButton - exit program when pressed
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                //Print all budgets from the stack
+            for (Budget budget : allBudgets) {
+                System.out.println(budget);
+            }
+
+                //System.exit(0);
             }
         });
 
@@ -277,8 +282,46 @@ public class newStart extends JPanel {    // based on Swing JPanel
         }
     });
 }
-
     
+    //method to check if the currentIncomeValues and currentSpendingValues are the same as the most recent budget
+    private void checkIfValuesAreSame() {
+       // Check if the current income and spending values match the most recent budget
+        boolean valuesMatch = true;
+        Budget mostRecentBudget = allBudgets.peek();
+
+        for (int i = 0; i < currentIncomeValues.size(); i++) {
+            // Compare income values
+            if (!currentIncomeValues.get(i).equals(mostRecentBudget.income.get(i).amount)) {
+                System.out.println("Income values are different.");
+                valuesMatch = false;  // Set flag to false if there's a mismatch
+                break;
+            }
+        }
+
+        // Only proceed to spending comparison if income values matched
+        if (valuesMatch) {
+            for (int i = 0; i < currentSpendingValues.size(); i++) {
+                // Compare spending values
+                if (!currentSpendingValues.get(i).equals(mostRecentBudget.expenses.get(i).amount)) {
+                    System.out.println("Spending values are different.");
+                    valuesMatch = false;  // Set flag to false if there's a mismatch
+                    break;
+                }
+            }
+        }
+
+        // If both income and spending values match, pop the most recent budget
+        if (valuesMatch) {
+            System.out.println("Income and spending values are the same. Removing the most recent budget.");
+            allBudgets.pop();
+        } else {
+            System.out.println("Values don't match, not removing the budget.");
+        }
+
+
+    }
+
+
     //method to goback to the previous budget 
     private void goBack() {
     
@@ -290,9 +333,15 @@ public class newStart extends JPanel {    // based on Swing JPanel
         
         System.out.println("Going back to the previous budget...");
 
+        //check if the current values are the same as the most recent budget
+        checkIfValuesAreSame();    
+        
+
         //grab the most recent budget
         Budget mostRecentBudget = allBudgets.pop();
         System.out.println("Most recent budget: " + mostRecentBudget);
+
+       
 
         //remove everything from incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues
         incomeCategories.clear();

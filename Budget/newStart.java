@@ -67,11 +67,28 @@ public class newStart extends JPanel {    // based on Swing JPanel
     private ArrayList<String> currentIncomeValues = new ArrayList<>(); // To store income values
     private ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values
 
+    // Stack to store all budgets
+    private Stack<Budget> allBudgets = new Stack<>();
+
     // constructor - create UI  (dont need to change this)
     public newStart(JFrame frame) {
         topLevelFrame = frame; // keep track of top-level frame
         setLayout(new GridBagLayout());  // use GridBag layout
         initComponents();  // initalise components
+    }
+
+
+    //debug method to print incomeCategories and spendingCategories, and currentIncomeValues and currentSpendingValues
+    public void DEBUG_printCurrentValues() {
+        System.out.println("Current values:");
+        System.out.println(incomeCategories);
+        System.out.println(currentIncomeValues);
+        System.out.println((" "));
+        System.out.println(spendingCategories);
+        System.out.println(currentSpendingValues);
+
+        
+       
     }
 
 
@@ -83,13 +100,21 @@ public class newStart extends JPanel {    // based on Swing JPanel
          *  expenses will be saved in a list of entries, eg [rent: 100, utilities: 200, subscriptions: 300]
          */
 
-        System.out.println(incomeCategories);
-        System.out.println(spendingCategories);
+        //convert the currentIncomeValues and currentSpendingValues into a list of entries
+        List<Budget.Entry> incomeEntries = new ArrayList<>();
+        List<Budget.Entry> expenseEntries = new ArrayList<>();
 
-        System.out.println(currentIncomeValues);
-        System.out.println(currentSpendingValues);
+        // Loop through incomeCategories and currentIncomeValues to create incomeEntries
+        for (int i = 0; i < incomeCategories.size(); i++) {
+            incomeEntries.add(new Budget.Entry(incomeCategories.get(i), currentIncomeValues.get(i)));
+        }
+        // Loop through spendingCategories and currentSpendingValues to create expenseEntries
+        for (int i = 0; i < spendingCategories.size(); i++) {
+            expenseEntries.add(new Budget.Entry(spendingCategories.get(i), currentSpendingValues.get(i)));
+        }
 
-
+        // Add a new budget to the stack
+        stacksTesting.addBudget(allBudgets, incomeEntries, expenseEntries);
 
     }
 
@@ -192,6 +217,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
         addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 0);
 
 
+
         // set up  listeners (in a spearate method)
         initListeners();
     }
@@ -203,7 +229,11 @@ public class newStart extends JPanel {    // based on Swing JPanel
         // exitButton - exit program when pressed
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                //Print all budgets from the stack
+                for (Budget budget : allBudgets) {
+                    System.out.println(budget);
+                }
+                //System.exit(0);
             }
         });
 
@@ -224,19 +254,21 @@ public class newStart extends JPanel {    // based on Swing JPanel
         public void insertUpdate(DocumentEvent e) {
             updateIncomeSpendingValuesList();
             triggerCalculations();
+            //DEBUG_printCurrentValues();
             saveFields();
-            
             
         }
         // Trigger calculations when text is removed
         public void removeUpdate(DocumentEvent e) {
             updateIncomeSpendingValuesList();
-            triggerCalculations();
+            //DEBUG_printCurrentValues();
+            saveFields();
         }
         // Trigger calculations when text is changed
         public void changedUpdate(DocumentEvent e) {
             updateIncomeSpendingValuesList();
-            triggerCalculations();
+            //DEBUG_printCurrentValues();
+            saveFields();
         }
     });
 }

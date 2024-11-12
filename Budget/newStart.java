@@ -318,20 +318,19 @@ public class newStart extends JPanel {    // based on Swing JPanel
             System.out.println("Values don't match, not removing the budget.");
         }
 
-
     }
-
 
     //method to goback to the previous budget 
     private void goBack() {
     
-        // Check if there are any budgets to go back to
-        if (allBudgets.size() <1) {
-        System.out.println("No previous budget to revert to.");
-        return;
+        //if theres only 1 budget, set default values to 0
+        if (allBudgets.size() == 1) {
+            System.out.println("Only one budget in the stack. Setting default values to 0.");
+            currentIncomeValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
+            currentSpendingValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
         }
         
-        System.out.println("Going back to the previous budget...");
+        //System.out.println("Going back to the previous budget...");
 
         //check if the current values are the same as the most recent budget
         checkIfValuesAreSame();    
@@ -339,9 +338,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
         //grab the most recent budget
         Budget mostRecentBudget = allBudgets.pop();
-        System.out.println("Most recent budget: " + mostRecentBudget);
-
-       
+        //System.out.println("Most recent budget: " + mostRecentBudget);
 
         //remove everything from incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues
         incomeCategories.clear();
@@ -360,10 +357,10 @@ public class newStart extends JPanel {    // based on Swing JPanel
             currentSpendingValues.add(spending.amount);
         }
 
-        System.out.println("Updated income categories: " + incomeCategories);
-        System.out.println("Updated income values: " + currentIncomeValues);
-        System.out.println("Updated spending categories: " + spendingCategories);
-        System.out.println("Updated spending values: " + currentSpendingValues);
+        //System.out.println("Updated income categories: " + incomeCategories);
+        //System.out.println("Updated income values: " + currentIncomeValues);
+        //System.out.println("Updated spending categories: " + spendingCategories);
+        //System.out.println("Updated spending values: " + currentSpendingValues);
 
         //remove all components from the panel
         removeAll(); // Remove all components from the panel
@@ -375,7 +372,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
         revalidate(); // Refresh the panel to show the new components
         repaint(); // Repaint the panel to ensure it displays correctly
 
-        System.out.println("UI components reinitialized and layout refreshed.");
+        //System.out.println("UI components reinitialized and layout refreshed.");
     }
     
 

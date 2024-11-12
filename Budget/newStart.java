@@ -55,6 +55,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     private JButton addIncomeFieldButton;
     private JButton addSpendingFieldButton;
+    private JButton undoButton;
 
     private JTextField totalSpendingField;
     private JTextField overalTotalField;
@@ -85,10 +86,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
         System.out.println(currentIncomeValues);
         System.out.println((" "));
         System.out.println(spendingCategories);
-        System.out.println(currentSpendingValues);
-
-        
-       
+        System.out.println(currentSpendingValues);       
     }
 
 
@@ -211,10 +209,13 @@ public class newStart extends JPanel {    // based on Swing JPanel
         overalTotalField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
         addComponent(overalTotalField, numberIncomeRows+numberSpendingRows +7, 1);
 
-
+        //Undo Button
+        undoButton = new JButton("Undo");
+        addComponent(undoButton, numberIncomeRows + numberSpendingRows + 8, 0);
+        
         //Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 0);
+        addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 1);
 
 
 
@@ -234,8 +235,22 @@ public class newStart extends JPanel {    // based on Swing JPanel
                     System.out.println(budget);
                 }
                 //System.exit(0);
+                removeAll();
+
+                initComponents();
             }
         });
+
+        //undo button
+        undoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Pop the last budget from the stack
+                if (!allBudgets.isEmpty()) {
+                    allBudgets.pop();
+                }
+            }
+        });
+
 
         // Add DocumentListener to all income and spending fields
         for (JTextField incomeField : incomeFields) {
@@ -246,7 +261,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
         }
     }
 
-    
     // Add a DocumentListener to a text field to trigger calculations when text is changed
     private void addTriggerCalculationsListener(JTextField field) {
     field.getDocument().addDocumentListener(new DocumentListener() {
@@ -256,6 +270,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
             triggerCalculations();
             //DEBUG_printCurrentValues();
             saveFields();
+            goBack();
             
         }
         // Trigger calculations when text is removed
@@ -272,6 +287,27 @@ public class newStart extends JPanel {    // based on Swing JPanel
         }
     });
 }
+
+    
+    //method to goback to the previous budget 
+    private void goBack() {
+        //grab the most recent budget
+        Budget mostRecentBudget = allBudgets.peek();
+        
+        //remove everything from incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues
+        incomeCategories.clear();
+        spendingCategories.clear();
+        currentIncomeValues.clear();
+        currentSpendingValues.clear();
+
+        //add the most recent budget's income and expense entries to the lists
+        
+
+        
+
+        
+    }
+    
 
     // add a component at specified row and column in UI.  (0,0) is top-left corner
     private void addComponent(Component component, int gridrow, int gridcol) {

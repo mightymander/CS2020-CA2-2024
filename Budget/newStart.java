@@ -52,8 +52,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
     private JTextField totalSpendingField;
     private JTextField overalTotalField;
 
-    private int temp1 = 0;
-
 
      // Income, spending categories
     ArrayList<String> incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
@@ -214,9 +212,8 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
         // Save the current fields to the stack
         //only saves initial fields
-        if (temp1 ==0) {
-            saveFields();
-            temp1=1;
+        if (allBudgets.isEmpty()) {
+            saveFields(); // Save the current state as the first state in the stack
         }
 
         // set up  listeners (in a spearate method)

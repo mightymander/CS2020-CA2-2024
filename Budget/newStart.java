@@ -23,6 +23,9 @@ package Budget;
 
 // Swing imports
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.event.*;
 import java.awt.*;
 import java.util.List;
@@ -204,9 +207,39 @@ public class newStart extends JPanel {    // based on Swing JPanel
             }
         });
 
-        
-
+        // Add DocumentListener to all income and spending fields
+        for (JTextField incomeField : incomeFields) {
+            addTriggerCalculationsListener(incomeField);
+        }
+        for (JTextField spendingField : spendingFields) {
+            addTriggerCalculationsListener(spendingField);
+        }
     }
+
+    
+    // Add a DocumentListener to a text field to trigger calculations when text is changed
+    private void addTriggerCalculationsListener(JTextField field) {
+    field.getDocument().addDocumentListener(new DocumentListener() {
+        // Trigger calculations when text is inserted
+        public void insertUpdate(DocumentEvent e) {
+            updateIncomeSpendingValuesList();
+            triggerCalculations();
+            saveFields();
+            
+            
+        }
+        // Trigger calculations when text is removed
+        public void removeUpdate(DocumentEvent e) {
+            updateIncomeSpendingValuesList();
+            triggerCalculations();
+        }
+        // Trigger calculations when text is changed
+        public void changedUpdate(DocumentEvent e) {
+            updateIncomeSpendingValuesList();
+            triggerCalculations();
+        }
+    });
+}
 
     // add a component at specified row and column in UI.  (0,0) is top-left corner
     private void addComponent(Component component, int gridrow, int gridcol) {
@@ -217,25 +250,64 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     }
 
-    // update totalIncomeField (eg, when Calculate is pressed)
-    // use double to hold numbers, so user can type fractional amounts such as 134.50
-    public double calculateTotalIncome() {
+    //method for updating the currentIncomeValues and currentSpendingValues lists
+    private void updateIncomeSpendingValuesList() {
+        // Clear the current values lists
+        currentIncomeValues.clear();
+        currentSpendingValues.clear();
 
-        // get values from income text fields.  valie is NaN if an error occurs
-        double wages = getTextFieldValue(wagesField);
-        double loans = getTextFieldValue(loansField);
-
-        // clear total field and return if any value is NaN (error)
-        if (Double.isNaN(wages) || Double.isNaN(loans)) {
-            totalIncomeField.setText("");  // clear total income field
-            wages = 0.0;
-            return wages;   // exit method and do nothing
+        // Loop through incomeFields and add values to currentIncomeValues
+        for (JTextField field : incomeFields) {
+            currentIncomeValues.add(field.getText());
         }
 
-        // otherwise calculate total income and update text field
-        double totalIncome = wages + loans;
-        totalIncomeField.setText(String.format("%.2f",totalIncome));  // format with 2 digits after the .
-        return totalIncome;
+        // Loop through spendingFields and add values to currentSpendingValues
+        for (JTextField field : spendingFields) {
+            currentSpendingValues.add(field.getText());
+        }
+    }
+
+    // Trigger calculations for income, spending, and overall total
+    private void triggerCalculations() {
+        calculateTotalIncome();
+        calculateTotalSpending();
+        calculateOverallTotal();
+    }
+
+    public double calculateTotal(JTextField[] fields) {
+        double total = 0.0;
+
+        // Loop through the fields array to get values and sum them
+        for (JTextField field : fields) {
+            double value = getTextFieldValue(field);
+
+            // Exit and return 0 if any value is NaN (error)
+            if (Double.isNaN(value)) {
+                return 0.0;
+            }
+
+            total += value;
+        }
+
+        return total;  // Return the calculated total
+    }
+
+    // Calculate total income using incomeFields array
+    public void calculateTotalIncome() {
+        double totalIncome = calculateTotal(incomeFields);
+        totalIncomeField.setText(String.format("%.2f", totalIncome));  // Update the UI field with formatted total
+    }
+
+    //Calculate total spending using spendingFields array 
+    public void calculateTotalSpending() {
+        double totalSpending = calculateTotal(spendingFields);
+        totalSpendingField.setText(String.format("%.2f", totalSpending));
+    }
+
+    //Calculate overall total using total income and total spending
+    public void calculateOverallTotal() {
+        double overallTotal = calculateTotal(incomeFields) - calculateTotal(spendingFields);
+        overalTotalField.setText(String.format("%.2f", overallTotal));
     }
 
     // return the value if a text field as a double

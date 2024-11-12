@@ -3,7 +3,7 @@ package Budget;
 import java.util.Stack;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class stacksTesting {
 
@@ -68,6 +68,8 @@ public class stacksTesting {
     }
 
     public static void main(String[] args) {
+
+        /* 
         
         // Create lists of income and expense entries
         List<Budget.Entry> incomeValues = Arrays.asList(
@@ -111,6 +113,7 @@ public class stacksTesting {
         for (Budget budget : allBudgets) {
             System.out.println(budget);
         }
-
+*/
     }
+        
 }

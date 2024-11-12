@@ -43,7 +43,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     private JButton addSpendingFieldButton;
 
 
-    // Income categories
+    // Income, spending categories
     ArrayList<String> incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
     ArrayList<String> spendingCategories = new ArrayList<>(Arrays.asList("Food", "Rent", "apples"));
 
@@ -130,11 +130,10 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         }
 
         //total spending
-
         JLabel totalSpendingLabel = new JLabel("Total Spending");
         addComponent(totalSpendingLabel, numberIncomeRows+numberSpendingRows +5, 0);
 
-        // set up text box for displaying total income.  Users cam view, but cannot directly edit it
+        // set up text box for displaying total spending.  Users cam view, but cannot directly edit it
         totalSpendingField = new JTextField("0", 10);   // 0 initially, with 10 columns
         totalSpendingField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         totalSpendingField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
@@ -207,7 +206,8 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
                 spendingCategories.add(input);
 
                 // Save current state before clearing components
-                saveCurrentState();
+                saveCurrentState1();
+                System.exit(ABORT);
 
                 // Clear existing components
                 removeAll(); // Remove all components from the panel
@@ -258,6 +258,31 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
                 }
             });
         }
+    }
+
+    //method to save the current state of the all the fields values
+    // using stack of objects
+    private void saveCurrentState1() {
+
+        //PAUSE THIS GOING TO PRACTIVE IN ANOTHER FILE
+        // Save current values of income fields
+        ArrayList<Double> currentIncomeValues = new ArrayList<>();
+        for (JTextField field : incomeFields) {
+            currentIncomeValues.add(getTextFieldValue(field)); // Add current value to the list
+        }
+
+        // Save current values of spending fields
+        ArrayList<Double> currentSpendingValues = new ArrayList<>();
+        for (JTextField field : spendingFields) {
+            currentSpendingValues.add(getTextFieldValue(field)); // Add current value to the list
+        }
+
+        //append the new values to the stack of objects
+
+        //debug print all
+        System.out.println("Income values: " + currentIncomeValues);
+        System.out.println("Spending values: " + currentSpendingValues);
+
     }
 
 

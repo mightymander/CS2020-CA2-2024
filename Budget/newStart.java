@@ -28,6 +28,11 @@ import java.util.Stack;
 import Budget.stacksTesting.Budget;
 
 
+/*
+ * TODO
+ *  - replace with just all total saying "Invalid number"
+ */
+
 // class definition
 public class newStart extends JPanel {    // based on Swing JPanel
 
@@ -204,6 +209,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
         //Undo Button
         undoButton = new JButton("Undo");
+        //undoButton.setEnabled(false);
         addComponent(undoButton, numberIncomeRows + numberSpendingRows + 8, 0);
         
         //Exit Button
@@ -228,11 +234,11 @@ public class newStart extends JPanel {    // based on Swing JPanel
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //Print all budgets from the stack
-            for (Budget budget : allBudgets) {
-                System.out.println(budget);
-            }
+            //for (Budget budget : allBudgets) {
+             //   System.out.println(budget);
+            //}
 
-                //System.exit(0);
+                System.exit(0);
             }
         });
 
@@ -329,8 +335,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
             currentIncomeValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
             currentSpendingValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
         }
-        
-        //System.out.println("Going back to the previous budget...");
+
 
         //check if the current values are the same as the most recent budget
         checkIfValuesAreSame();    
@@ -363,7 +368,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
         //System.out.println("Updated spending values: " + currentSpendingValues);
 
         //remove all components from the panel
-        removeAll(); // Remove all components from the panel
+        removeAll();
 
         //reinitialize the components
         initComponents(); // Reinitialize the components
@@ -418,7 +423,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
             // Exit and return 0 if any value is NaN (error)
             if (Double.isNaN(value)) {
-                return 0.0;
+                return Double.NaN;
             }
 
             total += value;
@@ -430,18 +435,36 @@ public class newStart extends JPanel {    // based on Swing JPanel
     // Calculate total income using incomeFields array
     public void calculateTotalIncome() {
         double totalIncome = calculateTotal(incomeFields);
+
+        // If total income is NaN, set the field to "Invalid number"
+        if (Double.isNaN(totalIncome)) {
+            totalIncomeField.setText("Invalid number");
+            return;
+        }
         totalIncomeField.setText(String.format("%.2f", totalIncome));  // Update the UI field with formatted total
     }
 
     //Calculate total spending using spendingFields array 
     public void calculateTotalSpending() {
         double totalSpending = calculateTotal(spendingFields);
+        
+        //if total spending is NaN, set the field to "Invalid number"
+        if (Double.isNaN(totalSpending)) {
+            totalSpendingField.setText("Invalid number");
+            return;
+        }
         totalSpendingField.setText(String.format("%.2f", totalSpending));
     }
 
     //Calculate overall total using total income and total spending
     public void calculateOverallTotal() {
         double overallTotal = calculateTotal(incomeFields) - calculateTotal(spendingFields);
+
+        //if overall total is NaN, set the field to "Invalid number"
+        if (Double.isNaN(overallTotal)) {
+            overalTotalField.setText("Invalid number");
+            return;
+        }
         overalTotalField.setText(String.format("%.2f", overallTotal));
     }
 
@@ -461,7 +484,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
             try {
                 return Double.parseDouble(fieldString);  // parse field number into a double
              } catch (java.lang.NumberFormatException ex) {  // catch invalid number exception
-                JOptionPane.showMessageDialog(topLevelFrame, "Please enter a valid number");  // show error message
+                //JOptionPane.showMessageDialog(topLevelFrame, "Please enter a valid number");  // show error message
                 return Double.NaN;  // return NaN to show that field is not a number
             }
         }

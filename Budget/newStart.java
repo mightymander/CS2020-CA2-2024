@@ -465,6 +465,13 @@ public class newStart extends JPanel {    // based on Swing JPanel
             overalTotalField.setText("Invalid number");
             return;
         }
+        //if overall total is negative, display text in red
+        if (overallTotal < 0) {
+            overalTotalField.setForeground(Color.RED);
+        } else {
+            overalTotalField.setForeground(Color.BLACK);
+        }
+
         overalTotalField.setText(String.format("%.2f", overallTotal));
     }
 

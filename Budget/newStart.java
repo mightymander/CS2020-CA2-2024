@@ -58,7 +58,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
     private JTextField overalTotalField;
 
     //combo box options
-    private String[] timeLineOptions = {"per week", "per month", "per year"};
+    private String[] timeLineOptions = {"per year", "per month", "per week"};
     private JComboBox<String> timeDropDown;
 
 
@@ -152,9 +152,10 @@ public class newStart extends JPanel {    // based on Swing JPanel
             incomeFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(incomeFields[i], i + 1, 1);
 
-            //create check box for each income category, that has per week/month/year
+            //create dropdown box for each income category, that has per week/month/year
             timeDropDown = new JComboBox<>(timeLineOptions);
             addComponent(timeDropDown, i + 1, 2);
+            addTriggerCalculationsListener(timeDropDown); // Add listener to trigger calculations when selected item is changed
 
         }
 
@@ -187,14 +188,15 @@ public class newStart extends JPanel {    // based on Swing JPanel
             addComponent(spendingCategoryLabel, numberIncomeRows + 5 + i, 0);
 
             // Create text fields
-            String spendingValue = i < currentSpendingValues.size() ? currentSpendingValues.get(i) : "";
+            String spendingValue = i < currentSpendingValues.size() ? currentSpendingValues.get(i) : ""; 
             spendingFields[i] = new JTextField(spendingValue, 10);
             spendingFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(spendingFields[i], numberIncomeRows + 5 + i, 1);
 
-            //create check box for each spending category, that has per week/month/year
+            //create check box for each spending category, that has per year/month/week
             timeDropDown = new JComboBox<>(timeLineOptions);
             addComponent(timeDropDown, numberIncomeRows + 5 + i, 2);
+            addTriggerCalculationsListener(timeDropDown); // Add listener to trigger calculations when selected item is changed
         }
 
         //total spending
@@ -270,8 +272,25 @@ public class newStart extends JPanel {    // based on Swing JPanel
         }
         for (JTextField spendingField : spendingFields) {
             addTriggerCalculationsListener(spendingField);
+
         }
+        
     }
+
+    //Add a DocumentListner to the ComboBox, to trigger calculations when the selected item is changed
+    private void addTriggerCalculationsListener(JComboBox<String> comboBox) {
+        comboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Time dropdown changed.");
+                updateIncomeSpendingValuesList();
+                triggerCalculations();
+                //DEBUG_printCurrentValues();
+                saveFields();
+            }
+        });
+    }
+
+
 
     // Add a DocumentListener to a text field to trigger calculations when text is changed
     private void addTriggerCalculationsListener(JTextField field) {
@@ -433,6 +452,13 @@ public class newStart extends JPanel {    // based on Swing JPanel
         // Loop through the fields array to get values and sum them
         for (JTextField field : fields) {
             double value = getTextFieldValue(field);
+            //if timevalue is not year, convert it to year
+            String timeValue = (String) timeDropDown.getSelectedItem();
+            if (timeValue.equals("per week")) {
+                value *= 52;
+            } else if (timeValue.equals("per month")) {
+                value *= 12;
+            }
 
             // Exit and return 0 if any value is NaN (error)
             if (Double.isNaN(value)) {
@@ -447,6 +473,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     // Calculate total income using incomeFields array
     public void calculateTotalIncome() {
+        //now modify this to use the incomeFields array and take into account the timeDropDown
         double totalIncome = calculateTotal(incomeFields);
 
         // If total income is NaN, set the field to "Invalid number"

@@ -59,7 +59,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     //combo box options
     private String[] timeLineOptions = {"per year", "per month", "per week"};
-    private JComboBox<String> timeDropDown;
+    private JComboBox<String>[] timeDropDown; // Array for time drop down boxes
 
 
      // Income, spending categories
@@ -118,9 +118,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
     }
 
 
-
-
-
     // initialise componenents
     // Note that this method is quite long.  Can be shortened by putting Action Listener stuff in a separate method
     // will be generated automatically by IntelliJ, Eclipse, etc
@@ -153,9 +150,10 @@ public class newStart extends JPanel {    // based on Swing JPanel
             addComponent(incomeFields[i], i + 1, 1);
 
             //create dropdown box for each income category, that has per week/month/year
-            timeDropDown = new JComboBox<>(timeLineOptions);
+            JComboBox<String> timeDropDown = new JComboBox<>(timeLineOptions);
             addComponent(timeDropDown, i + 1, 2);
             addTriggerCalculationsListener(timeDropDown); // Add listener to trigger calculations when selected item is changed
+            
 
         }
 
@@ -194,9 +192,9 @@ public class newStart extends JPanel {    // based on Swing JPanel
             addComponent(spendingFields[i], numberIncomeRows + 5 + i, 1);
 
             //create check box for each spending category, that has per year/month/week
-            timeDropDown = new JComboBox<>(timeLineOptions);
-            addComponent(timeDropDown, numberIncomeRows + 5 + i, 2);
-            addTriggerCalculationsListener(timeDropDown); // Add listener to trigger calculations when selected item is changed
+            //timeDropDown[i] = new JComboBox<>(timeLineOptions);
+            //addComponent(timeDropDown[i], numberIncomeRows + 5 + i, 2);
+            //addTriggerCalculationsListener(timeDropDown[i]); // Add listener to trigger calculations when selected item is changed
         }
 
         //total spending
@@ -452,13 +450,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
         // Loop through the fields array to get values and sum them
         for (JTextField field : fields) {
             double value = getTextFieldValue(field);
-            //if timevalue is not year, convert it to year
-            String timeValue = (String) timeDropDown.getSelectedItem();
-            if (timeValue.equals("per week")) {
-                value *= 52;
-            } else if (timeValue.equals("per month")) {
-                value *= 12;
-            }
 
             // Exit and return 0 if any value is NaN (error)
             if (Double.isNaN(value)) {
@@ -475,6 +466,9 @@ public class newStart extends JPanel {    // based on Swing JPanel
     public void calculateTotalIncome() {
         //now modify this to use the incomeFields array and take into account the timeDropDown
         double totalIncome = calculateTotal(incomeFields);
+
+        
+
 
         // If total income is NaN, set the field to "Invalid number"
         if (Double.isNaN(totalIncome)) {

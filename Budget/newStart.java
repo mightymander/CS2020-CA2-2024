@@ -57,10 +57,14 @@ public class newStart extends JPanel {    // based on Swing JPanel
     private JTextField totalSpendingField;
     private JTextField overalTotalField;
 
+    //combo box options
+    private String[] timeLineOptions = {"per week", "per month", "per year"};
+    private JComboBox<String> timeDropDown;
+
 
      // Income, spending categories
     ArrayList<String> incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
-    ArrayList<String> spendingCategories = new ArrayList<>(Arrays.asList("Food", "Rent", "apples"));
+    ArrayList<String> spendingCategories = new ArrayList<>(Arrays.asList("Food", "Rent", "Other"));
     private ArrayList<String> currentIncomeValues = new ArrayList<>(Arrays.asList("","","")); // To store income values with default 0
     private ArrayList<String> currentSpendingValues = new ArrayList<>(Arrays.asList("","","")); // To store spending values with default 0
 
@@ -147,6 +151,11 @@ public class newStart extends JPanel {    // based on Swing JPanel
             incomeFields[i] = new JTextField(incomeValue, 10);
             incomeFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(incomeFields[i], i + 1, 1);
+
+            //create check box for each income category, that has per week/month/year
+            timeDropDown = new JComboBox<>(timeLineOptions);
+            addComponent(timeDropDown, i + 1, 2);
+
         }
 
         //Total Income label followed by total income field
@@ -182,6 +191,10 @@ public class newStart extends JPanel {    // based on Swing JPanel
             spendingFields[i] = new JTextField(spendingValue, 10);
             spendingFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(spendingFields[i], numberIncomeRows + 5 + i, 1);
+
+            //create check box for each spending category, that has per week/month/year
+            timeDropDown = new JComboBox<>(timeLineOptions);
+            addComponent(timeDropDown, numberIncomeRows + 5 + i, 2);
         }
 
         //total spending

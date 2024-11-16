@@ -476,34 +476,36 @@ public class newStart extends JPanel {    // based on Swing JPanel
         calculateOverallTotal();
     }
 
-    public double calculateTotal(JTextField[] fields) {
-        double total = 0.0;
-
-        // Loop through the fields array to get values and sum them
-        for (JTextField field : fields) {
-            double value = getTextFieldValue(field);
-
-            // Exit and return 0 if any value is NaN (error)
-            if (Double.isNaN(value)) {
-                return Double.NaN;
-            }
-
-            total += value;
-        }
-
-        return total;  // Return the calculated total
-    }
-
     // Calculate total income using incomeFields array
     public void calculateTotalIncome() {
         double totalIncome = 0.0;
 
-        
-       
-        //double totalIncome = calculateTotal(incomeFields);
+        // Loop through the incomeFields array to get values and sum them
+        // Also check what time period the value is in, and convert it to per year
+        for (int i = 0; i < incomeFields.length; i++) {
+            double value = getTextFieldValue(incomeFields[i]);  // get value from text field
+            String timeValue = currentIncomeTimeValues.get(i);  // get time value from time drop down box
 
-        
+            // Convert value to per year based on time period
+            switch (timeValue) {
+                case "per month":
+                    value *= 12;
+                    break;
+                case "per week":
+                    value *= 52;
+                    break;
+                default:
+                    break;
+            }
 
+            // Exit and set total income to NaN if any value is NaN (error)
+            if (Double.isNaN(value)) {
+                totalIncome = Double.NaN;
+                break;
+            }
+
+            totalIncome += value;  // add value to total income
+        }
 
         // If total income is NaN, set the field to "Invalid number"
         if (Double.isNaN(totalIncome)) {
@@ -515,7 +517,34 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     //Calculate total spending using spendingFields array 
     public void calculateTotalSpending() {
-        double totalSpending = calculateTotal(spendingFields);
+        double totalSpending = 0.0;
+
+        //Loop through the spendingFields array to get values and sum them
+        //Also check what time period the value is in, and convert it to per year
+        for (int i = 0; i < spendingFields.length; i++) {
+            double value = getTextFieldValue(spendingFields[i]);  // get value from text field
+            String timeValue = currentSpendingTimeValues.get(i);  // get time value from time drop down box
+
+            // Convert value to per year based on time period
+            switch (timeValue) {
+                case "per month":
+                    value *= 12;
+                    break;
+                case "per week":
+                    value *= 52;
+                    break;
+                default:
+                    break;
+            }
+
+            // Exit and set total spending to NaN if any value is NaN (error)
+            if (Double.isNaN(value)) {
+                totalSpending = Double.NaN;
+                break;
+            }
+
+            totalSpending += value;  // add value to total spending
+        }
         
         //if total spending is NaN, set the field to "Invalid number"
         if (Double.isNaN(totalSpending)) {
@@ -527,7 +556,9 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     //Calculate overall total using total income and total spending
     public void calculateOverallTotal() {
-        double overallTotal = calculateTotal(incomeFields) - calculateTotal(spendingFields);
+        double totalIncome = getTextFieldValue(totalIncomeField);  // get total income value
+        double totalSpending = getTextFieldValue(totalSpendingField);  // get total spending value
+        double overallTotal = totalIncome - totalSpending;  // calculate overall total
 
         //if overall total is NaN, set the field to "Invalid number"
         if (Double.isNaN(overallTotal)) {

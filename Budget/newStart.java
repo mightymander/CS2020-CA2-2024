@@ -296,13 +296,8 @@ public class newStart extends JPanel {    // based on Swing JPanel
     private void addTriggerCalculationsListener(JComboBox<String> comboBox) {
         comboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Time dropdown changed.");
-                updateIncomeSpendingTimeValuesList();
-                //display the current values for debugging
-                System.out.println("Current income time values: " + currentIncomeTimeValues);
-                
+                updateIncomeSpendingTimeValuesList();                
                 triggerCalculations();
-                //DEBUG_printCurrentValues();
                 saveFields();
             }
         });
@@ -317,7 +312,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
         public void insertUpdate(DocumentEvent e) {
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            //DEBUG_printCurrentValues();
             saveFields();
             
             
@@ -326,14 +320,12 @@ public class newStart extends JPanel {    // based on Swing JPanel
         public void removeUpdate(DocumentEvent e) {
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            //DEBUG_printCurrentValues();
             saveFields();
         }
         // Trigger calculations when text is changed
         public void changedUpdate(DocumentEvent e) {
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            //DEBUG_printCurrentValues();
             saveFields();
         }
     });
@@ -545,7 +537,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
             totalSpending += value;  // add value to total spending
         }
-        
+
         //if total spending is NaN, set the field to "Invalid number"
         if (Double.isNaN(totalSpending)) {
             totalSpendingField.setText("Invalid number");

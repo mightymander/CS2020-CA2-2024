@@ -19,6 +19,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.event.*;
+import java.lang.reflect.Array;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -56,11 +57,14 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     private JTextField totalSpendingField;
     private JTextField overalTotalField;
+    
+    private JComboBox<String>[] incomeTimeDropDownFields; // Array for time drop down boxes
+    private JComboBox<String>[] spendingTimeDropDownFields; // Array for time drop down boxes
 
     //combo box options
-    private String[] timeLineOptions = {"per year", "per month", "per week"};
-    private JComboBox<String>[] timeDropDown; // Array for time drop down boxes
-
+    ArrayList<String> timeLineCategories = new ArrayList<>(Arrays.asList("per year", "per month", "per week"));
+    private ArrayList<String> currentIncomeTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year")); // To store income time values with default per year
+    private ArrayList<String> currentSpendingTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year")); // To store spending time values with default per year
 
      // Income, spending categories
     ArrayList<String> incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
@@ -123,11 +127,21 @@ public class newStart extends JPanel {    // based on Swing JPanel
     // will be generated automatically by IntelliJ, Eclipse, etc
     private void initComponents() { 
         
+        //set up number of rows for income and spending fields
         int numberIncomeRows = incomeCategories.size();
         incomeFields = new JTextField[numberIncomeRows];
 
         int numberSpendingRows = spendingCategories.size();
         spendingFields = new JTextField[numberSpendingRows];
+
+        //set up time drop down fields
+        int numberTimeRowsIncome = currentIncomeTimeValues.size();
+        incomeTimeDropDownFields = new JComboBox[numberTimeRowsIncome];
+
+        int numberTimeRowsSpending = currentSpendingTimeValues.size();
+        spendingTimeDropDownFields = new JComboBox[numberTimeRowsSpending];
+
+        
 
          // Top row (0) - "INCOME" label
         JLabel incomeLabel = new JLabel("INCOME");
@@ -150,10 +164,11 @@ public class newStart extends JPanel {    // based on Swing JPanel
             addComponent(incomeFields[i], i + 1, 1);
 
             //create dropdown box for each income category, that has per week/month/year
-            JComboBox<String> timeDropDown = new JComboBox<>(timeLineOptions);
-            addComponent(timeDropDown, i + 1, 2);
-            addTriggerCalculationsListener(timeDropDown); // Add listener to trigger calculations when selected item is changed
-            
+            String timeValue = i < currentIncomeTimeValues.size() ? currentIncomeTimeValues.get(i) : "";
+            incomeTimeDropDownFields[i] = new JComboBox<>(timeLineCategories.toArray(new String[0]));
+            incomeTimeDropDownFields[i].setSelectedItem(timeValue);
+            addComponent(incomeTimeDropDownFields[i], i + 1, 2);
+            addTriggerCalculationsListener(incomeTimeDropDownFields[i]); // Add listener to trigger calculations when selected item is changed
 
         }
 
@@ -191,10 +206,12 @@ public class newStart extends JPanel {    // based on Swing JPanel
             spendingFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(spendingFields[i], numberIncomeRows + 5 + i, 1);
 
-            //create check box for each spending category, that has per year/month/week
-            //timeDropDown[i] = new JComboBox<>(timeLineOptions);
-            //addComponent(timeDropDown[i], numberIncomeRows + 5 + i, 2);
-            //addTriggerCalculationsListener(timeDropDown[i]); // Add listener to trigger calculations when selected item is changed
+            //create dropdown box for each spending category, that has per week/month/year
+            String timeValue = i < currentSpendingTimeValues.size() ? currentSpendingTimeValues.get(i) : "";
+            spendingTimeDropDownFields[i] = new JComboBox<>(timeLineCategories.toArray(new String[0]));
+            spendingTimeDropDownFields[i].setSelectedItem(timeValue);
+            addComponent(spendingTimeDropDownFields[i], numberIncomeRows + 5 + i, 2);
+            addTriggerCalculationsListener(spendingTimeDropDownFields[i]); // Add listener to trigger calculations when selected item is changed
         }
 
         //total spending
@@ -279,10 +296,8 @@ public class newStart extends JPanel {    // based on Swing JPanel
     private void addTriggerCalculationsListener(JComboBox<String> comboBox) {
         comboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Time dropdown changed.");
-                updateIncomeSpendingValuesList();
+                updateIncomeSpendingTimeValuesList();                
                 triggerCalculations();
-                //DEBUG_printCurrentValues();
                 saveFields();
             }
         });
@@ -295,25 +310,22 @@ public class newStart extends JPanel {    // based on Swing JPanel
     field.getDocument().addDocumentListener(new DocumentListener() {
         // Trigger calculations when text is inserted
         public void insertUpdate(DocumentEvent e) {
-            updateIncomeSpendingValuesList();
+            updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            //DEBUG_printCurrentValues();
             saveFields();
             
             
         }
         // Trigger calculations when text is removed
         public void removeUpdate(DocumentEvent e) {
-            updateIncomeSpendingValuesList();
+            updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            //DEBUG_printCurrentValues();
             saveFields();
         }
         // Trigger calculations when text is changed
         public void changedUpdate(DocumentEvent e) {
-            updateIncomeSpendingValuesList();
+            updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            //DEBUG_printCurrentValues();
             saveFields();
         }
     });
@@ -420,11 +432,13 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     }
 
-    //method for updating the currentIncomeValues and currentSpendingValues lists
-    private void updateIncomeSpendingValuesList() {
+    //method for updating the currentIncomeValues and currentSpendingValues lists and time drop down boxes
+    private void updateIncomeSpendingTimeValuesList() {
         // Clear the current values lists
         currentIncomeValues.clear();
         currentSpendingValues.clear();
+        currentIncomeTimeValues.clear();
+        currentSpendingTimeValues.clear();
 
         // Loop through incomeFields and add values to currentIncomeValues
         for (JTextField field : incomeFields) {
@@ -435,6 +449,16 @@ public class newStart extends JPanel {    // based on Swing JPanel
         for (JTextField field : spendingFields) {
             currentSpendingValues.add(field.getText());
         }
+
+        // Loop through incomeTimeDropDownFields and add values to currentIncomeTimeValues
+        for (JComboBox<String> comboBox : incomeTimeDropDownFields) {
+            currentIncomeTimeValues.add((String) comboBox.getSelectedItem());
+        }
+
+        // Loop through spendingTimeDropDownFields and add values to currentSpendingTimeValues
+        for (JComboBox<String> comboBox : spendingTimeDropDownFields) {
+            currentSpendingTimeValues.add((String) comboBox.getSelectedItem());
+        }
     }
 
     // Trigger calculations for income, spending, and overall total
@@ -444,31 +468,36 @@ public class newStart extends JPanel {    // based on Swing JPanel
         calculateOverallTotal();
     }
 
-    public double calculateTotal(JTextField[] fields) {
-        double total = 0.0;
-
-        // Loop through the fields array to get values and sum them
-        for (JTextField field : fields) {
-            double value = getTextFieldValue(field);
-
-            // Exit and return 0 if any value is NaN (error)
-            if (Double.isNaN(value)) {
-                return Double.NaN;
-            }
-
-            total += value;
-        }
-
-        return total;  // Return the calculated total
-    }
-
     // Calculate total income using incomeFields array
     public void calculateTotalIncome() {
-        //now modify this to use the incomeFields array and take into account the timeDropDown
-        double totalIncome = calculateTotal(incomeFields);
+        double totalIncome = 0.0;
 
-        
+        // Loop through the incomeFields array to get values and sum them
+        // Also check what time period the value is in, and convert it to per year
+        for (int i = 0; i < incomeFields.length; i++) {
+            double value = getTextFieldValue(incomeFields[i]);  // get value from text field
+            String timeValue = currentIncomeTimeValues.get(i);  // get time value from time drop down box
 
+            // Convert value to per year based on time period
+            switch (timeValue) {
+                case "per month":
+                    value *= 12;
+                    break;
+                case "per week":
+                    value *= 52;
+                    break;
+                default:
+                    break;
+            }
+
+            // Exit and set total income to NaN if any value is NaN (error)
+            if (Double.isNaN(value)) {
+                totalIncome = Double.NaN;
+                break;
+            }
+
+            totalIncome += value;  // add value to total income
+        }
 
         // If total income is NaN, set the field to "Invalid number"
         if (Double.isNaN(totalIncome)) {
@@ -480,8 +509,35 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     //Calculate total spending using spendingFields array 
     public void calculateTotalSpending() {
-        double totalSpending = calculateTotal(spendingFields);
-        
+        double totalSpending = 0.0;
+
+        //Loop through the spendingFields array to get values and sum them
+        //Also check what time period the value is in, and convert it to per year
+        for (int i = 0; i < spendingFields.length; i++) {
+            double value = getTextFieldValue(spendingFields[i]);  // get value from text field
+            String timeValue = currentSpendingTimeValues.get(i);  // get time value from time drop down box
+
+            // Convert value to per year based on time period
+            switch (timeValue) {
+                case "per month":
+                    value *= 12;
+                    break;
+                case "per week":
+                    value *= 52;
+                    break;
+                default:
+                    break;
+            }
+
+            // Exit and set total spending to NaN if any value is NaN (error)
+            if (Double.isNaN(value)) {
+                totalSpending = Double.NaN;
+                break;
+            }
+
+            totalSpending += value;  // add value to total spending
+        }
+
         //if total spending is NaN, set the field to "Invalid number"
         if (Double.isNaN(totalSpending)) {
             totalSpendingField.setText("Invalid number");
@@ -492,7 +548,9 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
     //Calculate overall total using total income and total spending
     public void calculateOverallTotal() {
-        double overallTotal = calculateTotal(incomeFields) - calculateTotal(spendingFields);
+        double totalIncome = getTextFieldValue(totalIncomeField);  // get total income value
+        double totalSpending = getTextFieldValue(totalSpendingField);  // get total spending value
+        double overallTotal = totalIncome - totalSpending;  // calculate overall total
 
         //if overall total is NaN, set the field to "Invalid number"
         if (Double.isNaN(overallTotal)) {

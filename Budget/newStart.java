@@ -1,16 +1,3 @@
-// base code for student budget assessment
-// Students do not need to use this code in their assessment, fine to junk it and do something different!
-//
-// Your submission must be a maven project, and must be submitted via Codio, and run in Codio
-//
-// user can enter in wages and loans and calculate total income
-//
-// run in Codio 
-// To see GUI, run with java and select Box Url from Codio top line menu
-//
-// Layout - Uses GridBag layout in a straightforward way, every component has a (column, row) position in the UI grid
-// Not the prettiest layout, but relatively straightforward
-// Students who use IntelliJ or Eclipse may want to use the UI designers in these IDEs , instead of GridBagLayout
 package Budget;
 
 // Swing imports
@@ -26,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
-import Budget.stacksTesting.Budget;
+import Budget.backupStacks.Budget;
 
 
 /*
  * TODO
- *  - replace with just all total saying "Invalid number"
+ *  - add niceer image when pop up for adding income/spending field
  */
 
 // class definition
@@ -117,7 +104,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
         }
 
         // Add a new budget to the stack
-        stacksTesting.addBudget(allBudgets, incomeEntries, expenseEntries);
+        backupStacks.addBudget(allBudgets, incomeEntries, expenseEntries);
 
     }
 

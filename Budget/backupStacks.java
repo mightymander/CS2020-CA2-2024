@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class stacksTesting {
+public class backupStacks {
 
     // Create new object class Budget with depth, list of income, list of expenses
     static class Budget {

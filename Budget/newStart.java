@@ -109,11 +109,11 @@ public class newStart extends JPanel {    // based on Swing JPanel
 
         // Loop through incomeCategories and currentIncomeValues to create incomeEntries
         for (int i = 0; i < incomeCategories.size(); i++) {
-            incomeEntries.add(new Budget.Entry(incomeCategories.get(i), currentIncomeValues.get(i)));
+            incomeEntries.add(new Budget.Entry(incomeCategories.get(i), currentIncomeValues.get(i), currentIncomeTimeValues.get(i)));
         }
         // Loop through spendingCategories and currentSpendingValues to create expenseEntries
         for (int i = 0; i < spendingCategories.size(); i++) {
-            expenseEntries.add(new Budget.Entry(spendingCategories.get(i), currentSpendingValues.get(i)));
+            expenseEntries.add(new Budget.Entry(spendingCategories.get(i), currentSpendingValues.get(i), currentSpendingTimeValues.get(i)));
         }
 
         // Add a new budget to the stack
@@ -426,6 +426,42 @@ public class newStart extends JPanel {    // based on Swing JPanel
             }
         }
 
+        //check if income  time values match
+        if (valuesMatch) {
+            for (int i = 0; i < currentIncomeTimeValues.size(); i++) {
+                // Compare income time values
+                if (!currentIncomeTimeValues.get(i).equals(mostRecentBudget.income.get(i).timeFrequency)) {
+                    System.out.println("Income time values are different.");
+                    valuesMatch = false;  // Set flag to false if there's a mismatch
+                    break;
+                }
+            }
+
+        //check if spending time values match
+            if (valuesMatch) {
+                for (int i = 0; i < currentSpendingTimeValues.size(); i++) {
+                    // Compare spending time values
+                    if (!currentSpendingTimeValues.get(i).equals(mostRecentBudget.expenses.get(i).timeFrequency)) {
+                        System.out.println("Spending time values are different.");
+                        valuesMatch = false;  // Set flag to false if there's a mismatch
+                        break;
+                    }
+                }
+            }
+
+            // Only proceed to spending comparison if income time values matched
+            if (valuesMatch) {
+                for (int i = 0; i < currentSpendingTimeValues.size(); i++) {
+                    // Compare spending time values
+                    if (!currentSpendingTimeValues.get(i).equals(mostRecentBudget.expenses.get(i).timeFrequency)) {
+                        System.out.println("Spending time values are different.");
+                        valuesMatch = false;  // Set flag to false if there's a mismatch
+                        break;
+                    }
+                }
+            }
+        }
+
         // If both income and spending values match, pop the most recent budget
         if (valuesMatch) {
             System.out.println("Income and spending values are the same. Removing the most recent budget.");
@@ -444,6 +480,8 @@ public class newStart extends JPanel {    // based on Swing JPanel
             System.out.println("Only one budget in the stack. Setting default values to 0.");
             currentIncomeValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
             currentSpendingValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
+            currentIncomeTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
+            currentSpendingTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
         }
 
         //check if the current values are the same as the most recent budget
@@ -452,22 +490,27 @@ public class newStart extends JPanel {    // based on Swing JPanel
         //grab the most recent budget
         Budget mostRecentBudget = allBudgets.pop();
 
-        //remove everything from incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues
+        //remove everything from incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues, and time values
         incomeCategories.clear();
         spendingCategories.clear();
         currentIncomeValues.clear();
         currentSpendingValues.clear();
+        currentIncomeTimeValues.clear();
+        currentSpendingTimeValues.clear();
 
-        //repopulate incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues
+        //repopulate incomeCategories, spendingCategories, currentIncomeValues, currentSpendingValues and time values
         // from mostRecentBudget
         for (Budget.Entry income : mostRecentBudget.income) {
             incomeCategories.add(income.description);
             currentIncomeValues.add(income.amount);
+            currentIncomeTimeValues.add(income.timeFrequency);
         }
         for (Budget.Entry spending : mostRecentBudget.expenses) {
             spendingCategories.add(spending.description);
             currentSpendingValues.add(spending.amount);
+            currentSpendingTimeValues.add(spending.timeFrequency);
         }
+        
 
         //remove all components from the panel
         removeAll();

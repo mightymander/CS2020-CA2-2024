@@ -22,12 +22,12 @@ public class backupStacks {
             this.timeFrequencyEntries = new ArrayList<>();
         }
 
-        // Add income with description and amount
+        // Add income with description, amount and time frequency
         public void addIncome(String description, String amount, String timeFrequency) {
             this.income.add(new Entry(description, amount, timeFrequency));
         }
 
-        // Add expense with description and amount
+        // Add expense with description, amount and time frequency
         public void addExpense(String description, String amount, String timeFrequency) {
             this.expenses.add(new Entry(description, amount, timeFrequency));
         }
@@ -83,7 +83,7 @@ public class backupStacks {
     public static void main(String[] args) {
 
         
-        
+        /*
         // Create lists of income and expense entries with time frequency
         List<Budget.Entry> incomeValues = Arrays.asList(
             new Budget.Entry("salary", "1000", "per year"), 
@@ -113,7 +113,7 @@ public class backupStacks {
         for (Budget budget : allBudgets) {
             System.out.println(budget);
         }
-
+    */
     }
         
 }

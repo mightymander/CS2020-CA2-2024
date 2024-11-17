@@ -6,7 +6,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.event.*;
-import java.lang.reflect.Array;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import Budget.backupStacks.Budget;
  */
 
 // class definition
-public class newStart extends JPanel {    // based on Swing JPanel
+public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     // high level UI stuff
     JFrame topLevelFrame;  // top-level JFrame
@@ -63,7 +62,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
     private Stack<Budget> allBudgets = new Stack<>();
    
     // constructor - create UI  (dont need to change this)
-    public newStart(JFrame frame) {
+    public BudgetMain(JFrame frame) {
         
         topLevelFrame = frame; // keep track of top-level frame
         setLayout(new GridBagLayout());  // use GridBag layout
@@ -687,7 +686,7 @@ public class newStart extends JPanel {    // based on Swing JPanel
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
         //Create and set up the content pane.
-        newStart newContentPane = new newStart(frame);
+        BudgetMain newContentPane = new BudgetMain(frame);
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
  

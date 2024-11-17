@@ -14,12 +14,6 @@ import java.util.Stack;
 
 import Budget.backupStacks.Budget;
 
-
-/*
- * TODO
- *  - add niceer image when pop up for adding income/spending field
- */
-
 // class definition
 public class BudgetMain extends JPanel {    // based on Swing JPanel
 

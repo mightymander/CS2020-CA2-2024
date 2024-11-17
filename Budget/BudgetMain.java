@@ -28,11 +28,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     GridBagConstraints layoutConstraints = new GridBagConstraints(); // used to control layout
 
     // widgets which may have listeners and/or values
-    private JButton calculateButton;   // Calculate button
     private JButton exitButton;        // Exit button
-    private JTextField wagesField;     // Wages text field
-    private JTextField loansField;     // Loans text field
-    private JTextField totalIncomeField; // Total Income field\
+    private JTextField totalIncomeField; // Total Income field
 
     private JTextField[] incomeFields; // Array for income text fields
     private JTextField[] spendingFields; // Array for spending text fields

@@ -329,7 +329,75 @@ public class newStart extends JPanel {    // based on Swing JPanel
             saveFields();
         }
     });
+
+    // Add action listener to the addIncomeFieldButton
+    // Remove all action listeners from the income field button
+    // This is to prevent multiple action listeners from being added
+    for (ActionListener al : addIncomeFieldButton.getActionListeners()) {
+    addIncomeFieldButton.removeActionListener(al);
+    }
+
+    addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            addIncomeField();
+            triggerCalculations();
+            saveFields();
+        }
+    });
+
+
+    // Remove all action listeners from the spending field button
+    // This is to prevent multiple action listeners from being added
+    for (ActionListener al : addSpendingFieldButton.getActionListeners()) {
+    addSpendingFieldButton.removeActionListener(al);
+    }
+
+    addSpendingFieldButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            addSpendingField();
+            triggerCalculations();
+            saveFields();
+        }
+    });
 }
+
+    //method to add a spending field
+    private void addSpendingField() {
+        // Add a new spending category to the list
+        String input = JOptionPane.showInputDialog("Enter additional Spending field name:  ");
+        spendingCategories.add(input);
+        currentSpendingValues.add("");
+        currentSpendingTimeValues.add("per year");
+
+        // Remove all components from the panel
+        removeAll();
+
+        // Reinitialize the components
+        initComponents();
+
+        // Refresh the layout
+        revalidate(); // Refresh the panel to show the new components
+        repaint(); // Repaint the panel to ensure it displays correctly
+    }
+
+    //method to add an income field
+    private void addIncomeField() {
+        // Add a new income category to the list
+        String input = JOptionPane.showInputDialog("Enter additional Income field name:  ");
+        incomeCategories.add(input);
+        currentIncomeValues.add("");
+        currentIncomeTimeValues.add("per year");
+
+        // Remove all components from the panel
+        removeAll();
+
+        // Reinitialize the components
+        initComponents();
+
+        // Refresh the layout
+        revalidate(); // Refresh the panel to show the new components
+        repaint(); // Repaint the panel to ensure it displays correctly
+    }
     
     //method to check if the currentIncomeValues and currentSpendingValues are the same as the most recent budget
     private void checkIfValuesAreSame() {
@@ -378,14 +446,11 @@ public class newStart extends JPanel {    // based on Swing JPanel
             currentSpendingValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
         }
 
-
         //check if the current values are the same as the most recent budget
         checkIfValuesAreSame();    
         
-
         //grab the most recent budget
         Budget mostRecentBudget = allBudgets.pop();
-        //System.out.println("Most recent budget: " + mostRecentBudget);
 
         //remove everything from incomeCategories, spendingCategories, currentIncomeValues, and currentSpendingValues
         incomeCategories.clear();
@@ -404,11 +469,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
             currentSpendingValues.add(spending.amount);
         }
 
-        //System.out.println("Updated income categories: " + incomeCategories);
-        //System.out.println("Updated income values: " + currentIncomeValues);
-        //System.out.println("Updated spending categories: " + spendingCategories);
-        //System.out.println("Updated spending values: " + currentSpendingValues);
-
         //remove all components from the panel
         removeAll();
 
@@ -418,8 +478,6 @@ public class newStart extends JPanel {    // based on Swing JPanel
         // Refresh the layout
         revalidate(); // Refresh the panel to show the new components
         repaint(); // Repaint the panel to ensure it displays correctly
-
-        //System.out.println("UI components reinitialized and layout refreshed.");
     }
     
 

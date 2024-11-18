@@ -67,6 +67,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
    
 
 
+    /*
+     * START OF INITIALIZATION METHODS
+     * CREATE COMPONENTS FOR THE BUDGET CALCULATOR
+     * CREATE UI
+     */
+
     private void initComponents() { 
         /*
          * Initialize components for the budget calculator
@@ -220,31 +226,16 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
-    // method to save all the current input fields
-    public void saveFields() {
-        /*
-         *  Will save all the current input fields input into a stack
-         *  incomes will be saved in a list of entries, eg [salary: 1000, freelance: 2000, investment: 3000]
-         *  expenses will be saved in a list of entries, eg [rent: 100, utilities: 200, subscriptions: 300]
-         */
 
-        //convert the currentIncomeValues and currentSpendingValues into a list of entries
-        List<Budget.Entry> incomeEntries = new ArrayList<>();
-        List<Budget.Entry> expenseEntries = new ArrayList<>();
+    /*
+     * END OF INITIALIZATION METHODS
+     */
 
-        // Loop through incomeCategories and currentIncomeValues to create incomeEntries
-        for (int i = 0; i < incomeCategories.size(); i++) {
-            incomeEntries.add(new Budget.Entry(incomeCategories.get(i), currentIncomeValues.get(i), currentIncomeTimeValues.get(i)));
-        }
-        // Loop through spendingCategories and currentSpendingValues to create expenseEntries
-        for (int i = 0; i < spendingCategories.size(); i++) {
-            expenseEntries.add(new Budget.Entry(spendingCategories.get(i), currentSpendingValues.get(i), currentSpendingTimeValues.get(i)));
-        }
+     /*
+      * START OF LISTENERS
+      * SET UP LISTENERS FOR BUTTONS AND TEXT FIELDS
+      */
 
-        // Add a new budget to the stack
-        backupStacks.addBudget(allBudgets, incomeEntries, expenseEntries);
-
-    }
 
     // set up listeners
     // initially just for buttons, can add listeners for text fields
@@ -330,6 +321,16 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
 }
 
+    /*
+     * END OF LISTENERS
+     */
+
+     /*
+      * START OF METHODS FOR ADDING MORE INCOME AND SPENDING FIELDS
+      */
+
+     
+
     //method to add a spending field
     private void addSpendingField() {
         // Add a new spending category to the list
@@ -367,9 +368,55 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         revalidate(); // Refresh the panel to show the new components
         repaint(); // Repaint the panel to ensure it displays correctly
     }
-    
-    //method to check if the currentIncomeValues and currentSpendingValues are the same as the most recent budget
+
+    /*
+     * END OF METHODS FOR ADDING MORE INCOME AND SPENDING FIELDS
+     */
+
+
+     
+    /*
+     * METHODS FOR SAVING AND GOING BACK TO PREVIOUS STATE
+     * SAVE FIELDS
+     * CHECK IF VALUES ARE SAME
+     * GO BACKS
+     */
+
+
+    // method to save all the current input fields
+    public void saveFields() {
+        /*
+         *  Will save all the current input fields input into a stack
+         *  incomes will be saved in a list of entries, eg [salary: 1000, freelance: 2000, investment: 3000]
+         *  expenses will be saved in a list of entries, eg [rent: 100, utilities: 200, subscriptions: 300]
+         */
+
+        //convert the currentIncomeValues and currentSpendingValues into a list of entries
+        List<Budget.Entry> incomeEntries = new ArrayList<>();
+        List<Budget.Entry> expenseEntries = new ArrayList<>();
+
+        // Loop through incomeCategories and currentIncomeValues to create incomeEntries
+        for (int i = 0; i < incomeCategories.size(); i++) {
+            incomeEntries.add(new Budget.Entry(incomeCategories.get(i), currentIncomeValues.get(i), currentIncomeTimeValues.get(i)));
+        }
+        // Loop through spendingCategories and currentSpendingValues to create expenseEntries
+        for (int i = 0; i < spendingCategories.size(); i++) {
+            expenseEntries.add(new Budget.Entry(spendingCategories.get(i), currentSpendingValues.get(i), currentSpendingTimeValues.get(i)));
+        }
+
+        // Add a new budget to the stack
+        backupStacks.addBudget(allBudgets, incomeEntries, expenseEntries);
+
+    }
+
     private void checkIfValuesAreSame() {
+        /*
+         * Check if the current income and spending values match the most recent budget
+         * If they match, pop the most recent budget
+         * This is used to prevent duplicate budgets from being added to the stack
+         */
+
+
        // Check if the current income and spending values match the most recent budget
         boolean valuesMatch = true;
         Budget mostRecentBudget = allBudgets.peek();
@@ -441,8 +488,11 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
-    //method to goback to the previous budget 
     private void goBack() {
+        /*
+         * Will go back to the previous state of the budget
+         * Undo button backend
+         */
     
         //if theres only 1 budget, set default values to 0
         if (allBudgets.size() == 1) {
@@ -502,6 +552,15 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
+    /*
+     * END OF METHODS FOR SAVING AND GOING BACK TO PREVIOUS STATE
+     */
+
+
+    /*
+     * METHODS FOR UPDATING THE CURRENT INCOME AND SPENDING VALUES AND TIME VALUES
+     */
+
     //method for updating the currentIncomeValues and currentSpendingValues lists and time drop down boxes
     private void updateIncomeSpendingTimeValuesList() {
         // Clear the current values lists
@@ -530,6 +589,15 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             currentSpendingTimeValues.add((String) comboBox.getSelectedItem());
         }
     }
+
+    /*
+     * END OF METHODS FOR UPDATING THE CURRENT INCOME AND SPENDING VALUES AND TIME VALUES
+     */
+
+
+    /*
+      * START OF METHODS FOR CALCULATING TOTAL INCOME, SPENDING, AND OVERALL TOTAL
+      */
 
     // Trigger calculations for income, spending, and overall total
     private void triggerCalculations() {
@@ -637,6 +705,19 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         overalTotalField.setText(String.format("%.2f", overallTotal));
     }
 
+    /*
+     * END OF METHODS FOR CALCULATING TOTAL INCOME, SPENDING, AND OVERALL TOTAL
+     */
+
+
+     /*
+      * START OF METHODS ALREADY IMPLEMENTED
+      * GET TEXT FIELD VALUE
+      * CREATE AND SHOW GUI
+      * MAIN METHOD
+      */
+
+
     // return the value if a text field as a double
     // --return 0 if field is blank
     // --return NaN if field is not a number
@@ -690,6 +771,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
     }
-
-
+    /*
+     * END OF METHODS ALREADY IMPLEMENTED
+     */
 }
+

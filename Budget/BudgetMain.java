@@ -197,8 +197,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         addIncomeFieldButton = new JButton("ADD");
         addComponent(addIncomeFieldButton, 0, 1);
 
-        
-
         //add button beside spending
         addSpendingFieldButton = new JButton("ADD");
         addComponent(addSpendingFieldButton, numberIncomeRows + 4, 1);        
@@ -608,82 +606,66 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         calculateOverallTotal();
     }
 
-    // Calculate total income using incomeFields array
     public void calculateTotalIncome() {
-        double totalIncome = 0.0;
+        // Calculate total income
+        double totalIncome = calculateTotal(incomeFields, currentIncomeTimeValues);
 
-        // Loop through the incomeFields array to get values and sum them
-        // Also check what time period the value is in, and convert it to per year
-        for (int i = 0; i < incomeFields.length; i++) {
-            double value = getTextFieldValue(incomeFields[i]);  // get value from text field
-            String timeValue = currentIncomeTimeValues.get(i);  // get time value from time drop down box
-
-            // Convert value to per year based on time period
-            switch (timeValue) {
-                case "per month":
-                    value *= 12;
-                    break;
-                case "per week":
-                    value *= 52;
-                    break;
-                default:
-                    break;
-            }
-
-            // Exit and set total income to NaN if any value is NaN (error)
-            if (Double.isNaN(value)) {
-                totalIncome = Double.NaN;
-                break;
-            }
-
-            totalIncome += value;  // add value to total income
-        }
-
-        // If total income is NaN, set the field to "Invalid number"
+        //if total income is NaN, set the field to "Invalid number"
         if (Double.isNaN(totalIncome)) {
             totalIncomeField.setText("Invalid number");
             return;
         }
-        totalIncomeField.setText(String.format("%.2f", totalIncome));  // Update the UI field with formatted total
+
+        totalIncomeField.setText(String.format("%.2f", totalIncome));
     }
 
-    //Calculate total spending using spendingFields array 
     public void calculateTotalSpending() {
-        double totalSpending = 0.0;
-
-        //Loop through the spendingFields array to get values and sum them
-        //Also check what time period the value is in, and convert it to per year
-        for (int i = 0; i < spendingFields.length; i++) {
-            double value = getTextFieldValue(spendingFields[i]);  // get value from text field
-            String timeValue = currentSpendingTimeValues.get(i);  // get time value from time drop down box
-
-            // Convert value to per year based on time period
-            switch (timeValue) {
-                case "per month":
-                    value *= 12;
-                    break;
-                case "per week":
-                    value *= 52;
-                    break;
-                default:
-                    break;
-            }
-
-            // Exit and set total spending to NaN if any value is NaN (error)
-            if (Double.isNaN(value)) {
-                totalSpending = Double.NaN;
-                break;
-            }
-
-            totalSpending += value;  // add value to total spending
-        }
+        // Calculate total spending
+        double totalSpending = calculateTotal(spendingFields, currentSpendingTimeValues);
 
         //if total spending is NaN, set the field to "Invalid number"
         if (Double.isNaN(totalSpending)) {
             totalSpendingField.setText("Invalid number");
             return;
         }
+
         totalSpendingField.setText(String.format("%.2f", totalSpending));
+    }
+
+
+
+    private double calculateTotal(JTextField[] fields, List<String> timeValues){
+        double total = 0.0;
+
+        //Loop through the fields array to get values and sum them
+        //Also check what time period the value is in, and convert it to per year
+        for (int i = 0; i < fields.length; i++) {
+            double value = getTextFieldValue(fields[i]);  // get value from text field
+            String timeValue = timeValues.get(i);  // get time value from time drop down box
+
+            // Convert value to per year based on time period
+            switch (timeValue) {
+                case "per month":
+                    value *= 12;
+                    break;
+                case "per week":
+                    value *= 52;
+                    break;
+                default:
+                    break;
+            }
+
+            // Exit and set total to NaN if any value is NaN (error)
+            if (Double.isNaN(value)) {
+                total = Double.NaN;
+                break;
+            }
+
+            total += value;  // add value to total
+        }
+
+        return total;
+        
     }
 
     //Calculate overall total using total income and total spending

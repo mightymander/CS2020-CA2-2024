@@ -24,3 +24,5 @@ new issue when trying to test add button, works great after removing everything 
 ===
 
 when something other than a number is entered the screen that says its not vaild appears twice, the more non ints you enter the more it wil pop up and say
+
+amazingly found when code was over 700 lines long, i was strugglying to find things so i decided to refactor it ans make it more readble, you can do mulitple button on one line.

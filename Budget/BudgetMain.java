@@ -71,20 +71,17 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     // will be generated automatically by IntelliJ, Eclipse, etc
     private void initComponents() { 
     
-        //set up number of rows for income and spending fields
+        // Get the number of rows for income and spending
         int numberIncomeRows = incomeCategories.size();
-        incomeFields = new JTextField[numberIncomeRows];
-
-        int numberSpendingRows = spendingCategories.size();
-        spendingFields = new JTextField[numberSpendingRows];
-
-        //set up time drop down fields
         int numberTimeRowsIncome = currentIncomeTimeValues.size();
-        incomeTimeDropDownFields = new JComboBox[numberTimeRowsIncome];
-
         int numberTimeRowsSpending = currentSpendingTimeValues.size();
+        int numberSpendingRows = spendingCategories.size();
+
+        // Create arrays of text fields for income and spending
+        incomeFields = new JTextField[numberIncomeRows];
+        spendingFields = new JTextField[numberSpendingRows];
+        incomeTimeDropDownFields = new JComboBox[numberTimeRowsIncome];    
         spendingTimeDropDownFields = new JComboBox[numberTimeRowsSpending];
-        
        
         addBudgetEntryFieldsToPanel(numberIncomeRows,numberSpendingRows); // Add income entry fields to panel
         addSummaryFields(numberIncomeRows,numberSpendingRows);  // Add summary fields for total income, spending, and overall total

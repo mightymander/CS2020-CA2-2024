@@ -66,10 +66,16 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     }
    
 
-    // initialise componenents
-    // Note that this method is quite long.  Can be shortened by putting Action Listener stuff in a separate method
-    // will be generated automatically by IntelliJ, Eclipse, etc
+
     private void initComponents() { 
+        /*
+         * Initialize components for the budget calculator
+         * Add fields for income and spending entries
+         * Add summary fields for total income, spending, and overall total
+         * Add action buttons to panel
+         * Add named labels to panel
+         * Set up listeners for buttons and text fields
+         */
     
         // Get the number of rows for income and spending
         int numberIncomeRows = incomeCategories.size();
@@ -82,11 +88,11 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         spendingFields = new JTextField[numberSpendingRows];
         incomeTimeDropDownFields = new JComboBox[numberTimeRowsIncome];    
         spendingTimeDropDownFields = new JComboBox[numberTimeRowsSpending];
-       
-        addBudgetEntryFieldsToPanel(numberIncomeRows,numberSpendingRows); // Add income entry fields to panel
-        addSummaryFields(numberIncomeRows,numberSpendingRows);  // Add summary fields for total income, spending, and overall total
-        addActionButtonsToPanel(numberIncomeRows,numberSpendingRows); // Add action buttons to panel
+
         addNamedLabelsToPanel(numberIncomeRows,numberSpendingRows); // Add named labels to panel
+        addSummaryFields(numberIncomeRows,numberSpendingRows);  // Add summary fields for total income, spending, and overall total
+        addBudgetEntryFieldsToPanel(numberIncomeRows,numberSpendingRows); // Add income entry fields to panel
+        addActionButtonsToPanel(numberIncomeRows,numberSpendingRows); // Add action buttons to panel
 
         // set up  listeners (in a spearate method)
         initListeners();
@@ -262,7 +268,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
-
         // Add DocumentListener to all income and spending fields
         for (JTextField incomeField : incomeFields) {
             addTriggerCalculationsListener(incomeField);
@@ -284,8 +289,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
     }
-
-
 
     // Add a DocumentListener to a text field to trigger calculations when text is changed
     private void addTriggerCalculationsListener(JTextField field) {

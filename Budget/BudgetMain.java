@@ -189,6 +189,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         addIncomeFieldButton = new JButton("ADD");
         addComponent(addIncomeFieldButton, 0, 1);
 
+        
+
         //add button beside spending
         addSpendingFieldButton = new JButton("ADD");
         addComponent(addSpendingFieldButton, numberIncomeRows + 4, 1);        
@@ -251,11 +253,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         // exitButton - exit program when pressed
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //Print all budgets from the stack
-            //for (Budget budget : allBudgets) {
-             //   System.out.println(budget);
-            //}
-
                 System.exit(0);
             }
         });
@@ -268,6 +265,24 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
+        //add income category button
+        addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addIncomeField();
+                triggerCalculations();
+                saveFields();
+            }
+        });
+
+        //add spending category button
+        addSpendingFieldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addSpendingField();
+                triggerCalculations();
+                saveFields();
+            }
+        });
+        
         // Add DocumentListener to all income and spending fields
         for (JTextField incomeField : incomeFields) {
             addTriggerCalculationsListener(incomeField);
@@ -298,8 +313,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
             saveFields();
-            
-            
         }
         // Trigger calculations when text is removed
         public void removeUpdate(DocumentEvent e) {
@@ -315,35 +328,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         }
     });
 
-    // Add action listener to the addIncomeFieldButton
-    // Remove all action listeners from the income field button
-    // This is to prevent multiple action listeners from being added
-    for (ActionListener al : addIncomeFieldButton.getActionListeners()) {
-    addIncomeFieldButton.removeActionListener(al);
-    }
-
-    addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            addIncomeField();
-            triggerCalculations();
-            saveFields();
-        }
-    });
-
-
-    // Remove all action listeners from the spending field button
-    // This is to prevent multiple action listeners from being added
-    for (ActionListener al : addSpendingFieldButton.getActionListeners()) {
-    addSpendingFieldButton.removeActionListener(al);
-    }
-
-    addSpendingFieldButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            addSpendingField();
-            triggerCalculations();
-            saveFields();
-        }
-    });
 }
 
     //method to add a spending field

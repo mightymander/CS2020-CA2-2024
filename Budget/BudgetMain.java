@@ -19,13 +19,13 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     //Fields related to budgets and categories
     private Stack<Budget> allBudgets = new Stack<>(); // Stack to store all budgets
-    private ArrayList<String> incomeCategories = new ArrayList<>();
-    private ArrayList<String> spendingCategories = new ArrayList<>();
-    private ArrayList<String> currentIncomeValues = new ArrayList<>(); // To store income values with default 0
-    private ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values with default 
-    private ArrayList<String> timeLineCategories = new ArrayList<>();
-    private ArrayList<String> currentIncomeTimeValues = new ArrayList<>(); // To store income time values with default per year
-    private ArrayList<String> currentSpendingTimeValues = new ArrayList<>(); // To store spending time values with default per year
+    private ArrayList<String> incomeCategories = new ArrayList<>(); // To store income categories
+    private ArrayList<String> spendingCategories = new ArrayList<>(); // To store spending categories
+    private ArrayList<String> currentIncomeValues = new ArrayList<>(); // To store income values
+    private ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values  
+    private ArrayList<String> timeLineCategories = new ArrayList<>(); // To store time line categories
+    private ArrayList<String> currentIncomeTimeValues = new ArrayList<>(); // To store income time values
+    private ArrayList<String> currentSpendingTimeValues = new ArrayList<>(); // To store spending time values 
     
 
     //UI-related fields
@@ -33,7 +33,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     GridBagConstraints layoutConstraints = new GridBagConstraints(); // used to control layout
     private JButton exitButton, addIncomeFieldButton, addSpendingFieldButton, undoButton; // buttons
     private JTextField[] incomeFields, spendingFields; // arrays of text fields for income and spending
-    private JTextField totalIncomeField, totalSpendingField, overalTotalField; // text fields for total income, spending, and overall total
+    private JTextField totalIncomeField, totalSpendingField, overallTotalField; // text fields for total income, spending, and overall total
     private JComboBox<String>[] incomeTimeDropDownFields, spendingTimeDropDownFields; // arrays of drop down boxes for income and spending time values
 
 
@@ -43,26 +43,28 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         initDefaultValues(); // set up default values
         saveFields(); // Save the current state as the first state in the stack
         setLayout(new GridBagLayout());  // use GridBag layout
-        initComponents();  // initalise components
+        initComponents();  // initialise components
     }
 
     private void initDefaultValues() {
         /*
          * Initialize default values for the budget
-         * 3 income categories: Wages, Loans, Other
-         * 3 spending categories: Food, Rent, Other
-         * 3 time line categories: per year, per month, per week
+         * 3 default values income categories: Wages, Loans, Other
+         * 3 default values spending categories: Food, Rent, Other
+         * 3 default values time line categories: per year, per month, per week
          * 3 default values for current income values: "", "", ""
          * 3 default values for current spending values: "", "", ""
          * 3 default values for current income time values: per year, per year, per year
+         * 3 default values for current spending time values: per year, per year, per year
          */
-        currentIncomeValues = new ArrayList<>(Arrays.asList("","",""));
-        currentSpendingValues = new ArrayList<>(Arrays.asList("","",""));
-        timeLineCategories = new ArrayList<>(Arrays.asList("per year", "per month", "per week"));
-        currentIncomeTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
-        currentSpendingTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
         incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
         spendingCategories = new ArrayList<>(Arrays.asList("Food", "Rent", "Other"));
+        timeLineCategories = new ArrayList<>(Arrays.asList("per year", "per month", "per week"));
+        currentIncomeValues = new ArrayList<>(Arrays.asList("","",""));
+        currentSpendingValues = new ArrayList<>(Arrays.asList("","",""));
+        currentIncomeTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
+        currentSpendingTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
+        
     }
    
 
@@ -100,7 +102,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         addBudgetEntryFieldsToPanel(numberIncomeRows,numberSpendingRows); // Add income entry fields to panel
         addActionButtonsToPanel(numberIncomeRows,numberSpendingRows); // Add action buttons to panel
 
-        // set up  listeners (in a spearate method)
+        // set up  listeners (in a separate method)
         initListeners();
     }
 
@@ -135,10 +137,10 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         JLabel overallTotalLabel = new JLabel("Overall Total");
         addComponent(overallTotalLabel, numberIncomeRows+numberSpendingRows +7, 0);
         // set up text box for displaying overall total.  Users cam view, but cannot directly edit it
-        overalTotalField = new JTextField("0", 10);   // 0 initially, with 10 columns
-        overalTotalField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        overalTotalField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
-        addComponent(overalTotalField, numberIncomeRows+numberSpendingRows +7, 1);
+        overallTotalField = new JTextField("0", 10);   // 0 initially, with 10 columns
+        overallTotalField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
+        overallTotalField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
+        addComponent(overallTotalField, numberIncomeRows+numberSpendingRows +7, 1);
     }
 
     private void addBudgetEntryFieldsToPanel(int numberIncomeRows, int numberSpendingRows) {
@@ -285,7 +287,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         
     }
 
-    //Add a DocumentListner to the ComboBox, to trigger calculations when the selected item is changed
+    //Add a DocumentListener to the ComboBox, to trigger calculations when the selected item is changed
     private void addTriggerCalculationsListener(JComboBox<String> comboBox) {
         comboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -494,7 +496,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
          * Undo button backend
          */
     
-        //if theres only 1 budget, set default values to 0
+        //if theirs only 1 budget, set default values to 0
         if (allBudgets.size() == 1) {
             System.out.println("Only one budget in the stack. Setting default values to 0.");
             currentIncomeValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
@@ -545,7 +547,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     // add a component at specified row and column in UI.  (0,0) is top-left corner
     private void addComponent(Component component, int gridrow, int gridcol) {
-        layoutConstraints.fill = GridBagConstraints.HORIZONTAL;   // always use horixontsl filll
+        layoutConstraints.fill = GridBagConstraints.HORIZONTAL;   
         layoutConstraints.gridx = gridcol;
         layoutConstraints.gridy = gridrow;
         add(component, layoutConstraints);
@@ -692,17 +694,17 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
         //if overall total is NaN, set the field to "Invalid number"
         if (Double.isNaN(overallTotal)) {
-            overalTotalField.setText("Invalid number");
+            overallTotalField.setText("Invalid number");
             return;
         }
         //if overall total is negative, display text in red
         if (overallTotal < 0) {
-            overalTotalField.setForeground(Color.RED);
+            overallTotalField.setForeground(Color.RED);
         } else {
-            overalTotalField.setForeground(Color.BLACK);
+            overallTotalField.setForeground(Color.BLACK);
         }
 
-        overalTotalField.setText(String.format("%.2f", overallTotal));
+        overallTotalField.setText(String.format("%.2f", overallTotal));
     }
 
     /*
@@ -741,8 +743,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     }
 
 
-// below is standard code to set up Swing, which students shouldnt need to edit much
-    // standard mathod to show UI
+// below is standard code to set up Swing, which students should not need to edit much
+    // standard method to show UI
     private static void createAndShowGUI() {
  
         //Create and set up the window.

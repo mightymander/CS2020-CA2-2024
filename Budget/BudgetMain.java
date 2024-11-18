@@ -66,8 +66,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         currentSpendingTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
         
     }
-   
-
 
     /*
      * START OF INITIALIZATION METHODS
@@ -143,6 +141,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         addComponent(overallTotalField, numberIncomeRows+numberSpendingRows +7, 1);
     }
 
+
     private void addBudgetEntryFieldsToPanel(int numberIncomeRows, int numberSpendingRows) {
         /*
          * Add fields for income and spending entries
@@ -192,6 +191,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         }
     }
 
+
     private void addActionButtonsToPanel(int numberIncomeRows, int numberSpendingRows) {
         //add button beside income
         addIncomeFieldButton = new JButton("ADD");
@@ -212,6 +212,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
+
     private void addNamedLabelsToPanel(int numberIncomeRows, int numberSpendingRows) {
         //Spending header
         JLabel spendingLabel = new JLabel("SPENDING");
@@ -226,7 +227,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
-
     /*
      * END OF INITIALIZATION METHODS
      */
@@ -235,7 +235,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
       * START OF LISTENERS
       * SET UP LISTENERS FOR BUTTONS AND TEXT FIELDS
       */
-
 
     // set up listeners
     // initially just for buttons, can add listeners for text fields
@@ -285,6 +284,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         
     }
 
+
     //Add a DocumentListener to the ComboBox, to trigger calculations when the selected item is changed
     private void addTriggerCalculationsListener(JComboBox<String> comboBox) {
         comboBox.addActionListener(new ActionListener() {
@@ -295,6 +295,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
     }
+
 
     // Add a DocumentListener to a text field to trigger calculations when text is changed
     private void addTriggerCalculationsListener(JTextField field) {
@@ -318,7 +319,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             saveFields();
         }
     });
-
 }
 
     /*
@@ -329,8 +329,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
       * START OF METHODS FOR ADDING MORE INCOME AND SPENDING FIELDS
       */
 
-     
-
+    
     //method to add a spending field
     private void addSpendingField() {
         // Add a new spending category to the list
@@ -488,6 +487,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
+
     private void goBack() {
         /*
          * Will go back to the previous state of the budget
@@ -606,6 +606,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         calculateOverallTotal();
     }
 
+
     public void calculateTotalIncome() {
         // Calculate total income
         double totalIncome = calculateTotal(incomeFields, currentIncomeTimeValues);
@@ -619,6 +620,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         totalIncomeField.setText(String.format("%.2f", totalIncome));
     }
 
+
     public void calculateTotalSpending() {
         // Calculate total spending
         double totalSpending = calculateTotal(spendingFields, currentSpendingTimeValues);
@@ -631,7 +633,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
         totalSpendingField.setText(String.format("%.2f", totalSpending));
     }
-
 
 
     private double calculateTotal(JTextField[] fields, List<String> timeValues){
@@ -665,8 +666,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         }
 
         return total;
-        
     }
+
 
     //Calculate overall total using total income and total spending
     public void calculateOverallTotal() {
@@ -692,7 +693,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     /*
      * END OF METHODS FOR CALCULATING TOTAL INCOME, SPENDING, AND OVERALL TOTAL
      */
-
 
      /*
       * START OF METHODS ALREADY IMPLEMENTED
@@ -744,6 +744,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         frame.setVisible(true);
     }
  
+    
     // standard main class to set up Swing UI
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
@@ -759,4 +760,3 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
      * END OF METHODS ALREADY IMPLEMENTED
      */
 }
-

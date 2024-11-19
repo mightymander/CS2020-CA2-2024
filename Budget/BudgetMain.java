@@ -31,7 +31,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     //UI-related fields
     JFrame topLevelFrame;  // top-level JFrame
     GridBagConstraints layoutConstraints = new GridBagConstraints(); // used to control layout
-    private JButton exitButton, addIncomeFieldButton, addSpendingFieldButton, undoButton; // buttons
+    private JButton exitButton, addIncomeFieldButton, addSpendingFieldButton, undoButton,printButton; // buttons
     private JTextField[] incomeFields, spendingFields; // arrays of text fields for income and spending
     private JTextField totalIncomeField, totalSpendingField, overallTotalField; // text fields for total income, spending, and overall total
     private JComboBox<String>[] incomeTimeDropDownFields, spendingTimeDropDownFields; // arrays of drop down boxes for income and spending time values
@@ -210,6 +210,9 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         exitButton = new JButton("Exit");
         addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 1);
 
+        //add button that prints current state
+        printButton = new JButton("Print");
+        addComponent(printButton, numberIncomeRows + numberSpendingRows + 8, 2);
     }
 
 
@@ -255,12 +258,34 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
+        //print button
+        printButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("");
+                System.out.println("Current state: ");
+                System.out.println("Income categories: " + incomeCategories);
+                System.out.println("Spending categories: " + spendingCategories);
+                System.out.println("Current income values: " + currentIncomeValues);
+                System.out.println("Current spending values: " + currentSpendingValues);
+                System.out.println("Current income time values: " + currentIncomeTimeValues);
+                System.out.println("Current spending time values: " + currentSpendingTimeValues);
+                System.out.println("Total income: " + totalIncomeField.getText());
+                System.out.println("Total spending: " + totalSpendingField.getText());
+                System.out.println("Overall total: " + overallTotalField.getText());
+                System.out.println("");
+                System.out.println("All budgets: ");
+                for (Budget budget : allBudgets) {
+                    System.out.println(budget);
+                }
+
+            }
+        });
+
         //add income category button
         addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addIncomeField();
                 triggerCalculations();
-                saveFields();
             }
         });
 
@@ -269,7 +294,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             public void actionPerformed(ActionEvent e) {
                 addSpendingField();
                 triggerCalculations();
-                saveFields();
             }
         });
         
@@ -338,6 +362,9 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         currentSpendingValues.add("");
         currentSpendingTimeValues.add("per year");
 
+        //save the current state
+        saveFields();
+
         // Remove all components from the panel
         removeAll();
 
@@ -356,6 +383,9 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         incomeCategories.add(input);
         currentIncomeValues.add("");
         currentIncomeTimeValues.add("per year");
+
+        //save the current state
+        saveFields();
 
         // Remove all components from the panel
         removeAll();
@@ -394,13 +424,22 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         List<Budget.Entry> incomeEntries = new ArrayList<>();
         List<Budget.Entry> expenseEntries = new ArrayList<>();
 
-        // Loop through incomeCategories and currentIncomeValues to create incomeEntries
-        for (int i = 0; i < incomeCategories.size(); i++) {
+        // Add income and spending entries to the list
+        if (incomeCategories.size() == currentIncomeValues.size() && currentIncomeValues.size() == currentIncomeTimeValues.size()) {
+            for (int i = 0; i < incomeCategories.size(); i++) {
             incomeEntries.add(new Budget.Entry(incomeCategories.get(i), currentIncomeValues.get(i), currentIncomeTimeValues.get(i)));
+            }
+        } else {
+            System.out.println("Income fields mismatch.");
         }
-        // Loop through spendingCategories and currentSpendingValues to create expenseEntries
-        for (int i = 0; i < spendingCategories.size(); i++) {
+
+        // Add income and spending entries to the list
+        if (spendingCategories.size() == currentSpendingValues.size() && currentSpendingValues.size() == currentSpendingTimeValues.size()) {
+            for (int i = 0; i < spendingCategories.size(); i++) {
             expenseEntries.add(new Budget.Entry(spendingCategories.get(i), currentSpendingValues.get(i), currentSpendingTimeValues.get(i)));
+            }
+        } else {
+            System.out.println("Spending fields mismatch.");
         }
 
         // Add a new budget to the stack
@@ -408,7 +447,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
-    private void checkIfValuesAreSame() {
+    private boolean isUIIdenticalToLastBudget() {
         /*
          * Check if the current income and spending values match the most recent budget
          * If they match, pop the most recent budget
@@ -416,74 +455,63 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
          */
 
 
-       // Check if the current income and spending values match the most recent budget
-        boolean valuesMatch = true;
+        //if the stack is empty, return false
+        if (allBudgets.isEmpty()) {
+            System.out.println("No previous budgets to compare to.");
+            return false;
+        }
+        
+        //get the most recent budget
         Budget mostRecentBudget = allBudgets.peek();
 
+        //check the size of the income and spending categories, this stops the program from crashing if the sizes are different
+        if (incomeCategories.size() != mostRecentBudget.income.size() || spendingCategories.size() != mostRecentBudget.expenses.size()) {
+            return false;
+        }
+
+        // Compare income categories from the UI to the last budget
+        for (int i = 0; i < incomeCategories.size(); i++) {
+            if (!incomeCategories.get(i).equals(mostRecentBudget.income.get(i).description)) {
+                return false;
+            }
+        }
+
+        // Compare spending categories from the UI to the last budget
+        for (int i = 0; i < spendingCategories.size(); i++) {
+            if (!spendingCategories.get(i).equals(mostRecentBudget.expenses.get(i).description)) {
+                return false;
+            }
+        }
+
+        // Compare income values from the UI to the last budget
         for (int i = 0; i < currentIncomeValues.size(); i++) {
-            // Compare income values
             if (!currentIncomeValues.get(i).equals(mostRecentBudget.income.get(i).amount)) {
-                System.out.println("Income values are different.");
-                valuesMatch = false;  // Set flag to false if there's a mismatch
-                break;
+                return false;
             }
         }
 
-        // Only proceed to spending comparison if income values matched
-        if (valuesMatch) {
-            for (int i = 0; i < currentSpendingValues.size(); i++) {
-                // Compare spending values
-                if (!currentSpendingValues.get(i).equals(mostRecentBudget.expenses.get(i).amount)) {
-                    System.out.println("Spending values are different.");
-                    valuesMatch = false;  // Set flag to false if there's a mismatch
-                    break;
-                }
+        // Compare spending values from the UI to the last budget
+        for (int i = 0; i < currentSpendingValues.size(); i++) {
+            if (!currentSpendingValues.get(i).equals(mostRecentBudget.expenses.get(i).amount)) {
+                return false;
             }
         }
 
-        //check if income  time values match
-        if (valuesMatch) {
-            for (int i = 0; i < currentIncomeTimeValues.size(); i++) {
-                // Compare income time values
-                if (!currentIncomeTimeValues.get(i).equals(mostRecentBudget.income.get(i).timeFrequency)) {
-                    System.out.println("Income time values are different.");
-                    valuesMatch = false;  // Set flag to false if there's a mismatch
-                    break;
-                }
-            }
-
-        //check if spending time values match
-            if (valuesMatch) {
-                for (int i = 0; i < currentSpendingTimeValues.size(); i++) {
-                    // Compare spending time values
-                    if (!currentSpendingTimeValues.get(i).equals(mostRecentBudget.expenses.get(i).timeFrequency)) {
-                        System.out.println("Spending time values are different.");
-                        valuesMatch = false;  // Set flag to false if there's a mismatch
-                        break;
-                    }
-                }
-            }
-
-            // Only proceed to spending comparison if income time values matched
-            if (valuesMatch) {
-                for (int i = 0; i < currentSpendingTimeValues.size(); i++) {
-                    // Compare spending time values
-                    if (!currentSpendingTimeValues.get(i).equals(mostRecentBudget.expenses.get(i).timeFrequency)) {
-                        System.out.println("Spending time values are different.");
-                        valuesMatch = false;  // Set flag to false if there's a mismatch
-                        break;
-                    }
-                }
+        // Compare income time values from the UI to the last budget
+        for (int i = 0; i < currentIncomeTimeValues.size(); i++) {
+            if (!currentIncomeTimeValues.get(i).equals(mostRecentBudget.income.get(i).timeFrequency)) {
+                return false;
             }
         }
-
-        // If both income and spending values match, pop the most recent budget
-        if (valuesMatch) {
-            System.out.println("Income and spending values are the same. Removing the most recent budget.");
-            allBudgets.pop();
-        } else {
-            System.out.println("Values don't match, not removing the budget.");
+        // Compare spending time values from the UI to the last budget
+        for (int i = 0; i < currentSpendingTimeValues.size(); i++) {
+            if (!currentSpendingTimeValues.get(i).equals(mostRecentBudget.expenses.get(i).timeFrequency)) {
+                return false;
+            }
         }
+        
+       // If no differences were found, UI is identical to the last budget
+        return true;
 
     }
 
@@ -494,18 +522,34 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
          * Undo button backend
          */
     
-        //if theirs only 1 budget, set default values to 0
+        //if theirs only 1 budget, call the default values method
         if (allBudgets.size() == 1) {
             System.out.println("Only one budget in the stack. Setting default values to 0.");
-            currentIncomeValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
-            currentSpendingValues = new ArrayList<>(Arrays.asList("0", "0", "0"));
-            currentIncomeTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
-            currentSpendingTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
+            initDefaultValues();
+            // Remove all components from the panel
+            removeAll();
+            // Reinitialize the components
+            initComponents();
+            // Refresh the layout
+            revalidate(); // Refresh the panel to show the new components
+            repaint(); // Repaint the panel to ensure it displays correctly
+            return;
         }
 
-        //check if the current values are the same as the most recent budget
-        checkIfValuesAreSame();    
+       // Check if the UI is identical to the last budget
+       // If it is, remove the most recent budget
+       // fixes of the undo button not working on the first click
+        if (isUIIdenticalToLastBudget()) {
+            allBudgets.pop(); // Remove the most recent budget
+        } else {
+            System.out.println("UI state has changed, cannot undo.");
+        }
         
+        //if the stack is empty, print a message and return
+        if (allBudgets.isEmpty()) {
+        System.out.println("No previous budgets to go back to.");
+        return;
+}
         //grab the most recent budget
         Budget mostRecentBudget = allBudgets.pop();
 
@@ -529,7 +573,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             currentSpendingValues.add(spending.amount);
             currentSpendingTimeValues.add(spending.timeFrequency);
         }
-        
 
         //remove all components from the panel
         removeAll();
@@ -744,7 +787,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         frame.setVisible(true);
     }
  
-    
+
     // standard main class to set up Swing UI
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:

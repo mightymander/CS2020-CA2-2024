@@ -449,8 +449,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     private boolean isUIIdenticalToLastBudget() {
         /*
-         * Check if the current income and spending values match the most recent budget
-         * If they match, pop the most recent budget
+         * Check if the current UI is identical to the last budget
+         * If it is, remove the most recent budget
          * This is used to prevent duplicate budgets from being added to the stack
          */
 
@@ -541,11 +541,9 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
        // fixes of the undo button not working on the first click
         if (isUIIdenticalToLastBudget()) {
             allBudgets.pop(); // Remove the most recent budget
-        } else {
-            System.out.println("UI state has changed, cannot undo.");
-        }
+        } 
         
-        //if the stack is empty, print a message and return
+        //if the stack is empty, print a message and return, should not happen
         if (allBudgets.isEmpty()) {
         System.out.println("No previous budgets to go back to.");
         return;

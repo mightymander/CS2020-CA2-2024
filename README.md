@@ -34,6 +34,8 @@ names
 - "addBudgetEntryFieldsToPanel" is run which dynamically adds based on the number of rows that was defined earlier the either default and custom labels entered by the user and there input fields, for the int value and time value, also add a Event listener to the input fields.
 - "addActionButtonsToPanel" is run which adds all the buttons that do actions, such as the two add buttons that are beside the Income and Spending Texts which allow the user to add their own custom income and spending categories as well as the undo button and the exit button.
 
+## listeners section
+
 - Next the listeners section, which basically adds all the functionality to the buttons and input fields.
 - The exit button is very simple it just called "System.exit(0);" which just exits the program.
 - The undo button called "revertToPreviousBudget" and "triggerCalculations", revertToPreviousBudget is the method that goes back to the previous version of the app eg the undo and triggering the calculations just makes sure that the total fields are updated with the new/old values.
@@ -41,12 +43,16 @@ names
 - The method "addTriggerCalculationsListener" will update the the income spending and time value lists, trigger all the calculations and then save state because the time drop down box has changed.
 - Then the last one for the text boxes where the user enters the numbers, when ever there is a change it will, updated the income spending and time value list, trigger calculations so that the total income spending and overall total are up to date and then save the state because the numbers have changed.
 
+## methods that add more income and spending fields
+
 - Now onto the methods that add more income and spending fields
 - There is two methods here "addSpendingField" and "addIncomeField"
 - They are very similar they work by sending a pop up to the user and asking for them to enter the name they would like it to be titled, if the user enters a blank string or clicks the okay button without adding anything then show error message. this stops the fields being adds that appear blank.
 - Then it adds the new input field to the "incomeCategories" List and adds the default values to currentIncomeValues and currentIncomeTimeValues
 - Then it will save the state of the game to the stack.
 - Then refresh the layout which will now reflect the new field that was added.
+
+## undo logic
 
 - Now we move onto the logic that handles going back to the previous state, saving fields and checking if the ui is the same and going back to the previous budget.
 - "saveCurrentBudgetState" first created two local lists "incomeEntries" and "expenseEntries" this is used to convert the 3 different lists that are used in the program into the format for the stack, which is description, amount, timeFrequency.

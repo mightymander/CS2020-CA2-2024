@@ -5,14 +5,14 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import Budget.backupStacks.Budget;
+
 import java.awt.event.*;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
-
-import Budget.backupStacks.Budget;
 
 // class definition
 public class BudgetMain extends JPanel {    // based on Swing JPanel

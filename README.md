@@ -30,3 +30,5 @@ Programming style (20 pts)
 names
 • 10 pts: Java code is well structured and decomposed into methods; for example win/loss
 detection is done using methods that check for a win in a specified row or column.
+
+- When first loading up the program you should see the nice window

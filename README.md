@@ -1,14 +1,6 @@
 JACOB CORBETT
 STUDENT ID: 52316427
 
-Undo (30 pts)
-
-• 10 pts: Good collection of JUnit tests for Undo
-
-Programming style (20 pts)
-• 10 pts: Java code follows good coding style, including good code comments and variable
-names
-
 - before getting into the program i would like to say that the calculate button has been removed for the reason that its redundant, the program will act like a spread sheet and automatically calculate. (Extensions, bullet point 2)
 - When first loading up the program you should see the nice window, with the 3 default income and spending fields, along with their input boxes and a dropdown menu of the time frame you would like to use for them.
 - for the input fields you can enter whatever you want into them, being integers or strings, during testing i found that a pop up every single time you entered not a number was actually very annoying so i removed it and replaced it with simply dynamically changing the total fields to "invalid number" this makes it much less annoying when entering a not valid input. (basic system, bullet point 1,2,4 )
@@ -59,4 +51,17 @@ names
 - then just "backupStacks.addBudget" which adds the budget to the stack.
 - Now onto "revertToPreviousBudget" this method is the undo buttons back end, it puts the program back 1 level, First of all it check if there is less than or equal to 1 thing in the stack which means that you are trying to undo back to the default so just re initialise the default values are repaint the UI and return, if there is more than 1 entry in the stack then check "isUIIdenticalToLastBudget" and if true then pop the stack, this is used to fix the problem of when you would first press the undo button in a sequence it would not do anything on the first press this is not a error its working as expected, its putting you back to the most recent save however the most recent save is the exact same as the current save so it appears the the end user that nothing is happening. so isUIIdenticalToLastBudget was created to solve this problem, it works by doing lots of checks to see if the current state of the GUI is the same as the most recent save in the stack if so then remove it. Then double check that the stack is not empty to prevent a crash, if empty then return. Pop the most recent budget into mostRecentBudget, clear all the lists and repopulate them using the mostRecentBudget data then clear and repaint the UI and done thats the logic of the undo button.
 
--
+## methods for updading the current income, spending and time values lists
+
+- "updateIncomeSpendingTimeValuesList" this is a very simple method, which starts by clearing all the lists, and then looking at the UI and setting the Current UI to the lists.
+
+## methods for calculating total income, spending and overall total
+
+- The first method here is "triggerCalculations" which just runs the other 3, calculateTotalIncome, calculateTotalSpending, calculateOverallTotal.
+- calculateTotalIncome works but first calling calculateTotal which loops through the fields list and just sums them, also taking into account the time and doing the correct calculation to turn it into per year. taking into account errors so if its NAN then return NAN and break, now back to calculateTotalIncome if the return is NAN then set the total field to be "Invalid Number" if not then set the text on the total income field to be the total.
+- calculateTotalSpending works very similarly.
+- calculateOverallTotal works by getting the total income value and spending value not by calculating anything but by reading the screen because this method is always called after the other two are called those will always be updated fist. The same catch again if total is NAN display Invalid number, and if the overall total is negative display the number in red.
+
+- Then the rest of the methods are boring, methods that were already included and are needed for swing to work.
+
+## Issues

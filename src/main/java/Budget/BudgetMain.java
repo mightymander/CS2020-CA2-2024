@@ -41,7 +41,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     public BudgetMain(JFrame frame) {
         topLevelFrame = frame; // keep track of top-level frame
         initDefaultValues(); // set up default values
-        saveFields(); // Save the current state as the first state in the stack
+        saveCurrentBudgetState(); // Save the current state as the first state in the stack
         setLayout(new GridBagLayout());  // use GridBag layout
         initComponents();  // initialise components
     }
@@ -255,7 +255,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         //undo button
         undoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                goBack();
+                revertToPreviousBudget();
                 triggerCalculations();
             }
         });
@@ -307,7 +307,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             public void actionPerformed(ActionEvent e) {
                 updateIncomeSpendingTimeValuesList();                
                 triggerCalculations();
-                saveFields();
+                saveCurrentBudgetState();
             }
         });
     }
@@ -320,19 +320,19 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         public void insertUpdate(DocumentEvent e) {
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            saveFields();
+            saveCurrentBudgetState();
         }
         // Trigger calculations when text is removed
         public void removeUpdate(DocumentEvent e) {
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            saveFields();
+            saveCurrentBudgetState();
         }
         // Trigger calculations when text is changed
         public void changedUpdate(DocumentEvent e) {
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
-            saveFields();
+            saveCurrentBudgetState();
         }
     });
 }
@@ -349,13 +349,20 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     //method to add a spending field
     private void addSpendingField() {
         // Add a new spending category to the list
+        // Ask the user for the name of the new spending category
         String input = JOptionPane.showInputDialog("Enter additional Spending field name:  ");
+        //check if the user entered a blank string, if so, show a message and return
+        if (input == null || input.isBlank()) {
+            JOptionPane.showMessageDialog(topLevelFrame, "Please enter a valid spending category name.");
+            return;
+        }
+
         spendingCategories.add(input);
         currentSpendingValues.add("");
         currentSpendingTimeValues.add("per year");
 
         //save the current state
-        saveFields();
+        saveCurrentBudgetState();
 
         // Remove all components from the panel
         removeAll();
@@ -372,12 +379,17 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     private void addIncomeField() {
         // Add a new income category to the list
         String input = JOptionPane.showInputDialog("Enter additional Income field name:  ");
+        //check if the user entered a blank string, if so, show a message and return
+        if (input == null || input.isBlank()) {
+            JOptionPane.showMessageDialog(topLevelFrame, "Please enter a valid income category name.");
+            return;
+        }
         incomeCategories.add(input);
         currentIncomeValues.add("");
         currentIncomeTimeValues.add("per year");
 
         //save the current state
-        saveFields();
+        saveCurrentBudgetState();
 
         // Remove all components from the panel
         removeAll();
@@ -397,19 +409,19 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
      
     /*
-     * METHODS FOR SAVING AND GOING BACK TO PREVIOUS STATE
-     * SAVE FIELDS
-     * CHECK IF VALUES ARE SAME
-     * GO BACKS
+     * METHODS FOR,
+     * SAVING AND GOING BACK TO PREVIOUS STATE
+     * CHECK IF UI IS IDENTICAL TO LAST BUDGET
+     * 
      */
 
 
     // method to save all the current input fields
-    public void saveFields() {
+    public void saveCurrentBudgetState() {
         /*
-         *  Will save all the current input fields input into a stack
-         *  incomes will be saved in a list of entries, eg [salary: 1000, freelance: 2000, investment: 3000]
-         *  expenses will be saved in a list of entries, eg [rent: 100, utilities: 200, subscriptions: 300]
+         *  Will save the current state of the budget into a stack
+         *  incomes will be saved in a list of entries
+         *  expenses will be saved in a list of entries
          */
 
         //convert the currentIncomeValues and currentSpendingValues into a list of entries
@@ -508,14 +520,14 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     }
 
 
-    private void goBack() {
+    private void revertToPreviousBudget() {
         /*
          * Will go back to the previous state of the budget
          * Undo button backend
          */
     
         //if theirs only 1 budget, call the default values method
-        if (allBudgets.size() == 1) {
+        if (allBudgets.size() <= 1) {
             System.out.println("Only one budget in the stack. Setting default values to 0.");
             initDefaultValues();
             // Remove all components from the panel

@@ -36,9 +36,21 @@ names
 
 - Next the listeners section, which basically adds all the functionality to the buttons and input fields.
 - The exit button is very simple it just called "System.exit(0);" which just exits the program.
-- The undo button called "goBack" and "triggerCalculations", goBack is the method that goes back to the previous version of the app eg the undo and triggering the calculations just makes sure that the total fields are updated with the new/old values.
+- The undo button called "revertToPreviousBudget" and "triggerCalculations", revertToPreviousBudget is the method that goes back to the previous version of the app eg the undo and triggering the calculations just makes sure that the total fields are updated with the new/old values.
 - The add income and add spending field buttons, call their respective addIncome/SpendingField method and then triggerCalculations
 - The method "addTriggerCalculationsListener" will update the the income spending and time value lists, trigger all the calculations and then save state because the time drop down box has changed.
 - Then the last one for the text boxes where the user enters the numbers, when ever there is a change it will, updated the income spending and time value list, trigger calculations so that the total income spending and overall total are up to date and then save the state because the numbers have changed.
+
+- Now onto the methods that add more income and spending fields
+- There is two methods here "addSpendingField" and "addIncomeField"
+- They are very similar they work by sending a pop up to the user and asking for them to enter the name they would like it to be titled, if the user enters a blank string or clicks the okay button without adding anything then show error message. this stops the fields being adds that appear blank.
+- Then it adds the new input field to the "incomeCategories" List and adds the default values to currentIncomeValues and currentIncomeTimeValues
+- Then it will save the state of the game to the stack.
+- Then refresh the layout which will now reflect the new field that was added.
+
+- Now we move onto the logic that handles going back to the previous state, saving fields and checking if the ui is the same and going back to the previous budget.
+- "saveCurrentBudgetState" first created two local lists "incomeEntries" and "expenseEntries" this is used to convert the 3 different lists that are used in the program into the format for the stack, which is description, amount, timeFrequency.
+- then just "backupStacks.addBudget" which adds the budget to the stack.
+- Now onto "revertToPreviousBudget" this method is the undo buttons back end, it puts the program back 1 level, First of all it check if there is less than or equal to 1 thing in the stack which means that you are trying to undo back to the default so just re initialise the default values are repaint the UI and return, if there is more than 1 entry in the stack then check "isUIIdenticalToLastBudget" and if true then pop the stack, this is used to fix the problem of when you would first press the undo button in a sequence it would not do anything on the first press this is not a error its working as expected, its putting you back to the most recent save however the most recent save is the exact same as the current save so it appears the the end user that nothing is happening. so isUIIdenticalToLastBudget was created to solve this problem, it works by doing lots of checks to see if the current state of the GUI is the same as the most recent save in the stack if so then remove it. Then double check that the stack is not empty to prevent a crash, if empty then return. Pop the most recent budget into mostRecentBudget, clear all the lists and repopulate them using the mostRecentBudget data then clear and repaint the UI and done thats the logic of the undo button.
 
 -

@@ -80,39 +80,6 @@ public class backupStacks {
     }
 
     public static void main(String[] args) {
-
-        
-        /*
-        // Create lists of income and expense entries with time frequency
-        List<Budget.Entry> incomeValues = Arrays.asList(
-            new Budget.Entry("salary", "1000", "per year"), 
-            new Budget.Entry("freelance", "2000", "per month"),
-            new Budget.Entry("investment", "3000", "per month")
-        );
-        List<Budget.Entry> expenseValues = Arrays.asList(
-            new Budget.Entry("rent", "100", "per month"), 
-            new Budget.Entry("utilities", "200", "per month"),
-            new Budget.Entry("subscriptions", "300", "per month")
-        );
-
-        // Create new stack of Budget objects
-        Stack<Budget> allBudgets = new Stack<>();
-
-        // Add a new budget to the stack
-        addBudget(allBudgets, incomeValues, expenseValues);
-
-
-        
-        
-
-        // Print the most recent budget, (peek is used to get the most recent budget)
-        //System.out.println(allBudgets.peek());
-
-        //Print all budgets from the stack
-        for (Budget budget : allBudgets) {
-            System.out.println(budget);
-        }
-    */
-    }
-        
+       //nothing to do here
+    } 
 }

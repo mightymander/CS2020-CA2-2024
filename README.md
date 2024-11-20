@@ -1,23 +1,6 @@
 JACOB CORBETT
 STUDENT ID: 52316427
 
-basic system (30 pts)
-• 10 pts: user enters three (or more) income fields (wages, loan, other) and the system
-computes total income when a Calculate button is pressed.
-• 10 pts: user enters three (or more) spending fields (food, rent, other) and the system
-computes total income when a Calculate button is pressed.
-• 5 pts: When Calculate is pressed, the system also shows surplus/deficit (income minus
-spending). This is black if positive or zero, and red if negative.
-• 5 pts: System checks user input (numbers for validity), and produces an appropriate error
-message if input is not valid. Empty fields are treated as 0 (no error message)
-Extensions (20 pts)
-• 10 pts: allow users to specify income/expenditure numbers per week, per month, or per
-year, for each input field. This requires both adding appropriate choice widgets (such as
-combo boxes), and also modifying the way you calculate totals. You can assume that there
-are 52 weeks in a year, 12 months in a year, and 4.3333333 weeks in a month.
-• 10 pts: implement “spreadsheet” behaviour, that is totals are updated whenever the user
-changes a number or time-period, with no need to press a Calculate button. You should
-update whenever the focus shifts, as well as whenever an action is performed.
 Undo (30 pts)
 • 10 pts: implement a single-level of Undo, so the user can “undo” his or her most recent
 action. This require saving the state of the system (ie, all numbers) when a change is made.
@@ -31,4 +14,12 @@ names
 • 10 pts: Java code is well structured and decomposed into methods; for example win/loss
 detection is done using methods that check for a win in a specified row or column.
 
-- When first loading up the program you should see the nice window
+- before getting into the program i would like to say that the calculate button has been removed for the reason that its redundant, the program will act like a spread sheet and automatically calculate. (Extensions, bullet point 2)
+- When first loading up the program you should see the nice window, with the 3 default income and spending fields, along with their input boxes and a dropdown menu of the time frame you would like to use for them.
+- for the input fields you can enter whatever you want into them, being integers or strings, during testing i found that a pop up every single time you entered not a number was actually very annoying so i removed it and replaced it with simply dynamically changing the total fields to "invalid number" this makes it much less annoying when entering a not valid input. (basic system, bullet point 1,2,4 )
+- the overall total output will change colour based on if the overall total is positive or negative so black if positive and red if negative. (basic system, bullet point 3 )
+- for the dropdowns being per year, per month or per week was simple enough because the overall total is per year, you simply convert the fields if they are not per year, so per month = * 12, and per week = *52. (Extensions, bullet point 1)
+- finally the programs made objective to have a undo button, at first this seemed to be something i would be confused about however the lecture that was given in relation to this, where the lecturer explained how he would recommend attacking this problem made me understand what i should do. When first going to tackle this problem i first started by creating a new .java file where i could test and experiment independently of my already created program, so i did not need to worry about any compatibility or anything like that.
+
+testinf 123
+test 222

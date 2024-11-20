@@ -89,7 +89,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         int numberTimeRowsSpending = currentSpendingTimeValues.size();
         int numberSpendingRows = spendingCategories.size();
 
-        // Create arrays of text fields for income and spending
+        // Create arrays for income and spending fields and time drop down boxes
         incomeFields = new JTextField[numberIncomeRows];
         spendingFields = new JTextField[numberSpendingRows];
         incomeTimeDropDownFields = new JComboBox[numberTimeRowsIncome];    
@@ -160,6 +160,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             incomeFields[i] = new JTextField(incomeValue, 10);
             incomeFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(incomeFields[i], i + 1, 1);
+            addTriggerCalculationsListener(incomeFields[i]); // Add listener to trigger calculations when text is changed
 
             //create dropdown box for each income category, that has per week/month/year
             String timeValue = i < currentIncomeTimeValues.size() ? currentIncomeTimeValues.get(i) : "";
@@ -181,6 +182,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             spendingFields[i] = new JTextField(spendingValue, 10);
             spendingFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(spendingFields[i], numberIncomeRows + 5 + i, 1);
+            addTriggerCalculationsListener(spendingFields[i]); // Add listener to trigger calculations when text is changed
 
             //create dropdown box for each spending category, that has per week/month/year
             String timeValue = i < currentSpendingTimeValues.size() ? currentSpendingTimeValues.get(i) : "";
@@ -296,16 +298,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
                 triggerCalculations();
             }
         });
-        
-        // Add DocumentListener to all income and spending fields
-        for (JTextField incomeField : incomeFields) {
-            addTriggerCalculationsListener(incomeField);
-        }
-        for (JTextField spendingField : spendingFields) {
-            addTriggerCalculationsListener(spendingField);
-
-        }
-        
     }
 
 

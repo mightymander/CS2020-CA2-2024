@@ -300,9 +300,9 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         });
     }
 
-
-    //Add a DocumentListener to the ComboBox, to trigger calculations when the selected item is changed
+    // Add a DocumentListener to a text field to trigger calculations when text is changed
     private void addTriggerCalculationsListener(JComboBox<String> comboBox) {
+        // Trigger calculations when selected item is changed
         comboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updateIncomeSpendingTimeValuesList();                

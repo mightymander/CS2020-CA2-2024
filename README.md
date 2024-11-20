@@ -8,8 +8,6 @@ Undo (30 pts)
 Programming style (20 pts)
 • 10 pts: Java code follows good coding style, including good code comments and variable
 names
-• 10 pts: Java code is well structured and decomposed into methods; for example win/loss
-detection is done using methods that check for a win in a specified row or column.
 
 - before getting into the program i would like to say that the calculate button has been removed for the reason that its redundant, the program will act like a spread sheet and automatically calculate. (Extensions, bullet point 2)
 - When first loading up the program you should see the nice window, with the 3 default income and spending fields, along with their input boxes and a dropdown menu of the time frame you would like to use for them.
@@ -33,5 +31,14 @@ detection is done using methods that check for a win in a specified row or colum
 - When the "initComponents" is run, it first gets the size of all the arrays so that we can do things that required the length of an array, the arrays of objects contain, income, spending and time drop downs objects.
 - Then "addNamedLabelsToPanel" is run which adds the labels, Spending and income
 - "addSummaryFields" is run which adds the total income, total spending, overall total text labels and also creates the output fields where the totals will be displayed, this is where they are modified to not allow editing so the user cannot change them, and the length of them to be 10 columns by default.
-- "addBudgetEntryFieldsToPanel" is run which dynamically adds based on the number of rows that was defined earlier the either default and custom labels entered by the user and there input fields, for the int value and time value, also add a Event listener to the time drop down fields
-- "addActionButtonsToPanel"
+- "addBudgetEntryFieldsToPanel" is run which dynamically adds based on the number of rows that was defined earlier the either default and custom labels entered by the user and there input fields, for the int value and time value, also add a Event listener to the input fields.
+- "addActionButtonsToPanel" is run which adds all the buttons that do actions, such as the two add buttons that are beside the Income and Spending Texts which allow the user to add their own custom income and spending categories as well as the undo button and the exit button.
+
+- Next the listeners section, which basically adds all the functionality to the buttons and input fields.
+- The exit button is very simple it just called "System.exit(0);" which just exits the program.
+- The undo button called "goBack" and "triggerCalculations", goBack is the method that goes back to the previous version of the app eg the undo and triggering the calculations just makes sure that the total fields are updated with the new/old values.
+- The add income and add spending field buttons, call their respective addIncome/SpendingField method and then triggerCalculations
+- The method "addTriggerCalculationsListener" will update the the income spending and time value lists, trigger all the calculations and then save state because the time drop down box has changed.
+- Then the last one for the text boxes where the user enters the numbers, when ever there is a change it will, updated the income spending and time value list, trigger calculations so that the total income spending and overall total are up to date and then save the state because the numbers have changed.
+
+-

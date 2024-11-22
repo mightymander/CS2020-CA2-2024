@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Stack;
 
 import Budget.backupStacks.Budget;
+import Budget.BudgetMain;
 
 public class savestatetests {
 
@@ -29,14 +30,15 @@ public class savestatetests {
 
     //test if budget object is created with depth and empty lists
     @Test
-    public void testBudgetObjectDepth() {
+    public void testBudgetCreated() {
         backupStacks.Budget budget = new backupStacks.Budget("1");
         assertEquals("1", budget.depth);
         assertEquals(0, budget.income.size());
         assertEquals(0, budget.expenses.size());
     }
 
-    //test if back up works with some entries
+    //test if budget object is created with depth and lists
+    // only 1 depth is tested
     @Test
     public void testBackup() {
 
@@ -66,9 +68,7 @@ public class savestatetests {
         assertEquals("Food", stack.peek().expenses.get(1).description);
         assertEquals("200", stack.peek().expenses.get(1).amount);
         assertEquals("per year", stack.peek().expenses.get(1).timeFrequency);
-    
     }
-
 
 
     

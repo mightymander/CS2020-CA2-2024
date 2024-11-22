@@ -31,6 +31,7 @@ STUDENT ID: 52316427
 - Next the listeners section, which basically adds all the functionality to the buttons and input fields.
 - The exit button is very simple it just called "System.exit(0);" which just exits the program.
 - The undo button called "revertToPreviousBudget" and "triggerCalculations", revertToPreviousBudget is the method that goes back to the previous version of the app eg the undo and triggering the calculations just makes sure that the total fields are updated with the new/old values.
+- The undo button shortcut which was added later on, his was done by adding a key binding to the root pane’s InputMap to map Ctrl+Z to an action called "undo". Then, in the ActionMap, the "undo" action is linked to the revertToPreviousBudget and triggerCalculations methods.
 - The add income and add spending field buttons, call their respective addIncome/SpendingField method and then triggerCalculations
 - The method "addTriggerCalculationsListener" will update the the income spending and time value lists, trigger all the calculations and then save state because the time drop down box has changed.
 - Then the last one for the text boxes where the user enters the numbers, when ever there is a change it will, updated the income spending and time value list, trigger calculations so that the total income spending and overall total are up to date and then save the state because the numbers have changed.

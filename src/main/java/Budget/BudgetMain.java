@@ -260,6 +260,16 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
+        //undo button shortcut
+        topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo"); 
+        //if the undo button is pressed, call the revertToPreviousBudget method
+        topLevelFrame.getRootPane().getActionMap().put("undo", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                revertToPreviousBudget();
+                triggerCalculations();
+            }
+        });
+
         //print button
         printButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {

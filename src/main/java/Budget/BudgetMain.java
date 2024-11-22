@@ -64,7 +64,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         currentSpendingValues = new ArrayList<>(Arrays.asList("","",""));
         currentIncomeTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
         currentSpendingTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
-        
     }
 
     /*
@@ -205,7 +204,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
         //Undo Button
         undoButton = new JButton("Undo");
-        //undoButton.setEnabled(false);
         addComponent(undoButton, numberIncomeRows + numberSpendingRows + 8, 0);
         
         //Exit Button

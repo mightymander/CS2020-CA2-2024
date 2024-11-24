@@ -25,7 +25,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     private ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values  
     private ArrayList<String> timeLineCategories = new ArrayList<>(); // To store time line categories
     private ArrayList<String> currentIncomeTimeValues = new ArrayList<>(); // To store income time values
-    private ArrayList<String> currentSpendingTimeValues = new ArrayList<>(); // To store spending time values 
+    private ArrayList<String> currentSpendingTimeValues = new ArrayList<>(); // To store spending time values
+     
     
 
     //UI-related fields
@@ -36,6 +37,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     private JTextField totalIncomeField, totalSpendingField, overallTotalField; // text fields for total income, spending, and overall total
     private JComboBox<String>[] incomeTimeDropDownFields, spendingTimeDropDownFields; // arrays of drop down boxes for income and spending time values
 
+    
+
 
     // constructor - create UI
     public BudgetMain(JFrame frame) {
@@ -45,6 +48,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         setLayout(new GridBagLayout());  // use GridBag layout
         initComponents();  // initialise components
         undoButton.setEnabled(false); // Disable undo button initially
+        topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo"); // Add key listener for undo button (Ctrl + Z)
     }
 
     private void initDefaultValues() {
@@ -258,9 +262,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
                 triggerCalculations();
             }
         });
-
-        //undo button shortcut
-        topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo"); 
+        
         //if the undo button is pressed, call the revertToPreviousBudget method
         topLevelFrame.getRootPane().getActionMap().put("undo", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {

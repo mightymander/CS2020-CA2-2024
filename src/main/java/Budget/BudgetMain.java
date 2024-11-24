@@ -44,6 +44,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         saveCurrentBudgetState(); // Save the current state as the first state in the stack
         setLayout(new GridBagLayout());  // use GridBag layout
         initComponents();  // initialise components
+        undoButton.setEnabled(false); // Disable undo button initially
     }
 
     private void initDefaultValues() {
@@ -263,8 +264,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         //if the undo button is pressed, call the revertToPreviousBudget method
         topLevelFrame.getRootPane().getActionMap().put("undo", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                revertToPreviousBudget();
-                triggerCalculations();
+                //check first if allowed to undo
+                if (checkIfUndoButtonShouldBeEnabled()) {
+                    revertToPreviousBudget();
+                    triggerCalculations();
+                }
+
             }
         });
 
@@ -329,18 +334,21 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
             saveCurrentBudgetState();
+            checkIfUndoButtonShouldBeEnabled();
         }
         // Trigger calculations when text is removed
         public void removeUpdate(DocumentEvent e) {
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
             saveCurrentBudgetState();
+            checkIfUndoButtonShouldBeEnabled();
         }
         // Trigger calculations when text is changed
         public void changedUpdate(DocumentEvent e) {
             updateIncomeSpendingTimeValuesList();
             triggerCalculations();
             saveCurrentBudgetState();
+            checkIfUndoButtonShouldBeEnabled();
         }
     });
 }
@@ -534,20 +542,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
          * Undo button backend
          */
     
-        //if theirs only 1 budget, call the default values method
-        if (allBudgets.size() <= 1) {
-            System.out.println("Only one budget in the stack. Setting default values to 0.");
-            initDefaultValues();
-            // Remove all components from the panel
-            removeAll();
-            // Reinitialize the components
-            initComponents();
-            // Refresh the layout
-            revalidate(); // Refresh the panel to show the new components
-            repaint(); // Repaint the panel to ensure it displays correctly
-            return;
-        }
-
        // Check if the UI is identical to the last budget
        // If it is, remove the most recent budget
        // fixes of the undo button not working on the first click
@@ -555,11 +549,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             allBudgets.pop(); // Remove the most recent budget
         } 
         
-        //if the stack is empty, print a message and return, should not happen
-        if (allBudgets.isEmpty()) {
-        System.out.println("No previous budgets to go back to.");
-        return;
-}
         //grab the most recent budget
         Budget mostRecentBudget = allBudgets.pop();
 
@@ -588,12 +577,57 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         removeAll();
 
         //reinitialize the components
-        initComponents(); // Reinitialize the components
+        initComponents();
 
         // Refresh the layout
         revalidate(); // Refresh the panel to show the new components
         repaint(); // Repaint the panel to ensure it displays correctly
+
+        checkIfUndoButtonShouldBeEnabled();
+
+        //if the stack is empty, add the default values
+        if (allBudgets.empty()){
+            initDefaultValues();
+            saveCurrentBudgetState();
+        }
     }
+    
+    
+
+    //method to check if the undo button should be enabled or disabled
+    private boolean checkIfUndoButtonShouldBeEnabled() {
+        
+        // if the stack has less than or equal to 1 budget this means there is only the default budget
+        
+        //check if any numbers are in the text fields
+        boolean anyNumbers = false;
+        if (allBudgets.size() <= 1) {
+            for (JTextField field : incomeFields) {
+                if (!field.getText().isBlank()) {
+                    anyNumbers = true;
+                    break;
+                }
+            }
+            for (JTextField field : spendingFields) {
+                if (!field.getText().isBlank()) {
+                    anyNumbers = true;
+                    break;
+                }
+            }
+        }   
+
+        //if the stack has 1 thing in it and nothing is in the text fields, disable the undo button
+        // however, if there are numbers in the text fields, enable the undo button
+        // this solves a bug where the undo button is disabled when the stack has 1 thing in it which is the default budget
+        if (allBudgets.size() <= 1 && !anyNumbers) {
+            undoButton.setEnabled(false);
+            return false;
+        } else {
+            undoButton.setEnabled(true);
+            return true;
+        }
+    }
+
     
 
     // add a component at specified row and column in UI.  (0,0) is top-left corner

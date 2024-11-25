@@ -1,5 +1,6 @@
 JACOB CORBETT
 STUDENT ID: 52316427
+Github link: https://github.com/mightymander/CS2020-CA2-2024
 
 - before getting into the program i would like to say that the calculate button has been removed for the reason that its redundant, the program will act like a spread sheet and automatically calculate. (Extensions, bullet point 2)
 - When first loading up the program you should see the nice window, with the 3 default income and spending fields, along with their input boxes and a dropdown menu of the time frame you would like to use for them.

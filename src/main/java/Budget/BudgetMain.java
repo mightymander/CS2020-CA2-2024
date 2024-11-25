@@ -27,7 +27,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     public ArrayList<String> currentIncomeTimeValues = new ArrayList<>(); // To store income time values
     public ArrayList<String> currentSpendingTimeValues = new ArrayList<>(); // To store spending time values
      
-    
 
     //UI-related fields
     JFrame topLevelFrame;  // top-level JFrame
@@ -37,7 +36,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     private JTextField totalIncomeField, totalSpendingField, overallTotalField; // text fields for total income, spending, and overall total
     private JComboBox<String>[] incomeTimeDropDownFields, spendingTimeDropDownFields; // arrays of drop down boxes for income and spending time values
 
-    
+
     public BudgetMain() {
         //this is a constructor that is used for testing purposes
     }
@@ -51,9 +50,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         initComponents();  // initialise components
         undoButton.setEnabled(false); // Disable undo button initially
         topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo"); // Add key listener for undo button (Ctrl + Z)
-
         topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK), "addIncomeField"); // Add key listener for add income field button (Ctrl + I)
-
         topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), "addSpendingField"); // Add key listener for add spending field button (Ctrl + S)
     }
 
@@ -132,7 +129,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         addComponent(totalSpendingLabel, numberIncomeRows+numberSpendingRows +5, 0);
         
         // set up text box for displaying total spending.  Users cam view, but cannot directly edit it
-        totalSpendingField = new JTextField("0", 10);   // 0 initially, with 10 columns
+        totalSpendingField = new JTextField("0", 10);   
         totalSpendingField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         totalSpendingField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
         addComponent(totalSpendingField, numberIncomeRows+numberSpendingRows +5, 1);
@@ -145,7 +142,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         JLabel overallTotalLabel = new JLabel("Overall Total");
         addComponent(overallTotalLabel, numberIncomeRows+numberSpendingRows +7, 0);
         // set up text box for displaying overall total.  Users cam view, but cannot directly edit it
-        overallTotalField = new JTextField("0", 10);   // 0 initially, with 10 columns
+        overallTotalField = new JTextField("0", 10);   
         overallTotalField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         overallTotalField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
         addComponent(overallTotalField, numberIncomeRows+numberSpendingRows +7, 1);
@@ -594,8 +591,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             saveCurrentBudgetState();
         }
     }
-    
-    
 
     //method to check if the undo button should be enabled or disabled
     private boolean checkIfUndoButtonShouldBeEnabled() {
@@ -751,10 +746,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
                 total = Double.NaN;
                 break;
             }
-
             total += value;  // add value to total
         }
-
         return total;
     }
 
@@ -808,7 +801,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             try {
                 return Double.parseDouble(fieldString);  // parse field number into a double
              } catch (java.lang.NumberFormatException ex) {  // catch invalid number exception
-                //JOptionPane.showMessageDialog(topLevelFrame, "Please enter a valid number");  // show error message
                 return Double.NaN;  // return NaN to show that field is not a number
             }
         }

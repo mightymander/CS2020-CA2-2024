@@ -2,6 +2,13 @@ JACOB CORBETT
 STUDENT ID: 52316427
 Github link: https://github.com/mightymander/CS2020-CA2-2024
 
+### Important Info
+
+main .java files located in /src/main/java/Budget
+test .java files located in /src/test/java/Budget
+
+---
+
 - before getting into the program i would like to say that the calculate button has been removed for the reason that its redundant, the program will act like a spread sheet and automatically calculate. (Extensions, bullet point 2)
 - When first loading up the program you should see the nice window, with the 3 default income and spending fields, along with their input boxes and a dropdown menu of the time frame you would like to use for them.
 - for the input fields you can enter whatever you want into them, being integers or strings, during testing i found that a pop up every single time you entered not a number was actually very annoying so i removed it and replaced it with simply dynamically changing the total fields to "invalid number" this makes it much less annoying when entering a not valid input. (basic system, bullet point 1,2,4 )

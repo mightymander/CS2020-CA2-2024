@@ -272,7 +272,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         });
 
         
-        //if the undo button is pressed, call the revertToPreviousBudget method
+        //enables Ctrl + Z to undo
         topLevelFrame.getRootPane().getActionMap().put("undo", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 //check first if allowed to undo
@@ -309,6 +309,23 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
+        //add income category button
+        addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addIncomeField();
+                triggerCalculations();
+            }
+        });
+
+        //add spending category button
+        addSpendingFieldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addSpendingField();
+                triggerCalculations();
+            }
+        });
+
+    
         //add income category button, works with Ctrl + I
         topLevelFrame.getRootPane().getActionMap().put("addIncomeField", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -317,7 +334,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
         
-
         //add spending category button, works with Ctrl + S
         topLevelFrame.getRootPane().getActionMap().put("addSpendingField", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {

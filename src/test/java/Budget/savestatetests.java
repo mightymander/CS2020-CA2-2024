@@ -352,5 +352,21 @@ public class savestatetests {
         checkState(newContentPane, Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
     }
 
-    
+
+    @Test
+    public void testUndoFunctionalityAdvanced() {
+        /*
+         * This test will simulate the user input of the GUI
+         * This will be the most complex test, using all the features of the GUI
+         * Including adding new income/spending fields, and changing the time frequency
+         * 
+         * The test will input the following values
+         * Income:
+         * Wages: 123 per year
+         * Loans: 456 per year
+         * Other: 789 per year
+         * 
+         */
+    }
+
 }

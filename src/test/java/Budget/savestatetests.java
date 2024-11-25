@@ -38,6 +38,7 @@ public class savestatetests {
     private void pressControlZ() {
         try {
             Robot robot = new Robot();
+            wait(1000);
             robot.keyPress(KeyEvent.VK_CONTROL); // Press the control key
             robot.keyPress(KeyEvent.VK_Z); // Press the z key
             robot.keyRelease(KeyEvent.VK_Z); // Release the z key
@@ -92,6 +93,7 @@ public class savestatetests {
             Robot robot = new Robot();
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
+                wait(100);
                 robot.keyPress(KeyEvent.getExtendedKeyCodeForChar(c)); // Press the key
                 robot.keyRelease(KeyEvent.getExtendedKeyCodeForChar(c)); // Release the key
             }
@@ -126,6 +128,7 @@ public class savestatetests {
             for (int i = 0; i < incomeValues.size(); i++) {
                 enterString(incomeValues.get(i));
                 pressTab(1);
+                wait(1000);
                 
                 //if per year, then skip over
                 // if per month, press down arrow twice, then enter
@@ -151,6 +154,7 @@ public class savestatetests {
             for (int i = 0; i < spendingValues.size(); i++) {
                 enterString(spendingValues.get(i));
                 pressTab(1);
+                wait(1000);
                 
                 //if per year, then skip over
                 // if per month, press down arrow twice, then enter

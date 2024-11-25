@@ -60,6 +60,31 @@ public class savestatetests {
         }
     }
 
+    //method to press down arrow x amount of times
+    private void pressDownArrow(int times) {
+        try {
+            Robot robot = new Robot();
+            for (int i = 0; i < times; i++) {
+                robot.keyPress(KeyEvent.VK_DOWN); // Press the Down key
+                robot.keyRelease(KeyEvent.VK_DOWN); // Release the Down key
+            }
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+    //method to press enter x amount of times
+    private void pressEnter(int times) {
+        try {
+            Robot robot = new Robot();
+            for (int i = 0; i < times; i++) {
+                robot.keyPress(KeyEvent.VK_ENTER); // Press the Enter key
+                robot.keyRelease(KeyEvent.VK_ENTER); // Release the Enter key
+            }
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
     //method to enter a string into the GUI
     private void enterString(String s) {
         wait(100);
@@ -93,23 +118,60 @@ public class savestatetests {
         }
 
         //method to enter into the whole UI
-        private void enterAll(BudgetMain newContentPane, List<String> incomeValues, List<String> spendingValues) {
+        private void enterAll(BudgetMain newContentPane, List<String> incomeValues, List<String> incomeTimeValues, List<String> spendingValues, List<String> spendingTimeValues) {
             wait(1000);
             pressTab(1);
 
             //enter the income values
             for (int i = 0; i < incomeValues.size(); i++) {
                 enterString(incomeValues.get(i));
-                pressTab(2);
+                pressTab(1);
+                
+                //if per year, then skip over
+                // if per month, press down arrow twice, then enter
+                // if per week, press down arrow three times, then enter
+
+                if (incomeTimeValues.get(i).equals("per year")){
+                    pressTab(1);
+                }
+                else if (incomeTimeValues.get(i).equals("per month")) {
+                    pressDownArrow(2);
+                    pressEnter(1);
+                    pressTab(1);
+
+                } else if (incomeTimeValues.get(i).equals("per week")) {
+                    pressDownArrow(3);
+                    pressEnter(1);
+                    pressTab(1);
+                }
             }
-            //move to the spending section
             pressTab(2);
+
             //enter the spending values
             for (int i = 0; i < spendingValues.size(); i++) {
                 enterString(spendingValues.get(i));
-                pressTab(2);
+                pressTab(1);
+                
+                //if per year, then skip over
+                // if per month, press down arrow twice, then enter
+                // if per week, press down arrow three times, then enter
+
+                if (spendingTimeValues.get(i).equals("per year")){
+                    pressTab(1);
+                }
+                else if (spendingTimeValues.get(i).equals("per month")) {
+                    pressDownArrow(2);
+                    pressEnter(1);
+                    pressTab(1);
+
+                } else if (spendingTimeValues.get(i).equals("per week")) {
+                    pressDownArrow(3);
+                    pressEnter(1);
+                    pressTab(1);
+                }
             }
-            pressTab(5);
+            
+            
 
         }
 
@@ -335,7 +397,7 @@ public class savestatetests {
         
 
         
-        enterAll(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("100","200","300"));
+        enterAll(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year","per year","per year"), Arrays.asList("100","200","300"),Arrays.asList("per year","per year","per year"));
     
 
         /*
@@ -444,17 +506,84 @@ public class savestatetests {
 
         //add new income fields
         addIncomeField(newContentPane,"Side Jobs");
-        wait(1000);
+        wait(100);
         addSpendingField(newContentPane, "Chocolate");
         
-        wait(1000);
+        wait(100);
         
-        enterAll(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("100","200","300","400"));
-        wait(1000);
+        enterAll(newContentPane, Arrays.asList("123","456","789","1000"),Arrays.asList("per year","per month","per week","per year"),  Arrays.asList("100","200","300","400"),Arrays.asList("per year","per week","per month", "per year"));
+        wait(100);
 
-        //change the time frequency
+        //check the current state of the UI
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","300","400"), Arrays.asList("per year", "per week", "per month", "per year"));
+
+        //now undo back to default values
         
-
+        //spending seciton
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","300","40"), Arrays.asList("per year", "per week", "per month", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","300","4"), Arrays.asList("per year", "per week", "per month", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","300",""), Arrays.asList("per year", "per week", "per month", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","300",""), Arrays.asList("per year", "per week", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","30",""), Arrays.asList("per year", "per week", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","3",""), Arrays.asList("per year", "per week", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","",""), Arrays.asList("per year", "per week", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","200","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","20","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","2","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("100","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("10","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("1","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        
+        //income section
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","100"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","10"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789","1"), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789",""), Arrays.asList("per year", "per month", "per week", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789",""), Arrays.asList("per year", "per month", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","78",""), Arrays.asList("per year", "per month", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","7",""), Arrays.asList("per year", "per month", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","",""), Arrays.asList("per year", "per month", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","",""), Arrays.asList("per year", "per year", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","45","",""), Arrays.asList("per year", "per year", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","4","",""), Arrays.asList("per year", "per year", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","","",""), Arrays.asList("per year", "per year", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("12","","",""), Arrays.asList("per year", "per year", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("1","","",""), Arrays.asList("per year", "per year", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"), Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("","","",""), Arrays.asList("per year", "per year", "per year","per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
     }
 
 

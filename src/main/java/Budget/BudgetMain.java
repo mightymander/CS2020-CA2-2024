@@ -18,14 +18,14 @@ import java.util.Stack;
 public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     //Fields related to budgets and categories
-    private Stack<Budget> allBudgets = new Stack<>(); // Stack to store all budgets
-    private ArrayList<String> incomeCategories = new ArrayList<>(); // To store income categories
-    private ArrayList<String> spendingCategories = new ArrayList<>(); // To store spending categories
-    private ArrayList<String> currentIncomeValues = new ArrayList<>(); // To store income values
-    private ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values  
-    private ArrayList<String> timeLineCategories = new ArrayList<>(); // To store time line categories
-    private ArrayList<String> currentIncomeTimeValues = new ArrayList<>(); // To store income time values
-    private ArrayList<String> currentSpendingTimeValues = new ArrayList<>(); // To store spending time values
+    public Stack<Budget> allBudgets = new Stack<>(); // Stack to store all budgets
+    public ArrayList<String> incomeCategories = new ArrayList<>(); // To store income categories
+    public ArrayList<String> spendingCategories = new ArrayList<>(); // To store spending categories
+    public ArrayList<String> currentIncomeValues = new ArrayList<>(); // To store income values
+    public ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values  
+    public ArrayList<String> timeLineCategories = new ArrayList<>(); // To store time line categories
+    public ArrayList<String> currentIncomeTimeValues = new ArrayList<>(); // To store income time values
+    public ArrayList<String> currentSpendingTimeValues = new ArrayList<>(); // To store spending time values
      
     
 
@@ -38,7 +38,9 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     private JComboBox<String>[] incomeTimeDropDownFields, spendingTimeDropDownFields; // arrays of drop down boxes for income and spending time values
 
     
-
+    public BudgetMain() {
+        
+    }
 
     // constructor - create UI
     public BudgetMain(JFrame frame) {
@@ -49,6 +51,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         initComponents();  // initialise components
         undoButton.setEnabled(false); // Disable undo button initially
         topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo"); // Add key listener for undo button (Ctrl + Z)
+        
     }
 
     private void initDefaultValues() {
@@ -262,6 +265,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
                 triggerCalculations();
             }
         });
+
         
         //if the undo button is pressed, call the revertToPreviousBudget method
         topLevelFrame.getRootPane().getActionMap().put("undo", new AbstractAction() {
@@ -794,7 +798,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     // return the value if a text field as a double
     // --return 0 if field is blank
     // --return NaN if field is not a number
-    private double getTextFieldValue(JTextField field) {
+    public double getTextFieldValue(JTextField field) {
 
         // get value as String from field
         String fieldString = field.getText();  // get text from text field
@@ -816,7 +820,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
 // below is standard code to set up Swing, which students should not need to edit much
     // standard method to show UI
-    private static void createAndShowGUI() {
+    public static void createAndShowGUI() {
  
         //Create and set up the window.
         JFrame frame = new JFrame("Budget Calculator");

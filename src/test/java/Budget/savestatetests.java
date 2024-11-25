@@ -39,9 +39,11 @@ public class savestatetests {
         try {
             Robot robot = new Robot();
             robot.keyPress(KeyEvent.VK_CONTROL); // Press the control key
+            wait(50);
             robot.keyPress(KeyEvent.VK_Z); // Press the z key
             robot.keyRelease(KeyEvent.VK_Z); // Release the z key
             robot.keyRelease(KeyEvent.VK_CONTROL); // Release the control key
+            wait(50);
         } catch (AWTException e) {
             e.printStackTrace();
         }

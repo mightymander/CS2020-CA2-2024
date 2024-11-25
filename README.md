@@ -66,4 +66,11 @@ STUDENT ID: 52316427
 
 - Then the rest of the methods are boring, methods that were already included and are needed for swing to work.
 
-## Issues
+## Testing
+
+- looking at "SaveStateTests.java" Here this is where i implemented testing for my undo feature, it ended up being much more difficult than expected and took a lot more time than expected, however its done now and works in testing that the undo feature is doing what its supposed to do.
+- So first off in the file I created lots of methods to help me, including wait x amount of time, enter certain keys, check the state of UI, enter details for the UI etc.
+- The first test was to make sure the testing tools/features are all working, its simply checking if true = true which it should always, however its a useful thing to keep when something breaks it can help you narrow down the suspect.
+- The second test "testBudgetCreated" simply checks if the creation of the backup stack is working correctly
+- And the third test "testSingleDepthBudgetCreation" is still simple but inputs fake data into the stack and trys to read it just making sure its all working.
+- Now onto the 3 main tests, the first one "testUndoFunctionalityBasic" creates the GUI and moves around like a user would, to simulate real world circumstances, this test

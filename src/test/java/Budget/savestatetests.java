@@ -252,7 +252,7 @@ public class SaveStateTests {
     //test if budget object is created with depth and lists
     // only 1 depth is tested
     @Test
-    public void testBackup1() {
+    public void testSingleDepthBudgetCreation() {
 
         Stack<Budget> stack = new Stack<>();
         List<Budget.Entry> incomeEntries = new ArrayList<>();
@@ -312,37 +312,16 @@ public class SaveStateTests {
 
         //simulate the user input
         //press key tab
-        Robot robot = new Robot();
-        robot.keyPress(KeyEvent.VK_TAB); // Press the Tab key
-        robot.keyRelease(KeyEvent.VK_TAB); // Release the Tab key
-        wait(500);
+        pressTab(1);
 
         //press 1, 2, 3
-        robot.keyPress(KeyEvent.VK_1); // Press the 1 key
-        robot.keyRelease(KeyEvent.VK_1); // Release the 1 key
-        robot.keyPress(KeyEvent.VK_2); // Press the 2 key
-        robot.keyRelease(KeyEvent.VK_2); // Release the 2 key
-        robot.keyPress(KeyEvent.VK_3); // Press the 3 key
-        robot.keyRelease(KeyEvent.VK_3); // Release the 3 key
+        enterString("123");
         wait(500);
 
         //check the current state of the UI
         //Income Values
 
-        
-        assertEquals("123", newContentPane.currentIncomeValues.get(0));
-        assertEquals("", newContentPane.currentIncomeValues.get(1));
-        assertEquals("", newContentPane.currentIncomeValues.get(2));
-        assertEquals("per year", newContentPane.currentIncomeTimeValues.get(0));
-        assertEquals("per year", newContentPane.currentIncomeTimeValues.get(1));
-        assertEquals("per year", newContentPane.currentIncomeTimeValues.get(2));
-        
-        //Spending Values
-        //loop 3 times
-        for (int i = 0; i < 3; i++) {
-            assertEquals("", newContentPane.currentSpendingValues.get(i));
-            assertEquals("per year", newContentPane.currentSpendingTimeValues.get(i));
-        }
+        checkState(newContentPane, Arrays.asList("123","",""), Arrays.asList("per year","per year","per year"), Arrays.asList("","",""), Arrays.asList("per year","per year","per year"));
 
         //Attempting to undo 
         pressControlZ();

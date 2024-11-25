@@ -313,8 +313,43 @@ public class savestatetests {
 
         //check the current state of the UI
         checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("100","200","300"), Arrays.asList("per year", "per year", "per year"));
-
-        wait(2000);
+        wait(100);
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("100","200","30"), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("100","200","3"), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("100","200",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("100","20",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("100","2",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("100","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("10","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("1","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","78"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456","7"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","456",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","45",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","4",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("123","",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("12","",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("1","",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
+        pressControlZ();
+        checkState(newContentPane, Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
 
 
 

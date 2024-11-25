@@ -8,7 +8,7 @@ STUDENT ID: 52316427
 - for the dropdowns being per year, per month or per week was simple enough because the overall total is per year, you simply convert the fields if they are not per year, so per month = * 12, and per week = *52. (Extensions, bullet point 1)
 - finally the programs made objective to have a undo button, at first this seemed to be something i would be confused about however the lecture that was given in relation to this, where the lecturer explained how he would recommend attacking this problem made me understand what i should do. When first going to tackle this problem i first started by creating a new .java file where i could test and experiment independently of my already created program, so i did not need to worry about any compatibility or anything like that. (Undo, bullet point 1,2)
 - instead of trying to implement 1 level of undo and then trying to alter it to be able to go forever, i just went straight to making the complete undo. its very simple the format for the stack is, each Budget object contains a depth, a list of income entries, a list of expense entries and a list of time entries. Looking back depth isnt 100% required however its very useful for debugging being able to see at a glace what depth i am looking at, and since it doesnt effect the user i decided to keep it in.
-- For testing the undo, inside the test folder there is "savestatetests.java" which conducts multiple diffrent tests on the undo to make sure that it is functioning correctly
+- For testing the undo, inside the test folder there is "SaveStateTests.java" which conducts multiple diffrent tests on the undo to make sure that it is functioning correctly
 
 ---
 

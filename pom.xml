@@ -5,7 +5,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>my-app</artifactId>
-    <version>1.0-ALPHA</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <dependencies>

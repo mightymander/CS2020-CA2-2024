@@ -62,16 +62,19 @@ public class savestatetests {
 
     //method to enter a string into the GUI
     private void enterString(String s) {
+        wait(100);
         try {
             Robot robot = new Robot();
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
-                robot.keyPress(c); // Press the key
-                robot.keyRelease(c); // Release the key
+                robot.keyPress(KeyEvent.getExtendedKeyCodeForChar(c)); // Press the key
+                robot.keyRelease(KeyEvent.getExtendedKeyCodeForChar(c)); // Release the key
             }
         } catch (AWTException e) {
             e.printStackTrace();}
         }
+
+        
 
 
         //method to check the current state of the GUI
@@ -109,6 +112,47 @@ public class savestatetests {
             pressTab(5);
 
         }
+
+        //method too add income field
+        private void addIncomeField(BudgetMain newContentPane, String description) {
+            try {
+                Robot robot = new Robot();
+                //press control I
+                robot.keyPress(KeyEvent.VK_CONTROL); // Press the control key
+                robot.keyPress(KeyEvent.VK_I); // Press the I key
+                robot.keyRelease(KeyEvent.VK_I); // Release the I key
+                robot.keyRelease(KeyEvent.VK_CONTROL); // Release the control key
+                wait(500);
+                enterString(description);
+                //press enter
+                robot.keyPress(KeyEvent.VK_ENTER); // Press the enter key
+                robot.keyRelease(KeyEvent.VK_ENTER); // Release the enter key
+
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //method to add spending field
+        private void addSpendingField(BudgetMain newContentPane, String description) {
+            try {
+                Robot robot = new Robot();
+                //press control I
+                robot.keyPress(KeyEvent.VK_CONTROL); // Press the control key
+                robot.keyPress(KeyEvent.VK_S); // Press the S key
+                robot.keyRelease(KeyEvent.VK_S); // Release the S key
+                robot.keyRelease(KeyEvent.VK_CONTROL); // Release the control key
+                wait(500);
+                enterString(description);
+                //press enter
+                robot.keyPress(KeyEvent.VK_ENTER); // Press the enter key
+                robot.keyRelease(KeyEvent.VK_ENTER); // Release the enter key
+
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+        }
+        
 
     //test if true = true, to make sure junit is working
     @Test
@@ -363,10 +407,56 @@ public class savestatetests {
          * The test will input the following values
          * Income:
          * Wages: 123 per year
-         * Loans: 456 per year
-         * Other: 789 per year
+         * Loans: 456 per month
+         * Other: 789 per week
+         * Side Job: 1000 per year
+         * Total: 2368 per year
+         * 
+         * Spending:
+         * Food: 100 per year
+         * Rent: 200 per week
+         * Other: 300 per month
+         * Chocolate: 400 per year
+         * Total: 1000 per year
+         * 
+         * Overall Total: 1368 per year
          * 
          */
+
+
+        //Create and set up the window.
+        JFrame frame = new JFrame("Budget Calculator");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ 
+        //Create and set up the content pane.
+        BudgetMain newContentPane = new BudgetMain(frame);
+        newContentPane.setOpaque(true); //content panes must be opaque
+        frame.setContentPane(newContentPane);
+ 
+        //Display the window.
+        //frame.pack();
+        frame.setSize(400,600);
+        frame.setVisible(true);
+        
+        //wait 1 second, to make sure the GUI is loaded
+        wait(1000);
+
+
+        //add new income fields
+        addIncomeField(newContentPane,"Side Jobs");
+        wait(1000);
+        addSpendingField(newContentPane, "Chocolate");
+        
+        wait(1000);
+        
+        enterAll(newContentPane, Arrays.asList("123","456","789","1000"), Arrays.asList("100","200","300","400"));
+        wait(1000);
+
+        //change the time frequency
+        
+
     }
+
+
 
 }

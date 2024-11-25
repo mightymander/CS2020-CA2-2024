@@ -60,6 +60,56 @@ public class savestatetests {
         }
     }
 
+    //method to enter a string into the GUI
+    private void enterString(String s) {
+        try {
+            Robot robot = new Robot();
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                robot.keyPress(c); // Press the key
+                robot.keyRelease(c); // Release the key
+            }
+        } catch (AWTException e) {
+            e.printStackTrace();}
+        }
+
+
+        //method to check the current state of the GUI
+        //takes in lists of strings and compares them to the current state of the GUI
+        private void checkState(BudgetMain newContentPane, List<String> incomeValues, List<String> incomeTimeValues, List<String> spendingValues, List<String> spendingTimeValues) {
+            //Income Values
+            for (int i = 0; i < incomeValues.size(); i++) {
+                assertEquals(incomeValues.get(i), newContentPane.currentIncomeValues.get(i));
+                assertEquals(incomeTimeValues.get(i), newContentPane.currentIncomeTimeValues.get(i));
+            }
+            //Spending Values
+            for (int i = 0; i < spendingValues.size(); i++) {
+                assertEquals(spendingValues.get(i), newContentPane.currentSpendingValues.get(i));
+                assertEquals(spendingTimeValues.get(i), newContentPane.currentSpendingTimeValues.get(i));
+            }
+        }
+
+        //method to enter into the whole UI
+        private void enterAll(BudgetMain newContentPane, List<String> incomeValues, List<String> spendingValues) {
+            wait(1000);
+            pressTab(1);
+
+            //enter the income values
+            for (int i = 0; i < incomeValues.size(); i++) {
+                enterString(incomeValues.get(i));
+                pressTab(2);
+            }
+            //move to the spending section
+            pressTab(2);
+            //enter the spending values
+            for (int i = 0; i < spendingValues.size(); i++) {
+                enterString(spendingValues.get(i));
+                pressTab(2);
+            }
+            pressTab(5);
+
+        }
+
     //test if true = true, to make sure junit is working
     @Test
     public void testTrueIsTrue() {
@@ -238,80 +288,11 @@ public class savestatetests {
         //simulate the user input
         //press tab key
         Robot robot = new Robot();
-        pressTab(1);
-        wait(100);
+        
 
-        //press 1, 2, 3
-        robot.keyPress(KeyEvent.VK_1); // Press the 1 key
-        robot.keyRelease(KeyEvent.VK_1); // Release the 1 key
-        robot.keyPress(KeyEvent.VK_2); // Press the 2 key
-        robot.keyRelease(KeyEvent.VK_2); // Release the 2 key
-        robot.keyPress(KeyEvent.VK_3); // Press the 3 key
-        robot.keyRelease(KeyEvent.VK_3); // Release the 3 key
-        wait(500);
-
-        //go down to loans
-        pressTab(2);
-        wait(100);
-
-        //press 4, 5, 6
-        robot.keyPress(KeyEvent.VK_4); // Press the 4 key
-        robot.keyRelease(KeyEvent.VK_4); // Release the 4 key
-        robot.keyPress(KeyEvent.VK_5); // Press the 5 key
-        robot.keyRelease(KeyEvent.VK_5); // Release the 5 key
-        robot.keyPress(KeyEvent.VK_6); // Press the 6 key
-        robot.keyRelease(KeyEvent.VK_6); // Release the 6 key
-        wait(500);
-
-        //go down to other
-        pressTab(2);
-        wait(100);
-
-        //press 7, 8, 9
-        robot.keyPress(KeyEvent.VK_7); // Press the 7 key
-        robot.keyRelease(KeyEvent.VK_7); // Release the 7 key
-        robot.keyPress(KeyEvent.VK_8); // Press the 8 key
-        robot.keyRelease(KeyEvent.VK_8); // Release the 8 key
-        robot.keyPress(KeyEvent.VK_9); // Press the 9 key
-        robot.keyRelease(KeyEvent.VK_9); // Release the 9 key
-        wait(500);
-
-        //go down to spending, rent
-        pressTab(4);
-        wait(100);
-
-        //press 1, 0, 0
-        robot.keyPress(KeyEvent.VK_1); // Press the 1 key
-        robot.keyRelease(KeyEvent.VK_1); // Release the 1 key
-        robot.keyPress(KeyEvent.VK_0); // Press the 0 key
-        robot.keyRelease(KeyEvent.VK_0); // Release the 0 key
-        robot.keyPress(KeyEvent.VK_0); // Press the 0 key
-        robot.keyRelease(KeyEvent.VK_0); // Release the 0 key
-        wait(500);
-
-        //go down to spending, rent
-        pressTab(2);
-
-        //press 2, 0, 0
-        robot.keyPress(KeyEvent.VK_2); // Press the 2 key
-        robot.keyRelease(KeyEvent.VK_2); // Release the 2 key
-        robot.keyPress(KeyEvent.VK_0); // Press the 0 key
-        robot.keyRelease(KeyEvent.VK_0); // Release the 0 key
-        robot.keyPress(KeyEvent.VK_0); // Press the 0 key
-        robot.keyRelease(KeyEvent.VK_0); // Release the 0 key
-        wait(500);
-
-        //go down to spending, other
-        pressTab(2);
-
-        //press 3, 0, 0
-        robot.keyPress(KeyEvent.VK_3); // Press the 3 key
-        robot.keyRelease(KeyEvent.VK_3); // Release the 3 key
-        robot.keyPress(KeyEvent.VK_0); // Press the 0 key
-        robot.keyRelease(KeyEvent.VK_0); // Release the 0 key
-        robot.keyPress(KeyEvent.VK_0); // Press the 0 key
-        robot.keyRelease(KeyEvent.VK_0); // Release the 0 key
-        wait(500);
+        
+        enterAll(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("100","200","300"));
+    
 
         /*
          * Now the screen should look like this
@@ -331,21 +312,11 @@ public class savestatetests {
          */
 
         //check the current state of the UI
-        //Income Values
-        assertEquals("123", newContentPane.currentIncomeValues.get(0));
-        assertEquals("456", newContentPane.currentIncomeValues.get(1));
-        assertEquals("789", newContentPane.currentIncomeValues.get(2));
-        assertEquals("per year", newContentPane.currentIncomeTimeValues.get(0));
-        assertEquals("per year", newContentPane.currentIncomeTimeValues.get(1));
-        assertEquals("per year", newContentPane.currentIncomeTimeValues.get(2));
+        checkState(newContentPane, Arrays.asList("123","456","789"), Arrays.asList("per year", "per year", "per year"), Arrays.asList("100","200","300"), Arrays.asList("per year", "per year", "per year"));
 
-        //Spending Values
-        assertEquals("100", newContentPane.currentSpendingValues.get(0));
-        assertEquals("200", newContentPane.currentSpendingValues.get(1));
-        assertEquals("300", newContentPane.currentSpendingValues.get(2));
-        assertEquals("per year", newContentPane.currentSpendingTimeValues.get(0));
-        assertEquals("per year", newContentPane.currentSpendingTimeValues.get(1));
-        assertEquals("per year", newContentPane.currentSpendingTimeValues.get(2));
+        wait(2000);
+
+
 
 
     }

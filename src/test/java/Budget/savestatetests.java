@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
 
 
 
-public class savestatetests {
+public class SaveStateTests {
 
     //method to wait x amount of time
     private void wait(int ms) {
@@ -71,6 +71,7 @@ public class savestatetests {
             Robot robot = new Robot();
             for (int i = 0; i < times; i++) {
                 robot.keyPress(KeyEvent.VK_DOWN); // Press the Down key
+                wait(50);
                 robot.keyRelease(KeyEvent.VK_DOWN); // Release the Down key
             }
         } catch (AWTException e) {
@@ -83,6 +84,7 @@ public class savestatetests {
             Robot robot = new Robot();
             for (int i = 0; i < times; i++) {
                 robot.keyPress(KeyEvent.VK_ENTER); // Press the Enter key
+                wait(50);
                 robot.keyRelease(KeyEvent.VK_ENTER); // Release the Enter key
             }
         } catch (AWTException e) {

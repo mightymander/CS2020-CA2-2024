@@ -72,5 +72,7 @@ STUDENT ID: 52316427
 - So first off in the file I created lots of methods to help me, including wait x amount of time, enter certain keys, check the state of UI, enter details for the UI etc.
 - The first test was to make sure the testing tools/features are all working, its simply checking if true = true which it should always, however its a useful thing to keep when something breaks it can help you narrow down the suspect.
 - The second test "testBudgetCreated" simply checks if the creation of the backup stack is working correctly
-- And the third test "testSingleDepthBudgetCreation" is still simple but inputs fake data into the stack and trys to read it just making sure its all working.
-- Now onto the 3 main tests, the first one "testUndoFunctionalityBasic" creates the GUI and moves around like a user would, to simulate real world circumstances, this test
+- And the third test "testSingleDepthBudgetCreation" is still simple but inputs fake data into the stack and try's to read it just making sure its all working.
+- Now onto the 3 main tests, the first one "testUndoFunctionalityBasic" creates the GUI and moves around like a user would, to simulate real world circumstances, this test just adds 123 to the first input field in the income part of the UI, and undo's and checks every time that its getting the expected result.
+- Now the second main test, "testUndoFunctionalityIntermediate" fills the whole UI but does not create any new fields or touch time intervals, it works on the same approach, fills the whole UI and undo's back to default checking every time for an expected output.
+- The last main test, "testUndoFunctionalityAdvanced", works on the same principal however it adds fields to income and spending, and changes time values, and undo's right back to default checking every state is correct.

@@ -32,7 +32,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     //UI-related fields
     JFrame topLevelFrame;  // top-level JFrame
     GridBagConstraints layoutConstraints = new GridBagConstraints(); // used to control layout
-    private JButton exitButton, addIncomeFieldButton, addSpendingFieldButton, undoButton,printButton; // buttons
+    private JButton exitButton, addIncomeFieldButton, addSpendingFieldButton, undoButton; // buttons
     private JTextField[] incomeFields, spendingFields; // arrays of text fields for income and spending
     private JTextField totalIncomeField, totalSpendingField, overallTotalField; // text fields for total income, spending, and overall total
     private JComboBox<String>[] incomeTimeDropDownFields, spendingTimeDropDownFields; // arrays of drop down boxes for income and spending time values
@@ -223,9 +223,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         exitButton = new JButton("Exit");
         addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 1);
 
-        //add button that prints current state
-        printButton = new JButton("Print");
-        addComponent(printButton, numberIncomeRows + numberSpendingRows + 8, 2);
     }
 
 
@@ -284,30 +281,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
-
-
-        //print button
-        printButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("");
-                System.out.println("Current state: ");
-                System.out.println("Income categories: " + incomeCategories);
-                System.out.println("Spending categories: " + spendingCategories);
-                System.out.println("Current income values: " + currentIncomeValues);
-                System.out.println("Current spending values: " + currentSpendingValues);
-                System.out.println("Current income time values: " + currentIncomeTimeValues);
-                System.out.println("Current spending time values: " + currentSpendingTimeValues);
-                System.out.println("Total income: " + totalIncomeField.getText());
-                System.out.println("Total spending: " + totalSpendingField.getText());
-                System.out.println("Overall total: " + overallTotalField.getText());
-                System.out.println("");
-                System.out.println("All budgets: ");
-                for (Budget budget : allBudgets) {
-                    System.out.println(budget);
-                }
-
-            }
-        });
 
         //add income category button
         addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {

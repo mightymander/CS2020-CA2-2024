@@ -38,7 +38,7 @@ public class savestatetests {
     private void pressControlZ() {
         try {
             Robot robot = new Robot();
-            wait(1000);
+            wait(100);
             robot.keyPress(KeyEvent.VK_CONTROL); // Press the control key
             wait(50);
             robot.keyPress(KeyEvent.VK_Z); // Press the z key
@@ -55,7 +55,9 @@ public class savestatetests {
         try {
             Robot robot = new Robot();
             for (int i = 0; i < times; i++) {
+                
                 robot.keyPress(KeyEvent.VK_TAB); // Press the Tab key
+                wait(50);
                 robot.keyRelease(KeyEvent.VK_TAB); // Release the Tab key
             }
         } catch (AWTException e) {

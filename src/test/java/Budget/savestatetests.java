@@ -350,10 +350,7 @@ public class savestatetests {
         checkState(newContentPane, Arrays.asList("1","",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
         pressControlZ();
         checkState(newContentPane, Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"), Arrays.asList("","",""), Arrays.asList("per year", "per year", "per year"));
-
-
-
-
     }
+
     
 }

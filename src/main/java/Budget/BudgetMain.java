@@ -39,7 +39,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     
     public BudgetMain() {
-        
+        //this is a constructor that is used for testing purposes
     }
 
     // constructor - create UI
@@ -51,7 +51,10 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         initComponents();  // initialise components
         undoButton.setEnabled(false); // Disable undo button initially
         topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo"); // Add key listener for undo button (Ctrl + Z)
-        
+
+        topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK), "addIncomeField"); // Add key listener for add income field button (Ctrl + I)
+
+        topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), "addSpendingField"); // Add key listener for add spending field button (Ctrl + S)
     }
 
     private void initDefaultValues() {
@@ -167,7 +170,9 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             incomeFields[i] = new JTextField(incomeValue, 10);
             incomeFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(incomeFields[i], i + 1, 1);
-            addTriggerCalculationsListener(incomeFields[i]); // Add listener to trigger calculations when text is changed
+            // Add listener to trigger calculations when text is changed and when Ctrl + I is pressed
+            addTriggerCalculationsListener(incomeFields[i]);
+
 
             //create dropdown box for each income category, that has per week/month/year
             String timeValue = i < currentIncomeTimeValues.size() ? currentIncomeTimeValues.get(i) : "";
@@ -279,6 +284,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
+
+
         //print button
         printButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -302,16 +309,17 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
-        //add income category button
-        addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {
+        //add income category button, works with Ctrl + I
+        topLevelFrame.getRootPane().getActionMap().put("addIncomeField", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 addIncomeField();
                 triggerCalculations();
             }
         });
+        
 
-        //add spending category button
-        addSpendingFieldButton.addActionListener(new java.awt.event.ActionListener() {
+        //add spending category button, works with Ctrl + S
+        topLevelFrame.getRootPane().getActionMap().put("addSpendingField", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 addSpendingField();
                 triggerCalculations();

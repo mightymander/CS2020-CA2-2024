@@ -17,16 +17,24 @@ import java.util.Stack;
 // class definition
 public class BudgetMain extends JPanel {    // based on Swing JPanel
 
+    // Constants, default values for the budget
+    private static final List<String> DEFAULT_INCOME_CATEGORIES = Arrays.asList("Wages", "Loans", "Other");
+    private static final List<String> DEFAULT_SPENDING_CATEGORIES = Arrays.asList("Food", "Rent", "Other");
+    private static final List<String> DEFAULT_TIMELINE_CATEGORIES = Arrays.asList("per year", "per month", "per week");
+    private static final List<String> DEFAULT_EMPTY_VALUES = Arrays.asList("", "", "");
+    private static final List<String> DEFAULT_TIMELINE_VALUES = Arrays.asList("per year", "per year", "per year");
+
+
     //Fields related to budgets and categories
     public Stack<Budget> allBudgets = new Stack<>(); // Stack to store all budgets
     public ArrayList<String> incomeCategories = new ArrayList<>(); // To store income categories
     public ArrayList<String> spendingCategories = new ArrayList<>(); // To store spending categories
     public ArrayList<String> currentIncomeValues = new ArrayList<>(); // To store income values
-    public ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values  
+    public ArrayList<String> currentSpendingValues = new ArrayList<>(); // To store spending values
     public ArrayList<String> timeLineCategories = new ArrayList<>(); // To store time line categories
     public ArrayList<String> currentIncomeTimeValues = new ArrayList<>(); // To store income time values
     public ArrayList<String> currentSpendingTimeValues = new ArrayList<>(); // To store spending time values
-     
+
 
     //UI-related fields
     JFrame topLevelFrame;  // top-level JFrame
@@ -36,9 +44,8 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     private JTextField totalIncomeField, totalSpendingField, overallTotalField; // text fields for total income, spending, and overall total
     private JComboBox<String>[] incomeTimeDropDownFields, spendingTimeDropDownFields; // arrays of drop down boxes for income and spending time values
 
-
     public BudgetMain() {
-        //this is a constructor that is used for testing purposes
+       // empty constructor, for testing purposes
     }
 
     // constructor - create UI
@@ -65,13 +72,13 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
          * 3 default values for current income time values: per year, per year, per year
          * 3 default values for current spending time values: per year, per year, per year
          */
-        incomeCategories = new ArrayList<>(Arrays.asList("Wages", "Loans", "Other"));
-        spendingCategories = new ArrayList<>(Arrays.asList("Food", "Rent", "Other"));
-        timeLineCategories = new ArrayList<>(Arrays.asList("per year", "per month", "per week"));
-        currentIncomeValues = new ArrayList<>(Arrays.asList("","",""));
-        currentSpendingValues = new ArrayList<>(Arrays.asList("","",""));
-        currentIncomeTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
-        currentSpendingTimeValues = new ArrayList<>(Arrays.asList("per year", "per year", "per year"));
+        incomeCategories = new ArrayList<>(DEFAULT_INCOME_CATEGORIES);
+        spendingCategories = new ArrayList<>(DEFAULT_SPENDING_CATEGORIES);
+        timeLineCategories = new ArrayList<>(DEFAULT_TIMELINE_CATEGORIES);
+        currentIncomeValues = new ArrayList<>(DEFAULT_EMPTY_VALUES);
+        currentSpendingValues = new ArrayList<>(DEFAULT_EMPTY_VALUES);
+        currentIncomeTimeValues = new ArrayList<>(DEFAULT_TIMELINE_VALUES);
+        currentSpendingTimeValues = new ArrayList<>(DEFAULT_TIMELINE_VALUES);
     }
 
     /*
@@ -80,7 +87,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
      * CREATE UI
      */
 
-    private void initComponents() { 
+    private void initComponents() {
         /*
          * Initialize components for the budget calculator
          * Add fields for income and spending entries
@@ -89,7 +96,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
          * Add named labels to panel
          * Set up listeners for buttons and text fields
          */
-    
+
         // Get the number of rows for income and spending
         int numberIncomeRows = incomeCategories.size();
         int numberTimeRowsIncome = currentIncomeTimeValues.size();
@@ -99,7 +106,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         // Create arrays for income and spending fields and time drop down boxes
         incomeFields = new JTextField[numberIncomeRows];
         spendingFields = new JTextField[numberSpendingRows];
-        incomeTimeDropDownFields = new JComboBox[numberTimeRowsIncome];    
+        incomeTimeDropDownFields = new JComboBox[numberTimeRowsIncome];
         spendingTimeDropDownFields = new JComboBox[numberTimeRowsSpending];
 
         addNamedLabelsToPanel(numberIncomeRows,numberSpendingRows); // Add named labels to panel
@@ -127,13 +134,13 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         //total spending
         JLabel totalSpendingLabel = new JLabel("Total Spending");
         addComponent(totalSpendingLabel, numberIncomeRows+numberSpendingRows +5, 0);
-        
+
         // set up text box for displaying total spending.  Users cam view, but cannot directly edit it
-        totalSpendingField = new JTextField("0", 10);   
+        totalSpendingField = new JTextField("0", 10);
         totalSpendingField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         totalSpendingField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
         addComponent(totalSpendingField, numberIncomeRows+numberSpendingRows +5, 1);
-         
+
         //blank row
         JLabel blankLabel2 = new JLabel(" ");
         addComponent(blankLabel2, numberIncomeRows + numberSpendingRows + 6, 0);
@@ -142,7 +149,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         JLabel overallTotalLabel = new JLabel("Overall Total");
         addComponent(overallTotalLabel, numberIncomeRows+numberSpendingRows +7, 0);
         // set up text box for displaying overall total.  Users cam view, but cannot directly edit it
-        overallTotalField = new JTextField("0", 10);   
+        overallTotalField = new JTextField("0", 10);
         overallTotalField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         overallTotalField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
         addComponent(overallTotalField, numberIncomeRows+numberSpendingRows +7, 1);
@@ -154,7 +161,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
          * Add fields for income and spending entries
          * These fields can be entered by the user
          */
-        
+
         // Add income categories
         // Loop through and create income rows dynamically
         for (int i = 0; i < numberIncomeRows; i++) {
@@ -187,7 +194,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             addComponent(spendingCategoryLabel, numberIncomeRows + 5 + i, 0);
 
             // Create text fields
-            String spendingValue = i < currentSpendingValues.size() ? currentSpendingValues.get(i) : ""; 
+            String spendingValue = i < currentSpendingValues.size() ? currentSpendingValues.get(i) : "";
             spendingFields[i] = new JTextField(spendingValue, 10);
             spendingFields[i].setHorizontalAlignment(JTextField.RIGHT);
             addComponent(spendingFields[i], numberIncomeRows + 5 + i, 1);
@@ -210,12 +217,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
         //add button beside spending
         addSpendingFieldButton = new JButton("ADD");
-        addComponent(addSpendingFieldButton, numberIncomeRows + 4, 1);        
+        addComponent(addSpendingFieldButton, numberIncomeRows + 4, 1);
 
         //Undo Button
         undoButton = new JButton("Undo");
         addComponent(undoButton, numberIncomeRows + numberSpendingRows + 8, 0);
-        
+
         //Exit Button
         exitButton = new JButton("Exit");
         addComponent(exitButton, numberIncomeRows + numberSpendingRows + 8, 1);
@@ -265,7 +272,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
-        
+
         //enables Ctrl + Z to undo
         topLevelFrame.getRootPane().getActionMap().put("undo", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -295,7 +302,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             }
         });
 
-    
+
         //add income category button, works with Ctrl + I
         topLevelFrame.getRootPane().getActionMap().put("addIncomeField", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -303,7 +310,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
                 triggerCalculations();
             }
         });
-        
+
         //add spending category button, works with Ctrl + S
         topLevelFrame.getRootPane().getActionMap().put("addSpendingField", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -318,7 +325,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         // Trigger calculations when selected item is changed
         comboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                updateIncomeSpendingTimeValuesList();                
+                updateIncomeSpendingTimeValuesList();
                 triggerCalculations();
                 saveCurrentBudgetState();
             }
@@ -361,7 +368,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
       * START OF METHODS FOR ADDING MORE INCOME AND SPENDING FIELDS
       */
 
-    
+
     //method to add a spending field
     private void addSpendingField() {
         // Add a new spending category to the list
@@ -423,12 +430,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
      */
 
 
-     
+
     /*
      * METHODS FOR,
      * SAVING AND GOING BACK TO PREVIOUS STATE
      * CHECK IF UI IS IDENTICAL TO LAST BUDGET
-     * 
+     *
      */
 
 
@@ -480,7 +487,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
             System.out.println("No previous budgets to compare to.");
             return false;
         }
-        
+
         //get the most recent budget
         Budget mostRecentBudget = allBudgets.peek();
 
@@ -529,7 +536,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
                 return false;
             }
         }
-        
+
        // If no differences were found, UI is identical to the last budget
         return true;
 
@@ -541,14 +548,14 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
          * Will go back to the previous state of the budget
          * Undo button backend
          */
-    
+
        // Check if the UI is identical to the last budget
        // If it is, remove the most recent budget
        // fixes of the undo button not working on the first click
         if (isUIIdenticalToLastBudget()) {
             allBudgets.pop(); // Remove the most recent budget
-        } 
-        
+        }
+
         //grab the most recent budget
         Budget mostRecentBudget = allBudgets.pop();
 
@@ -594,9 +601,9 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     //method to check if the undo button should be enabled or disabled
     private boolean checkIfUndoButtonShouldBeEnabled() {
-        
+
         // if the stack has less than or equal to 1 budget this means there is only the default budget
-        
+
         //check if any numbers are in the text fields
         boolean anyNumbers = false;
         if (allBudgets.size() <= 1) {
@@ -612,7 +619,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
                     break;
                 }
             }
-        }   
+        }
 
         //if the stack has 1 thing in it and nothing is in the text fields, disable the undo button
         // however, if there are numbers in the text fields, enable the undo button
@@ -626,11 +633,11 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         }
     }
 
-    
+
 
     // add a component at specified row and column in UI.  (0,0) is top-left corner
     private void addComponent(Component component, int gridrow, int gridcol) {
-        layoutConstraints.fill = GridBagConstraints.HORIZONTAL;   
+        layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
         layoutConstraints.gridx = gridcol;
         layoutConstraints.gridy = gridrow;
         add(component, layoutConstraints);
@@ -810,22 +817,22 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 // below is standard code to set up Swing, which students should not need to edit much
     // standard method to show UI
     public static void createAndShowGUI() {
- 
+
         //Create and set up the window.
         JFrame frame = new JFrame("Budget Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+
         //Create and set up the content pane.
         BudgetMain newContentPane = new BudgetMain(frame);
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
- 
+
         //Display the window.
         //frame.pack();
         frame.setSize(400,600);
         frame.setVisible(true);
     }
- 
+
 
     // standard main class to set up Swing UI
     public static void main(String[] args) {
@@ -834,7 +841,7 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI(); 
+                createAndShowGUI();
             }
         });
     }

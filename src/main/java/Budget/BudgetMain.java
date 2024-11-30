@@ -61,17 +61,18 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         topLevelFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), "addSpendingField"); // Add key listener for add spending field button (Ctrl + S)
     }
 
+    /**
+     * Initialize default values for the budget calculator
+     * Initialize default values for the budget
+     * 3 default values income categories: Wages, Loans, Other
+     * 3 default values spending categories: Food, Rent, Other
+     * 3 default values time line categories: per year, per month, per week
+     * 3 default values for current income values: "", "", ""
+     * 3 default values for current spending values: "", "", ""
+     * 3 default values for current income time values: per year, per year, per year
+     * 3 default values for current spending time values: per year, per year, per year  
+     */
     private void initDefaultValues() {
-        /*
-         * Initialize default values for the budget
-         * 3 default values income categories: Wages, Loans, Other
-         * 3 default values spending categories: Food, Rent, Other
-         * 3 default values time line categories: per year, per month, per week
-         * 3 default values for current income values: "", "", ""
-         * 3 default values for current spending values: "", "", ""
-         * 3 default values for current income time values: per year, per year, per year
-         * 3 default values for current spending time values: per year, per year, per year
-         */
         incomeCategories = new ArrayList<>(DEFAULT_INCOME_CATEGORIES);
         spendingCategories = new ArrayList<>(DEFAULT_SPENDING_CATEGORIES);
         timeLineCategories = new ArrayList<>(DEFAULT_TIMELINE_CATEGORIES);
@@ -87,16 +88,16 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
      * CREATE UI
      */
 
+    
+    /*
+     * Initialize components for the budget calculator
+     * Add fields for income and spending entries
+     * Add summary fields for total income, spending, and overall total
+     * Add action buttons to panel
+     * Add named labels to panel
+     * Set up listeners for buttons and text fields
+    */
     private void initComponents() {
-        /*
-         * Initialize components for the budget calculator
-         * Add fields for income and spending entries
-         * Add summary fields for total income, spending, and overall total
-         * Add action buttons to panel
-         * Add named labels to panel
-         * Set up listeners for buttons and text fields
-         */
-
         // Get the number of rows for income and spending
         int numberIncomeRows = incomeCategories.size();
         int numberTimeRowsIncome = currentIncomeTimeValues.size();
@@ -156,12 +157,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     }
 
 
+    /**
+     * Add income and spending entry fields to the panel
+     * @param numberIncomeRows The number of income rows to add to the panel
+     * @param numberSpendingRows The number of income and spending rows to add to the panel
+     */
     private void addBudgetEntryFieldsToPanel(int numberIncomeRows, int numberSpendingRows) {
-        /*
-         * Add fields for income and spending entries
-         * These fields can be entered by the user
-         */
-
         // Add income categories
         // Loop through and create income rows dynamically
         for (int i = 0; i < numberIncomeRows; i++) {
@@ -209,7 +210,11 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         }
     }
 
-
+    /**
+     * Add action buttons to the panel
+     * @param numberIncomeRows The number of income rows to add to the panel
+     * @param numberSpendingRows The number of income and spending rows to add to the panel
+     */
     private void addActionButtonsToPanel(int numberIncomeRows, int numberSpendingRows) {
         //add button beside income
         addIncomeFieldButton = new JButton("ADD");
@@ -229,7 +234,11 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
-
+    /**
+     * Add named labels to the panel, eg "Income", "Spending"
+     * @param numberIncomeRows The number of income rows to add to the panel
+     * @param numberSpendingRows The number of income and spending rows to add to the panel
+     */
     private void addNamedLabelsToPanel(int numberIncomeRows, int numberSpendingRows) {
         //Spending header
         JLabel spendingLabel = new JLabel("SPENDING");
@@ -253,8 +262,10 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
       * SET UP LISTENERS FOR BUTTONS AND TEXT FIELDS
       */
 
-    // set up listeners
-    // initially just for buttons, can add listeners for text fields
+    /**
+     * Set up listeners for buttons and text fields
+     * Add listeners for exit button, undo button, add income field button, and add spending field button
+     */
     private void initListeners() {
 
         // exitButton - exit program when pressed
@@ -284,7 +295,6 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
             }
         });
-
 
         //add income category button
         addIncomeFieldButton.addActionListener(new java.awt.event.ActionListener() {
@@ -320,7 +330,10 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         });
     }
 
-    // Add a DocumentListener to a text field to trigger calculations when text is changed
+    /**
+     * Add a listener to a JComboBox to trigger calculations when selected item is changed
+     * @param comboBox The JComboBox to add the listener to
+     */
     private void addTriggerCalculationsListener(JComboBox<String> comboBox) {
         // Trigger calculations when selected item is changed
         comboBox.addActionListener(new ActionListener() {
@@ -333,7 +346,10 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     }
 
 
-    // Add a DocumentListener to a text field to trigger calculations when text is changed
+    /**
+     * Add a listener to a JTextField to trigger calculations when text is changed
+     * @param field The JTextField to add the listener to
+     */
     private void addTriggerCalculationsListener(JTextField field) {
     field.getDocument().addDocumentListener(new DocumentListener() {
         // Trigger calculations when text is inserted
@@ -369,9 +385,11 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
       */
 
 
-    //method to add a spending field
+    /**
+     * Add a new spending field to the list
+     */
     private void addSpendingField() {
-        // Add a new spending category to the list
+    
         // Ask the user for the name of the new spending category
         String input = JOptionPane.showInputDialog("Enter additional Spending field name:  ");
         //check if the user entered a blank string, if so, show a message and return
@@ -398,9 +416,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         repaint(); // Repaint the panel to ensure it displays correctly
     }
 
-    //method to add an income field
+    /**
+     * Add a new income field to the list
+     */
     private void addIncomeField() {
-        // Add a new income category to the list
+
+        // Ask the user for the name of the new income category
         String input = JOptionPane.showInputDialog("Enter additional Income field name:  ");
         //check if the user entered a blank string, if so, show a message and return
         if (input == null || input.isBlank()) {
@@ -439,14 +460,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
      */
 
 
-    // method to save all the current input fields
+    /**
+     * Save the current state of the budget
+     * Will save the current state of the budget into the stack
+     */
     public void saveCurrentBudgetState() {
-        /*
-         *  Will save the current state of the budget into a stack
-         *  incomes will be saved in a list of entries
-         *  expenses will be saved in a list of entries
-         */
-
+      
         //convert the currentIncomeValues and currentSpendingValues into a list of entries
         List<Budget.Entry> incomeEntries = new ArrayList<>();
         List<Budget.Entry> expenseEntries = new ArrayList<>();
@@ -474,13 +493,13 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
+    /**
+     * Check if the current UI is identical to the last budget
+     * Prevents the user from saving the same budget multiple times
+     * 
+     * @return true if the current UI is identical to the last budget, false otherwise
+     */
     private boolean isUIIdenticalToLastBudget() {
-        /*
-         * Check if the current UI is identical to the last budget
-         * If it is, remove the most recent budget
-         * This is used to prevent duplicate budgets from being added to the stack
-         */
-
 
         //if the stack is empty, return false
         if (allBudgets.isEmpty()) {
@@ -542,12 +561,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
     }
 
-
+    /**
+     * Revert to the previous state of the budget
+     * Will go back to the previous state of the budget
+     * Undo button backend
+     */
     private void revertToPreviousBudget() {
-        /*
-         * Will go back to the previous state of the budget
-         * Undo button backend
-         */
 
        // Check if the UI is identical to the last budget
        // If it is, remove the most recent budget
@@ -599,7 +618,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         }
     }
 
-    //method to check if the undo button should be enabled or disabled
+    /**
+     * Check if the undo button should be enabled
+     * The undo button should be enabled if the stack has more than 1 budget or if there are numbers in the text fields
+     * The undo button should be disabled if the stack has 1 budget and there are no numbers in the text fields
+     * @return true if the undo button should be enabled, false otherwise
+     */
     private boolean checkIfUndoButtonShouldBeEnabled() {
 
         // if the stack has less than or equal to 1 budget this means there is only the default budget
@@ -635,7 +659,12 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
 
 
 
-    // add a component at specified row and column in UI.  (0,0) is top-left corner
+    /**
+     * Add a component to the panel
+     * @param component The component to add
+     * @param gridrow The row to add the component to
+     * @param gridcol The column to add the component to
+     */
     private void addComponent(Component component, int gridrow, int gridcol) {
         layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
         layoutConstraints.gridx = gridcol;
@@ -653,7 +682,10 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
      * METHODS FOR UPDATING THE CURRENT INCOME AND SPENDING VALUES AND TIME VALUES
      */
 
-    //method for updating the currentIncomeValues and currentSpendingValues lists and time drop down boxes
+    /**
+     * Update the current income and spending values and time values
+     * 
+     */
     private void updateIncomeSpendingTimeValuesList() {
         // Clear the current values lists
         currentIncomeValues.clear();
@@ -691,14 +723,19 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
       * START OF METHODS FOR CALCULATING TOTAL INCOME, SPENDING, AND OVERALL TOTAL
       */
 
-    // Trigger calculations for income, spending, and overall total
+    /**
+     * Trigger calculations for total income, total spending, and overall total
+     */
     private void triggerCalculations() {
         calculateTotalIncome();
         calculateTotalSpending();
         calculateOverallTotal();
     }
 
-
+    /**
+     * Calculate total income
+     * Calculate the total income based on the values in the incomeFields and incomeTimeDropDownFields
+     */
     public void calculateTotalIncome() {
         // Calculate total income
         double totalIncome = calculateTotal(incomeFields, currentIncomeTimeValues);
@@ -712,7 +749,10 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
         totalIncomeField.setText(String.format("%.2f", totalIncome));
     }
 
-
+    /**
+     * Calculate total spending
+     * Calculate the total spending based on the values in the spendingFields and spendingTimeDropDownFields
+     */
     public void calculateTotalSpending() {
         // Calculate total spending
         double totalSpending = calculateTotal(spendingFields, currentSpendingTimeValues);
@@ -727,6 +767,13 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     }
 
 
+    /**
+     * Calculate total income or spending
+     * Calculate the total income or spending based on the values in the fields array and timeValues list
+     * @param fields The array of text fields to get values from
+     * @param timeValues The list of time values to get time periods from
+     * @return The total income or spending
+     */
     private double calculateTotal(JTextField[] fields, List<String> timeValues){
         double total = 0.0;
 
@@ -759,7 +806,10 @@ public class BudgetMain extends JPanel {    // based on Swing JPanel
     }
 
 
-    //Calculate overall total using total income and total spending
+    /**
+     * Calculate overall total
+     * Calculate the overall total based on the total income and total spending values in the text fields
+     */
     public void calculateOverallTotal() {
         double totalIncome = getTextFieldValue(totalIncomeField);  // get total income value
         double totalSpending = getTextFieldValue(totalSpendingField);  // get total spending value
